@@ -1,0 +1,237 @@
+<div class="min-h-screen bg-cyber-bg text-gray-100 relative selection:bg-cyber-primary selection:text-black flex flex-col font-sans">
+  
+  <div class="absolute top-[-10%] left-1/4 w-[600px] h-[600px] bg-cyber-accent/15 rounded-full blur-[160px] pointer-events-none"></div>
+  <div class="absolute bottom-10 right-1/4 w-[500px] h-[500px] bg-cyber-primary/10 rounded-full blur-[140px] pointer-events-none"></div>
+
+  <nav class="sticky top-0 z-40 glass-panel bg-slate-950/40 border-b border-cyber-primary/20 backdrop-blur-xl px-8 py-5 shadow-[0_1px_20px_rgba(0,240,255,0.05)]">
+    <div class="max-w-7xl mx-auto flex justify-between items-center">
+      <div class="flex items-center space-x-3">
+        <div class="w-8 h-8 bg-gradient-to-tr from-cyber-primary via-cyber-accent to-cyber-secondary rounded-lg shadow-[0_0_25px_rgba(0,240,255,0.5)]"></div>
+        <span class="text-xl font-black tracking-wider text-white">ADMIN DASHBOARD</span>
+      </div>
+      
+      <button (click)="onLogout()" class="glass-panel px-6 py-2.5 bg-white/5 border border-cyber-secondary/30 text-sm font-bold text-cyber-secondary uppercase rounded-xl hover:bg-cyber-secondary hover:text-white hover:shadow-[0_0_25px_rgba(255,0,127,0.4)] transition-all duration-300 cursor-pointer">
+        Logout
+      </button>
+    </div>
+  </nav>
+
+  <main class="max-w-7xl w-full mx-auto px-6 py-8 flex-1 flex flex-col relative z-10">
+    
+    <div class="flex flex-col lg:flex-row justify-between items-start lg:items-center gap-6 mb-8 glass-panel bg-cyber-card/60 p-6 rounded-2xl border border-white/5">
+      <div>
+        <h1 class="text-3xl font-black text-white tracking-wide uppercase">Product Management</h1>
+        <p class="text-sm text-gray-400 mt-1">Manage your products and categories here</p>
+      </div>
+
+      <div class="flex flex-col sm:flex-row items-stretch sm:items-center gap-4 w-full lg:w-auto flex-1 lg:flex-none justify-end">
+        
+        <div class="relative flex-1 sm:flex-none sm:w-64">
+          <input type="text" [(ngModel)]="searchTerm" placeholder="Search products locally..." 
+                 class="w-full bg-black/40 border border-white/10 rounded-xl pl-4 pr-10 py-3.5 text-sm text-white focus:outline-none focus:border-cyber-primary transition-all placeholder-gray-500">
+          <button *ngIf="searchTerm" (click)="clearSearch()" 
+                  class="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-cyber-secondary text-xl font-bold p-1 cursor-pointer transition-colors focus:outline-none">
+            &times;
+          </button>
+        </div>
+        
+        <button (click)="showCategoryModal = true" class="px-5 py-3.5 bg-black/40 hover:bg-white/5 border border-white/10 text-sm font-bold text-gray-300 uppercase rounded-xl transition-all cursor-pointer whitespace-nowrap">
+          Manage Categories
+        </button>
+        <button (click)="openProductModal()" class="px-6 py-3.5 bg-gradient-to-r from-cyber-primary to-cyber-accent text-black font-black text-sm tracking-wider uppercase rounded-xl shadow-[0_0_25px_rgba(0,240,255,0.3)] hover:shadow-[0_0_35px_rgba(0,240,255,0.5)] transition-all duration-300 cursor-pointer transform active:scale-95 whitespace-nowrap">
+          + Add New Product
+        </button>
+      </div>
+    </div>
+
+    <div class="glass-panel bg-cyber-card/40 rounded-2xl border border-white/5 overflow-hidden shadow-2xl flex-1">
+      
+      <div class="px-6 py-5 border-b border-white/5 bg-slate-900/40 flex flex-wrap justify-between items-center gap-4">
+        <div class="flex items-center space-x-6">
+          <h3 class="text-lg font-black text-white uppercase tracking-wider">
+            Products: <span class="text-cyber-primary text-xl font-mono ml-1">{{ filteredProducts.length }}</span>
+          </h3>
+          <span class="h-5 w-px bg-white/10"></span>
+          <h3 class="text-lg font-black text-white uppercase tracking-wider">
+            Categories: <span class="text-cyber-accent text-xl font-mono ml-1">{{ categoriesList.length }}</span>
+          </h3>
+        </div>
+        <span class="text-xs font-mono px-3 py-1 bg-cyber-accent/10 text-cyber-accent rounded-md border border-cyber-accent/20 tracking-widest uppercase animate-pulse">Live</span>
+      </div>
+      
+      <div class="overflow-x-auto">
+        <table class="w-full text-left text-base text-gray-200 table-fixed min-w-[700px]">
+          <thead>
+            <tr class="border-b border-white/5 text-xs font-bold uppercase text-gray-400 tracking-wider bg-black/40">
+              <th class="py-4 px-6 w-[15%]">Product Image</th>
+              <th class="py-4 px-6 w-[45%]">Product Details</th>
+              <th class="py-4 px-6 w-[20%] text-right">Price</th>
+              <th class="py-4 px-6 w-[20%] text-center">Actions</th>
+            </tr>
+          </thead>
+          <tbody class="divide-y divide-white/[0.02]">
+            
+            <ng-container *ngIf="loadingData">
+              <tr *ngFor="let item of [1,2,3]" class="animate-pulse border-b border-white/[0.02]">
+                <td class="py-4 px-6">
+                  <div class="w-16 h-16 bg-white/5 rounded-xl border border-white/5"></div>
+                </td>
+                <td class="py-4 px-6 space-y-2">
+                  <div class="h-5 bg-white/10 rounded w-1/2"></div>
+                  <div class="h-4 bg-white/5 rounded w-3/4"></div>
+                </td>
+                <td class="py-4 px-6">
+                  <div class="h-6 bg-white/10 rounded w-24 ml-auto"></div>
+                </td>
+                <td class="py-4 px-6">
+                  <div class="flex justify-center space-x-3">
+                    <div class="h-9 bg-white/5 rounded-xl w-16"></div>
+                    <div class="h-9 bg-white/5 rounded-xl w-20"></div>
+                  </div>
+                </td>
+              </tr>
+            </ng-container>
+
+            <ng-container *ngIf="!loadingData">
+              <tr *ngFor="let prod of filteredProducts" class="hover:bg-cyber-primary/[0.02] border-l-2 border-l-transparent hover:border-l-cyber-primary transition-all duration-300 group">
+                <td class="py-4 px-6">
+                  <div class="relative w-16 h-16 rounded-xl overflow-hidden border border-white/10 bg-black/40 p-0.5">
+                    <img [      [src]="prod.imageUrl || 'noimage.png'"
+            (error)="onImageError($event)" class="w-full h-full object-cover rounded-lg" alt="product image">
+                  </div>
+                </td>
+                <td class="py-4 px-6 overflow-hidden">
+                  <p class="font-extrabold text-white text-lg tracking-wide truncate">{{ prod.name }}</p>
+                  <p class="text-sm text-gray-400 mt-1 truncate font-medium">{{ prod.description || 'No description provided.' }}</p>
+                </td>
+                <td class="py-4 px-6 font-mono text-right whitespace-nowrap">
+                  <div class="inline-flex flex-col items-end justify-center min-w-[120px]">
+                    <span class="text-xs text-gray-500 line-through mb-0.5">₹{{ prod.originalPrice }}</span>
+                    <span class="text-cyber-primary font-black text-lg drop-shadow-[0_0_8px_rgba(0,240,255,0.3)]">₹{{ prod.price }}</span>
+                  </div>
+                </td>
+                <td class="py-4 px-6">
+                  <div class="flex justify-center space-x-3">
+                    <button (click)="openProductModal(prod)" class="text-sm font-bold bg-white/5 border border-white/5 hover:border-cyber-primary hover:bg-cyber-primary/10 text-gray-300 hover:text-cyber-primary px-4 py-2 rounded-xl transition-all cursor-pointer">
+                      Edit
+                    </button>
+                    <button (click)="removeProduct(prod.id, prod.name)" class="text-sm font-bold bg-white/5 border border-white/5 hover:border-cyber-secondary hover:bg-cyber-secondary/10 text-gray-300 hover:text-cyber-secondary px-4 py-2 rounded-xl transition-all cursor-pointer">
+                      Delete
+                    </button>
+                  </div>
+                </td>
+              </tr>
+            </ng-container>
+
+            <tr *ngIf="!loadingData && filteredProducts.length === 0">
+              <td colspan="4" class="text-center py-20 text-gray-500 text-base font-mono uppercase tracking-wide">No products found matching your search.</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </main>
+
+  <div *ngIf="showProductModal" class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-md transition-all">
+    <div class="glass-panel bg-cyber-card/95 border border-cyber-secondary/30 w-full max-w-2xl rounded-2xl shadow-[0_0_50px_rgba(255,0,127,0.15)] overflow-hidden">
+      
+      <div class="px-6 py-4 border-b border-white/5 flex justify-between items-center bg-black/40">
+        <h2 class="text-xl font-black text-white tracking-wider uppercase">
+          {{ isEditingProduct ? 'Edit Product' : 'Add New Product' }}
+        </h2>
+        <button (click)="closeProductModal()" class="text-gray-400 hover:text-cyber-secondary text-2xl font-black p-1 transition-colors cursor-pointer">&times;</button>
+      </div>
+
+      <form (ngSubmit)="onSaveProduct()" class="p-6 space-y-6">
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
+          <div>
+            <label class="text-base font-bold text-gray-300 block mb-2">Product Name *</label>
+            <input type="text" [(ngModel)]="productName" name="pName" placeholder="Enter product name..." required 
+                   class="w-full bg-black/60 border border-white/10 rounded-xl px-4 py-3.5 text-base text-white focus:outline-none focus:border-cyber-secondary">
+          </div>
+          <div>
+            <label class="text-base font-bold text-gray-300 block mb-2">Select Category *</label>
+            <select [(ngModel)]="productCategoryId" name="pCat" required 
+                    class="w-full bg-black/60 border border-white/10 rounded-xl px-4 py-3.5 text-base text-gray-200 focus:outline-none focus:border-cyber-secondary cursor-pointer">
+              <option value="" disabled selected>-- Choose Category --</option>
+              <option *ngFor="let cat of categoriesList" [value]="cat.id" class="bg-cyber-bg text-white">{{ cat.name }}</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
+          <div>
+            <label class="text-base font-bold text-gray-300 block mb-2">Original Price (M.R.P. ₹)</label>
+            <input type="number" [(ngModel)]="productOriginalPrice" name="pOriginalPrice" placeholder="0.00" 
+                   class="w-full bg-black/60 border border-white/10 rounded-xl px-4 py-3.5 text-base text-white focus:outline-none focus:border-cyber-secondary">
+          </div>
+          <div>
+            <label class="text-base font-bold text-gray-300 block mb-2">Selling Price (₹) *</label>
+            <input type="number" [(ngModel)]="productPrice" name="pPrice" placeholder="0.00" required 
+                   class="w-full bg-black/60 border border-white/10 rounded-xl px-4 py-3.5 text-base text-white focus:outline-none focus:border-cyber-secondary">
+          </div>
+        </div>
+
+        <div>
+          <label class="text-base font-bold text-gray-300 block mb-2">Product Image URL</label>
+          <input type="text" [(ngModel)]="productImageUrl" name="pUrl" placeholder="Paste image link here..." 
+                 class="w-full bg-black/60 border border-white/10 rounded-xl px-4 py-3.5 text-base text-white focus:outline-none focus:border-cyber-secondary">
+        </div>
+
+        <div>
+          <label class="text-base font-bold text-gray-300 block mb-2">Product Description</label>
+          <textarea [(ngModel)]="productDescription" name="pDesc" rows="3" placeholder="Enter product details..." 
+                    class="w-full bg-black/60 border border-white/10 rounded-xl px-4 py-3.5 text-base text-white focus:outline-none focus:border-cyber-secondary resize-none"></textarea>
+        </div>
+
+        <div class="flex justify-end space-x-4 pt-4 border-t border-white/5 bg-black/20 -mx-6 -mb-6 p-6">
+          <button type="button" (click)="closeProductModal()" class="px-6 py-3.5 bg-white/5 border border-white/5 text-gray-300 rounded-xl font-bold text-sm tracking-wider uppercase hover:bg-white/10 transition-all cursor-pointer">
+            Cancel
+          </button>
+          <button type="submit" [disabled]="loading" class="px-8 py-3.5 bg-gradient-to-r from-cyber-secondary to-pink-600 text-white font-black text-sm tracking-wider uppercase rounded-xl shadow-[0_0_25px_rgba(255,0,127,0.3)] hover:shadow-[0_0_35px_rgba(255,0,127,0.5)] transition-all cursor-pointer">
+            {{ loading ? 'Saving...' : 'Save Product' }}
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <div *ngIf="showCategoryModal" class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-md transition-all">
+    <div class="glass-panel bg-cyber-card/95 border border-cyber-primary/30 w-full max-w-md rounded-2xl shadow-[0_0_50px_rgba(0,240,255,0.15)] overflow-hidden">
+      
+      <div class="px-6 py-4 border-b border-white/5 flex justify-between items-center bg-black/40">
+        <h2 class="text-lg font-black text-white tracking-wider uppercase">Manage Categories</h2>
+        <button (click)="showCategoryModal = false; cancelCategoryEdit()" class="text-gray-400 hover:text-cyber-primary text-2xl font-black p-1 cursor-pointer">&times;</button>
+      </div>
+
+      <div class="p-6 space-y-6">
+        <form (ngSubmit)="onSaveCategory()" class="space-y-3">
+          <label class="text-base font-bold text-gray-300 block mb-1">Category Name</label>
+          <div class="flex gap-3">
+            <input type="text" [(ngModel)]="newCategoryName" name="catName" placeholder="Enter new category..." required 
+                   class="flex-1 bg-black/60 border border-white/10 rounded-xl px-4 py-3 text-base text-white focus:outline-none focus:border-cyber-primary">
+            <button type="submit" class="px-5 py-3 bg-cyber-primary text-black font-black rounded-xl text-sm tracking-wider uppercase shadow-[0_0_15px_rgba(0,240,255,0.2)] hover:shadow-[0_0_25px_rgba(0,240,255,0.4)] transition-all cursor-pointer">
+              {{ isEditingCategory ? 'Save' : 'Add' }}
+            </button>
+          </div>
+          <button type="button" *ngIf="isEditingCategory" (click)="cancelCategoryEdit()" class="text-xs font-mono text-cyber-secondary uppercase tracking-widest hover:underline block mt-1">Cancel Edit</button>
+        </form>
+
+        <div>
+          <h4 class="text-xs font-black text-gray-400 uppercase tracking-widest mb-3">Available Categories</h4>
+          <div class="max-h-48 overflow-y-auto space-y-2 pr-1 custom-scrollbar">
+            <div *ngFor="let cat of categoriesList" class="flex justify-between items-center bg-black/40 border border-white/5 rounded-xl p-3.5">
+              <span class="text-sm font-extrabold text-white tracking-wide">{{ cat.name }}</span>
+              <div class="flex space-x-3 font-mono text-xs">
+                <button (click)="editCategory(cat)" class="text-cyber-primary hover:underline font-bold cursor-pointer">Edit</button>
+                <button (click)="removeCategory(cat.id, cat.name)" class="text-cyber-secondary hover:underline font-bold cursor-pointer">Delete</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+</div>

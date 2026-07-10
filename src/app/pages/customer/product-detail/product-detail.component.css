@@ -1,0 +1,47 @@
+@keyframes shimmer {
+  0% {
+    background-position: -200% 0;
+  }
+  100% {
+    background-position: 200% 0;
+  }
+}
+
+.animate-shimmer {
+  background: linear-gradient(
+    90deg,
+    rgba(255, 255, 255, 0.05) 25%,
+    rgba(255, 255, 255, 0.1) 50%,
+    rgba(255, 255, 255, 0.05) 75%
+  );
+  background-size: 200% 100%;
+  animation: shimmer 1.5s infinite linear;
+}
+
+/* Cyber Button Glow Effect */
+.cyber-btn-glow {
+  transition: all 0.3s ease;
+  border: 1px solid rgba(0, 240, 255, 0.2);
+}
+
+.cyber-btn-glow:hover {
+  box-shadow: 0 0 15px rgba(0, 240, 255, 0.4);
+  border-color: rgba(0, 240, 255, 0.6);
+}
+
+/* Jab saved ho jaye */
+.is-saved {
+  background: rgba(0, 240, 255, 0.1);
+  border-color: #00f0ff !important;
+  box-shadow: 0 0 20px rgba(0, 240, 255, 0.2);
+}
+
+.cyber-action-btn {
+  cursor: pointer; /* Yaha se pointer cursor aayega */
+  transition: all 0.3s ease;
+}
+
+.cyber-action-btn:hover {
+  transform: translateY(-2px);
+  border-color: rgba(0, 240, 255, 0.5);
+}

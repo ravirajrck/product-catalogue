@@ -1,0 +1,193 @@
+<div
+  class="min-h-screen bg-cyber-bg text-gray-100 p-6 md:p-12 relative overflow-hidden"
+>
+  <div
+    class="absolute top-[-10%] left-1/4 w-[600px] h-[600px] bg-cyber-primary/10 rounded-full blur-[160px] pointer-events-none"
+  ></div>
+
+  <div class="max-w-6xl mx-auto mb-8 relative z-10">
+    <button
+      (click)="goBack()"
+      class="group flex items-center gap-3 text-cyber-primary hover:text-white transition-all duration-300 cursor-pointer"
+    >
+      <div
+        class="w-10 h-10 rounded-full border border-cyber-primary/30 flex items-center justify-center group-hover:bg-cyber-primary/20 group-hover:border-cyber-primary transition-all shrink-0 relative"
+      >
+        <div class="absolute inset-0 flex items-center justify-center pb-1">
+          <span class="text-xl">←</span>
+        </div>
+      </div>
+      <span class="uppercase font-bold tracking-widest text-sm"
+        >Back to Catalog</span
+      >
+    </button>
+  </div>
+
+  <div
+    *ngIf="!loading"
+    class="max-w-6xl mx-auto grid grid-cols-1 lg:grid-cols-2 gap-12 relative z-10"
+  >
+    <div class="flex flex-col-reverse lg:flex-row gap-4">
+      <div
+        class="flex flex-row lg:flex-col gap-3 justify-center lg:justify-start"
+      >
+        <div
+          (click)="changeImage(product.imageUrl)"
+          [class.border-cyber-primary]="
+            activeImage === product.imageUrl ||
+            (!activeImage && product.imageUrl)
+          "
+          class="w-20 h-20 border-2 rounded-xl cursor-pointer overflow-hidden transition-all border-white/10 hover:border-cyber-primary"
+        >
+          <img
+            [src]="product.imageUrl"
+            (error)="onImageError($event)"
+            class="w-full h-full object-cover"
+          />
+        </div>
+
+        <div
+          (click)="changeImage(product.image2)"
+          [class.border-cyber-primary]="activeImage === product.image2"
+          class="w-20 h-20 border-2 rounded-xl cursor-pointer overflow-hidden transition-all border-white/10 hover:border-cyber-primary"
+        >
+          <img
+            [src]="product.image2"
+            (error)="onImageError($event)"
+            class="w-full h-full object-cover"
+          />
+        </div>
+
+        <div
+          (click)="changeImage(product.image3)"
+          [class.border-cyber-primary]="activeImage === product.image3"
+          class="w-20 h-20 border-2 rounded-xl cursor-pointer overflow-hidden transition-all border-white/10 hover:border-cyber-primary"
+        >
+          <img
+            [src]="product.image3"
+            (error)="onImageError($event)"
+            class="w-full h-full object-cover"
+          />
+        </div>
+
+        <!-- <div
+          (click)="changeImage('https://picsum.photos/400/400?random=1')"
+          [class.border-cyber-primary]="
+            activeImage === 'https://picsum.photos/400/400?random=1'
+          "
+          class="w-20 h-20 border-2 rounded-xl cursor-pointer overflow-hidden transition-all border-white/10 hover:border-cyber-primary"
+        >
+          <img
+            src="https://picsum.photos/400/400?random=1"
+            class="w-full h-full object-cover"
+          />
+        </div> -->
+      </div>
+      <div
+        class="glass-panel border border-cyber-primary/30 rounded-2xl p-1 shadow-[0_0_20px_rgba(0,240,255,0.2)] flex-1 h-[400px] flex items-center justify-center overflow-hidden"
+      >
+        <img
+          [src]="activeImage || product.imageUrl"
+          (error)="onImageError($event)"
+          class="max-h-full object-contain rounded-xl"
+        />
+      </div>
+    </div>
+
+    <div class="flex flex-col space-y-6">
+      <div
+        class="glass-panel bg-black/40 border border-white/10 p-8 rounded-2xl"
+      >
+        <h1
+          class="text-4xl font-black text-white uppercase tracking-tighter mb-4"
+        >
+          {{ product.name }}
+        </h1>
+        <div class="flex items-center gap-6 mb-6">
+          <span class="text-3xl font-black text-cyber-primary"
+            >₹{{ product.price }}</span
+          >
+          <span
+            *ngIf="product.originalPrice"
+            class="text-lg text-gray-500 line-through"
+            >₹{{ product.originalPrice }}</span
+          >
+        </div>
+        <div class="border-t border-white/10 pt-6">
+          <h3
+            class="text-xs font-mono text-cyber-primary uppercase tracking-widest mb-3"
+          >
+            // System Overview
+          </h3>
+          <p
+            class="text-gray-300 leading-relaxed transition-all"
+            [class.line-clamp-3]="!isExpanded"
+          >
+            {{ product.description }}
+          </p>
+          <button
+            *ngIf="product.description.length > 200"
+            (click)="isExpanded = !isExpanded"
+            class="text-cyber-primary text-sm mt-2 cursor-pointer hover:underline font-bold"
+          >
+            {{ isExpanded ? "Read Less" : "Read More" }}
+          </button>
+        </div>
+      </div>
+<p class="text-[10px] text-gray-500 font-mono uppercase tracking-widest mt-3 text-center">
+*Click Enquire Now to discuss details on WhatsApp. No direct payment required here.
+</p>
+  <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mt-8">
+  
+  <button 
+    (click)="orderOnWhatsApp()"
+    class="col-span-2 py-4 bg-gradient-to-r from-cyber-primary to-cyber-accent text-black font-black uppercase tracking-widest rounded-xl cyber-action-btn flex items-center justify-center gap-2"
+  >
+    <span>Enquire Now</span>
+  </button>
+
+  <button 
+    (click)="toggleSaved()"
+    [class.is-saved]="isSaved()"
+    class="cyber-action-btn flex items-center justify-center py-4 bg-black/40 border border-white/10 text-white rounded-xl"
+  >
+    <svg class="w-6 h-6" [class.fill-cyber-primary]="isSaved()" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+      <path stroke-linecap="round" stroke-linejoin="round" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"/>
+    </svg>
+  </button>
+
+  <button 
+    (click)="shareProduct()"
+    class="cyber-action-btn flex items-center justify-center py-4 bg-black/40 border border-white/10 text-white rounded-xl"
+  >
+    <svg class="w-6 h-6" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+      <path stroke-linecap="round" stroke-linejoin="round" d="M8.684 13.342C8.886 12.938 9 12.482 9 12c0-.482-.114-.938-.316-1.342m0 2.684a3 3 0 110-2.684m0 2.684l6.632 3.316m-6.632-6l6.632-3.316m0 0a3 3 0 105.367-1.342A3 3 0 0015.316 7.342z"/>
+    </svg>
+  </button>
+</div>
+
+    </div>
+  </div>
+
+  <div
+  *ngIf="loading"
+  class="max-w-6xl mx-auto grid grid-cols-1 lg:grid-cols-2 gap-12 relative z-10 animate-pulse"
+>
+  <div class="flex flex-col-reverse lg:flex-row gap-4">
+    <div class="flex flex-row lg:flex-col gap-3">
+      <div class="w-20 h-20 rounded-xl animate-shimmer bg-white/5"></div>
+      <div class="w-20 h-20 rounded-xl animate-shimmer bg-white/5"></div>
+    </div>
+    <div class="flex-1 h-[400px] rounded-2xl animate-shimmer bg-white/5"></div>
+  </div>
+  <div class="flex flex-col space-y-6">
+    <div class="h-64 rounded-2xl animate-shimmer bg-white/5"></div>
+    <div class="h-16 rounded-xl animate-shimmer bg-white/5"></div>
+  </div>
+</div>
+
+<div
+  *ngIf="!loading"
+  class="max-w-6xl mx-auto grid grid-cols-1 lg:grid-cols-2 gap-12 relative z-10"
+></div>
+</div>

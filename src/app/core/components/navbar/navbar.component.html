@@ -1,0 +1,150 @@
+<header
+  class="sticky top-0 z-50 bg-slate-950/70 border-b border-cyber-primary/30 backdrop-blur-xl px-6 md:px-12 py-4 relative"
+>
+  <div
+    class="absolute bottom-0 left-0 h-[2px] bg-cyber-primary transition-all duration-300 ease-out"
+    [class.w-full]="isLoading"
+    [class.w-0]="!isLoading"
+    [class.opacity-100]="isLoading"
+    [class.opacity-0]="!isLoading"
+  >
+    <div class="absolute inset-0 shadow-[0_0_10px_rgba(0,240,255,0.8)]"></div>
+  </div>
+
+  <div class="max-w-[1600px] mx-auto flex justify-between items-center">
+    <div class="flex items-center space-x-3 group cursor-pointer">
+      <div
+        class="relative w-9 h-9 bg-black/60 border border-cyber-primary/40 rounded-xl flex items-center justify-center overflow-hidden shadow-[0_0_15px_rgba(0,240,255,0.2)]"
+      >
+        <span
+          class="absolute w-1.5 h-1.5 rounded-full bg-cyber-primary animate-ping"
+        ></span>
+        <span class="text-xs font-mono font-black text-cyber-primary">RCK</span>
+      </div>
+      <div class="flex flex-col">
+        <span
+          class="text-lg font-black tracking-widest text-white uppercase leading-none"
+          >RCK <span class="text-cyber-primary">Computer</span></span
+        >
+        <span
+          class="text-[9px] font-mono text-gray-500 uppercase tracking-widest mt-1"
+          >RCK DIGITECH PLATFORM</span
+        >
+      </div>
+    </div>
+
+    <div class="hidden md:flex items-center space-x-4">
+      <a
+        routerLink="/store"
+        class="text-xs font-mono text-gray-400 hover:text-white transition-all cursor-pointer"
+      >
+        CATALOG
+      </a>
+
+      <a
+        routerLink="/saved"
+        class="flex items-center space-x-2 text-xs font-mono text-white bg-cyber-primary/10 hover:bg-cyber-primary/20 border border-cyber-primary/30 px-4 py-2 rounded-full transition-all cursor-pointer"
+      >
+        <svg
+          class="w-4 h-4 text-cyber-primary"
+          fill="currentColor"
+          viewBox="0 0 24 24"
+        >
+          <path
+            d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"
+          />
+        </svg>
+        <span>SAVED PRODUCT</span>
+      </a>
+    </div>
+
+    <button
+      (click)="isSidebarOpen = !isSidebarOpen"
+      class="md:hidden p-2 text-cyber-primary border border-cyber-primary/30 rounded-lg hover:bg-cyber-primary/10 transition-all"
+    >
+      <svg
+        class="w-6 h-6"
+        fill="none"
+        stroke="currentColor"
+        viewBox="0 0 24 24"
+      >
+        <path
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          stroke-width="2"
+          d="M4 6h16M4 12h16M4 18h16"
+        ></path>
+      </svg>
+    </button>
+  </div>
+</header>
+<div *ngIf="isSidebarOpen" class="fixed inset-0 z-[60] md:hidden">
+  <div
+    (click)="isSidebarOpen = false"
+    class="absolute inset-0 bg-black/60 backdrop-blur-sm"
+  ></div>
+
+  <div
+    class="absolute left-0 top-0 h-full w-[280px] glass-panel bg-slate-950 border-r border-cyber-primary/30 p-6 shadow-[0_0_30px_rgba(0,240,255,0.1)]"
+  >
+    <button
+      (click)="isSidebarOpen = false"
+      class="text-white mb-8 font-black uppercase tracking-widest text-sm hover:text-cyber-primary transition-colors"
+    >
+      ✕ Close
+    </button>
+
+    <div class="flex flex-col space-y-4">
+      <div class="flex flex-col space-y-4">
+        <a
+          routerLink="/store"
+          (click)="isSidebarOpen = false"
+          class="flex items-center justify-center space-x-2 w-full py-4 bg-white/5 border border-white/10 rounded-xl text-white font-bold uppercase tracking-widest text-sm hover:bg-white/10 transition-all"
+        >
+          <span>View Catalog</span>
+        </a>
+
+        <a
+          routerLink="/saved"
+          (click)="isSidebarOpen = false"
+          class="flex items-center justify-center space-x-2 w-full py-4 bg-cyber-primary/10 border border-cyber-primary/30 rounded-xl text-cyber-primary font-bold uppercase tracking-widest text-sm hover:bg-cyber-primary/20 transition-all"
+        >
+          <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
+            <path
+              d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"
+            />
+          </svg>
+          <span>My Collection</span>
+        </a>
+      </div>
+
+      <div
+        class="flex items-center space-x-2 text-[10px] font-mono text-gray-400 bg-white/5 border border-white/5 px-3 py-3 rounded-lg"
+      >
+        <span class="text-cyber-primary">SYS_STATUS:</span>
+        <span class="text-green-400">NOMINAL</span>
+      </div>
+
+      <div
+        class="flex items-center space-x-2 text-xs font-mono text-gray-300 bg-black/40 px-4 py-3 rounded-xl border border-cyber-primary/20"
+      >
+        <span class="relative flex h-2 w-2">
+          <span
+            class="animate-ping absolute inline-flex h-full w-full rounded-full bg-cyber-accent opacity-75"
+          ></span>
+          <span
+            class="relative inline-flex rounded-full h-2 w-2 bg-cyber-accent"
+          ></span>
+        </span>
+        <span class="text-[11px] tracking-wide uppercase">CLOUD_SYNC_ON</span>
+      </div>
+
+      <div
+        class="flex items-center space-x-2 text-xs font-mono text-gray-400 bg-white/5 px-4 py-3 rounded-full border border-white/5"
+      >
+        <span class="w-2 h-2 rounded-full bg-cyber-accent animate-pulse"></span>
+        <span>Firebase Cloud Sync Active</span>
+      </div>
+    </div>
+  </div>
+</div>
