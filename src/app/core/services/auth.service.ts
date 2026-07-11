@@ -26,7 +26,7 @@ export class AuthService {
           const uid = userCredential.user?.uid;
 
           localStorage.setItem('adminToken', uid);
-          this.router.navigate(['/admin-dashboard']);
+          this.router.navigate(['/admin/dashboard']);
         },
       );
     } catch (error) {
