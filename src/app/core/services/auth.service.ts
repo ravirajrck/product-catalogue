@@ -1,9 +1,14 @@
 import { Injectable, inject } from '@angular/core';
-import { Auth, signInWithEmailAndPassword, signOut, user } from '@angular/fire/auth';
+import {
+  Auth,
+  signInWithEmailAndPassword,
+  signOut,
+  user,
+} from '@angular/fire/auth';
 import { Router } from '@angular/router';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class AuthService {
   private auth = inject(Auth);
@@ -15,17 +20,30 @@ export class AuthService {
   // Login Function
   async login(email: string, pass: string) {
     try {
-      await signInWithEmailAndPassword(this.auth, email, pass);
-      this.router.navigate(['/admin-dashboard']);
+      await signInWithEmailAndPassword(this.auth, email, pass).then(
+        (userCredential) => {
+          // Firebase se UID mil gayi
+          const uid = userCredential.user?.uid;
+
+          localStorage.setItem('adminToken', uid);
+          this.router.navigate(['/admin-dashboard']);
+        },
+      );
     } catch (error) {
-      console.error("Auth Error:", error);
-      alert("Invalid Email or Password! Please try again.");
+      console.error('Auth Error:', error);
+      alert('Invalid Email or Password! Please try again.');
     }
   }
 
   // Logout Function
   async logout() {
     await signOut(this.auth);
-    this.router.navigate(['/admin-login']);
+    localStorage.removeItem('adminToken');
+  }
+
+  // auth.service.ts
+  isLoggedIn(): boolean {
+    // Yahan check karein ki user logged in hai ya nahi (e.g., token check)
+    return !!localStorage.getItem('adminToken');
   }
 }

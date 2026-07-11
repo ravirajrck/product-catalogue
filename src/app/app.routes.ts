@@ -6,31 +6,40 @@ import { DashboardComponent } from './pages/admin/dashboard/dashboard.component'
 import { CustomerStoreComponent } from './pages/customer/customer-store/customer-store.component';
 import { ProductDetailComponent } from './pages/customer/product-detail/product-detail.component';
 import { HomeComponent } from './pages/customer/home/home.component';
+import { AdminHomeComponent } from './pages/admin/admin-home/admin-home.component';
 import { SavedProductsComponent } from './pages/customer/saved-products/saved-products.component';
+import { AddProductComponent } from './pages/admin/add-product/add-product.component';
 
 export const routes: Routes = [
-{
+  {
     path: '',
     component: HomeComponent, // Yeh aapka main wrapper component hai
     children: [
       { path: '', redirectTo: 'store', pathMatch: 'full' }, // Default store load hoga
       { path: 'store', component: CustomerStoreComponent },
       { path: 'product/:id', component: ProductDetailComponent },
-      { path: 'saved', component: SavedProductsComponent }
-    ]
+      { path: 'saved', component: SavedProductsComponent },
+    ],
   },
 
+  // Suggestion
+  {
+    path: 'admin',
+    component: AdminHomeComponent,
+    children: [
+      { path: 'dashboard', component: DashboardComponent },
+      { path: 'manage-product', component: AddProductComponent },
+      { path: 'manage-product/:id', component: AddProductComponent },
+    ],
+  },
 
-  { 
-    path: 'admin-login', 
-    component: LoginComponent 
+  {
+    path: 'admin-login',
+    component: LoginComponent,
   },
-  { 
-    path: 'admin-dashboard', 
-    component: DashboardComponent 
+
+  {
+    path: '**',
+    redirectTo: '',
   },
-  { 
-    path: '**', 
-    redirectTo: '' 
-  }
 ];

@@ -9,6 +9,7 @@ import {
   NavigationError,
   RouterModule,
 } from '@angular/router';
+import { AuthService } from '../../services/auth.service';
 @Component({
   selector: 'app-navbar',
   imports: [CommonModule, RouterModule],
@@ -18,6 +19,7 @@ import {
 export class NavbarComponent {
   isSidebarOpen: boolean = false; // Sidebar state track karne ke liye
 
+  public authService = inject(AuthService);
   // Toggle function jo click hone par true/false karega
   toggleSidebar() {
     this.isSidebarOpen = !this.isSidebarOpen;
@@ -51,5 +53,10 @@ export class NavbarComponent {
     if (this.timer) {
       clearTimeout(this.timer); // Component hatne par timeout cancel ho jayega
     }
+  }
+
+  onLogout() {
+    this.authService.logout();
+    this.router.navigate(['/login']);
   }
 }

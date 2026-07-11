@@ -35,6 +35,7 @@
 
     <div class="hidden md:flex items-center space-x-4">
       <a
+        *ngIf="!authService.isLoggedIn()"
         routerLink="/store"
         class="text-xs font-mono text-gray-400 hover:text-white transition-all cursor-pointer"
       >
@@ -42,6 +43,7 @@
       </a>
 
       <a
+        *ngIf="!authService.isLoggedIn()"
         routerLink="/saved"
         class="flex items-center space-x-2 text-xs font-mono text-white bg-cyber-primary/10 hover:bg-cyber-primary/20 border border-cyber-primary/30 px-4 py-2 rounded-full transition-all cursor-pointer"
       >
@@ -55,6 +57,27 @@
           />
         </svg>
         <span>SAVED PRODUCT</span>
+      </a>
+
+      <a
+        *ngIf="authService.isLoggedIn()"
+        (click)="onLogout()"
+        class="flex items-center space-x-2 text-xs font-mono text-white bg-cyber-primary/10 hover:bg-cyber-primary/20 border border-cyber-primary/30 px-4 py-2 rounded-full transition-all cursor-pointer"
+      >
+        <svg
+          class="w-5 h-5"
+          fill="none"
+          stroke="currentColor"
+          viewBox="0 0 24 24"
+          stroke-width="2"
+        >
+          <path
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"
+          />
+        </svg>
+        <span>Logout</span>
       </a>
     </div>
 
@@ -97,6 +120,7 @@
     <div class="flex flex-col space-y-4">
       <div class="flex flex-col space-y-4">
         <a
+          *ngIf="!authService.isLoggedIn()"
           routerLink="/store"
           (click)="isSidebarOpen = false"
           class="flex items-center justify-center space-x-2 w-full py-4 bg-white/5 border border-white/10 rounded-xl text-white font-bold uppercase tracking-widest text-sm hover:bg-white/10 transition-all"
@@ -105,6 +129,7 @@
         </a>
 
         <a
+          *ngIf="!authService.isLoggedIn()"
           routerLink="/saved"
           (click)="isSidebarOpen = false"
           class="flex items-center justify-center space-x-2 w-full py-4 bg-cyber-primary/10 border border-cyber-primary/30 rounded-xl text-cyber-primary font-bold uppercase tracking-widest text-sm hover:bg-cyber-primary/20 transition-all"
@@ -116,34 +141,28 @@
           </svg>
           <span>My Collection</span>
         </a>
-      </div>
 
-      <div
-        class="flex items-center space-x-2 text-[10px] font-mono text-gray-400 bg-white/5 border border-white/5 px-3 py-3 rounded-lg"
-      >
-        <span class="text-cyber-primary">SYS_STATUS:</span>
-        <span class="text-green-400">NOMINAL</span>
-      </div>
-
-      <div
-        class="flex items-center space-x-2 text-xs font-mono text-gray-300 bg-black/40 px-4 py-3 rounded-xl border border-cyber-primary/20"
-      >
-        <span class="relative flex h-2 w-2">
-          <span
-            class="animate-ping absolute inline-flex h-full w-full rounded-full bg-cyber-accent opacity-75"
-          ></span>
-          <span
-            class="relative inline-flex rounded-full h-2 w-2 bg-cyber-accent"
-          ></span>
-        </span>
-        <span class="text-[11px] tracking-wide uppercase">CLOUD_SYNC_ON</span>
-      </div>
-
-      <div
-        class="flex items-center space-x-2 text-xs font-mono text-gray-400 bg-white/5 px-4 py-3 rounded-full border border-white/5"
-      >
-        <span class="w-2 h-2 rounded-full bg-cyber-accent animate-pulse"></span>
-        <span>Firebase Cloud Sync Active</span>
+        <a
+          *ngIf="authService.isLoggedIn()"
+          (click)="onLogout()"
+          (click)="isSidebarOpen = false"
+          class="flex items-center justify-center space-x-2 w-full py-4 bg-cyber-primary/10 border border-cyber-primary/30 rounded-xl text-cyber-primary font-bold uppercase tracking-widest text-sm hover:bg-cyber-primary/20 transition-all"
+        >
+          <svg
+            class="w-5 h-5"
+            fill="none"
+            stroke="currentColor"
+            viewBox="0 0 24 24"
+            stroke-width="2"
+          >
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"
+            />
+          </svg>
+          <span>Logout</span>
+        </a>
       </div>
     </div>
   </div>

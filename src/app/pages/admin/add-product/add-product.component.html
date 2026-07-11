@@ -1,0 +1,158 @@
+<div
+  class="min-h-screen bg-cyber-bg p-4 sm:p-8 text-white selection:bg-cyber-primary selection:text-black"
+>
+  <div class="max-w-6xl mx-auto mb-8 relative z-10">
+    <button
+      (click)="goBack()"
+      class="group flex items-center gap-3 text-cyber-primary hover:text-white transition-all duration-300 cursor-pointer"
+    >
+      <div
+        class="w-10 h-10 rounded-full border border-cyber-primary/30 flex items-center justify-center group-hover:bg-cyber-primary/20 group-hover:border-cyber-primary transition-all shrink-0 relative"
+      >
+        <div class="absolute inset-0 flex items-center justify-center pb-1">
+          <span class="text-xl">←</span>
+        </div>
+      </div>
+      <span class="uppercase font-bold tracking-widest text-sm"
+        >Back to Dashboard</span
+      >
+    </button>
+  </div>
+
+  <div class="max-w-6xl mx-auto mb-8 relative z-10">
+    <h1 class="text-3xl font-black uppercase tracking-widest text-white">
+      {{ isEditing ? "Edit Product" : "Add New Product" }}
+    </h1>
+    <p class="text-sm text-gray-400 mt-1">
+      Deploy new inventory to your cyber-store.
+    </p>
+  </div>
+  <form
+    [formGroup]="productForm"
+    (ngSubmit)="onSaveProduct()"
+    class="max-w-6xl mx-auto grid grid-cols-1 lg:grid-cols-3 gap-8"
+  >
+    <div class="lg:col-span-2 space-y-6">
+      <div
+        class="glass-panel bg-cyber-card/70 border border-white/5 p-8 rounded-2xl shadow-2xl"
+      >
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
+          <div>
+            <label class="block text-base font-bold text-gray-300 mb-2"
+              >Product Name *</label
+            >
+            <input
+              formControlName="name"
+              class="w-full bg-black/50 border border-white/10 rounded-xl px-4 py-4 text-white focus:border-cyber-primary outline-none"
+            />
+          </div>
+          <div>
+            <label class="block text-base font-bold text-gray-300 mb-2"
+              >Category *</label
+            >
+            <select
+              formControlName="categoryId"
+              class="w-full bg-black/50 border border-white/10 rounded-xl px-4 py-4 text-white focus:border-cyber-primary outline-none"
+            >
+              <option value="" disabled>Select Category</option>
+              <option *ngFor="let cat of categoriesList" [value]="cat.id">
+                {{ cat.name }}
+              </option>
+            </select>
+          </div>
+        </div>
+
+        <div class="grid grid-cols-2 gap-6 mt-6">
+          <div>
+            <label class="block text-base font-bold text-gray-300 mb-2"
+              >M.R.P (₹)</label
+            >
+            <input
+              type="number"
+              formControlName="originalPrice"
+              class="w-full bg-black/50 border border-white/10 rounded-xl px-4 py-4 text-white focus:border-cyber-primary outline-none"
+            />
+          </div>
+          <div>
+            <label class="block text-base font-bold text-gray-300 mb-2"
+              >Selling Price (₹) *</label
+            >
+            <input
+              type="number"
+              formControlName="price"
+              class="w-full bg-black/50 border border-white/10 rounded-xl px-4 py-4 text-white focus:border-cyber-primary outline-none"
+            />
+          </div>
+        </div>
+
+        <div class="mt-6">
+          <label class="block text-base font-bold text-gray-300 mb-2"
+            >Description</label
+          >
+          <textarea
+            formControlName="description"
+            rows="4"
+            class="w-full bg-black/50 border border-white/10 rounded-xl px-4 py-4 text-white focus:border-cyber-primary outline-none"
+          ></textarea>
+        </div>
+      </div>
+    </div>
+
+    <div class="space-y-6">
+      <div
+        class="glass-panel bg-cyber-card/70 border border-white/5 p-6 rounded-2xl shadow-2xl"
+      >
+        <label class="block text-base font-bold text-gray-300 mb-4"
+          >Product Images</label
+        >
+
+        <div formArrayName="images" class="grid grid-cols-1 gap-4">
+          <div
+            *ngFor="let img of imageArray.controls; let i = index"
+            class="relative group aspect-video bg-black/50 border border-white/10 rounded-xl overflow-hidden"
+          >
+            <img
+              *ngIf="img.value"
+              [src]="img.value"
+              class="w-full h-full object-cover"
+            />
+            <div
+              *ngIf="!img.value"
+              class="flex items-center justify-center h-full text-gray-600"
+            >
+              No Image
+            </div>
+
+            <div
+              class="absolute inset-0 bg-black/60 opacity-0 group-hover:opacity-100 flex items-center justify-center gap-2 transition-all"
+            >
+              <button
+                type="button"
+                (click)="uploadImage(i)"
+                class="bg-cyber-primary text-black font-bold px-3 py-1 rounded text-xs"
+              >
+                UPLOAD
+              </button>
+              <button
+                type="button"
+                *ngIf="img.value"
+                (click)="removeImage(i)"
+                class="bg-red-600 text-white font-bold px-3 py-1 rounded text-xs"
+              >
+                X
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <button
+        type="submit"
+        [disabled]="isSaving || productForm.invalid"
+        class="w-full bg-gradient-to-r from-cyber-primary to-cyber-accent text-black font-black uppercase text-base tracking-wider py-4 rounded-xl shadow-[0_0_20px_rgba(0,240,255,0.3)] hover:shadow-[0_0_30px_rgba(0,240,255,0.5)] transition-all"
+      >
+        {{ isSaving ? "Saving..." : "Save Product" }}
+      </button>
+    </div>
+  </form>
+</div>
