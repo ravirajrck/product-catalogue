@@ -217,4 +217,18 @@ export class DashboardComponent implements OnInit {
   // अगर इमेज लोड नहीं हो पाती, तो उसे 'noimage.png' से रिप्लेस कर दें
   event.target.src = 'noimage.png';
 }
+
+uploadImage() {
+  const myWidget = (window as any).cloudinary.createUploadWidget({
+    cloudName: 'u2uihi8w', // Apna Cloud Name daalein
+    uploadPreset: 'my_shop_preset_rck_digi' // Dashboard se 'unsigned' preset enable karke ye daalein
+  }, (error: any, result: any) => {
+    if (!error && result && result.event === "success") {
+      console.log('Done! Image URL: ', result.info.secure_url);
+      this.productImageUrl = result.info.secure_url; // Yeh URL aapke model mein set ho jayega
+    }
+  });
+
+  myWidget.open();
+}
 }
