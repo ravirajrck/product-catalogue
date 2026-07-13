@@ -1,44 +1,89 @@
-<div class="min-h-screen bg-cyber-bg text-gray-100 flex items-center justify-center relative px-4 selection:bg-cyber-primary selection:text-black">
-  
+<div
+  class="min-h-screen bg-cyber-bg text-gray-100 flex items-center justify-center relative px-4 selection:bg-cyber-primary selection:text-black"
+>
   <!-- BACKGROUND NEON GLOWS (Matching with Dashboard) -->
-  <div class="absolute top-1/4 left-1/3 w-[450px] h-[450px] bg-cyber-accent/15 rounded-full blur-[130px] animate-aurora pointer-events-none"></div>
-  <div class="absolute bottom-1/4 right-1/3 w-[450px] h-[450px] bg-cyber-primary/10 rounded-full blur-[130px] animate-aurora pointer-events-none"></div>
+  <div
+    class="absolute top-1/4 left-1/3 w-[450px] h-[450px] bg-cyber-accent/15 rounded-full blur-[130px] animate-aurora pointer-events-none"
+  ></div>
+  <div
+    class="absolute bottom-1/4 right-1/3 w-[450px] h-[450px] bg-cyber-primary/10 rounded-full blur-[130px] animate-aurora pointer-events-none"
+  ></div>
 
   <!-- ULTRA-PREMIUM GLASSMORPHIC LOGIN CARD -->
-  <div class="glass-panel bg-cyber-card/70 w-full max-w-md rounded-2xl p-8 md:p-10 shadow-2xl border border-white/5 relative z-10">
-    
+  <div
+    class="glass-panel bg-cyber-card/70 w-full max-w-md rounded-2xl p-8 md:p-10 shadow-2xl border border-white/5 relative z-10"
+  >
     <!-- BRAND / LOGO AREA -->
     <div class="text-center mb-8">
-      <div class="inline-block w-10 h-10 bg-gradient-to-tr from-cyber-primary via-cyber-accent to-cyber-secondary rounded-xl shadow-[0_0_20px_rgba(0,240,255,0.4)] mb-4"></div>
-      <h2 class="text-2xl font-black tracking-wide text-white uppercase">Admin Login</h2>
+      <div
+        class="inline-block w-10 h-10 bg-gradient-to-tr from-cyber-primary via-cyber-accent to-cyber-secondary rounded-xl shadow-[0_0_20px_rgba(0,240,255,0.4)] mb-4"
+      ></div>
+      <h2 class="text-2xl font-black tracking-wide text-white uppercase">
+        Admin Login
+      </h2>
       <p class="text-sm text-gray-400 mt-2">Sign in to manage your system</p>
     </div>
-    
+
     <!-- FORM INTERFACE (Bigger Fonts & Clear Labels) -->
     <form (ngSubmit)="onLogin()" class="space-y-6">
-      
       <!-- EMAIL INPUT -->
       <div>
-        <label class="text-base font-bold text-gray-300 block mb-2">Email Address *</label>
-        <input type="email" [(ngModel)]="email" name="email" placeholder="admin@example.com" required 
-               class="w-full bg-black/50 border border-white/10 rounded-xl px-4 py-4 text-base focus:outline-none focus:border-cyber-primary focus:shadow-[0_0_15px_rgba(0,240,255,0.15)] text-white transition-all duration-300">
+        <label class="text-base font-bold text-gray-300 block mb-2"
+          >Email Address *</label
+        >
+        <input
+          type="email"
+          [(ngModel)]="email"
+          autocomplete="username"
+          name="email"
+          placeholder="admin@example.com"
+          required
+          class="w-full bg-black/50 border border-white/10 rounded-xl px-4 py-4 text-base focus:outline-none focus:border-cyber-primary focus:shadow-[0_0_15px_rgba(0,240,255,0.15)] text-white transition-all duration-300"
+        />
       </div>
 
       <!-- PASSWORD INPUT -->
       <div>
-        <label class="text-base font-bold text-gray-300 block mb-2">Password *</label>
-        <input type="password" [(ngModel)]="password" name="password" placeholder="••••••••" required 
-               class="w-full bg-black/50 border border-white/10 rounded-xl px-4 py-4 text-base focus:outline-none focus:border-cyber-primary focus:shadow-[0_0_15px_rgba(0,240,255,0.15)] text-white transition-all duration-300">
+        <label class="text-base font-bold text-gray-300 block mb-2"
+          >Password *</label
+        >
+        <input
+          type="password"
+          [(ngModel)]="password"
+          autocomplete="current-password"
+          name="password"
+          placeholder="••••••••"
+          required
+          class="w-full bg-black/50 border border-white/10 rounded-xl px-4 py-4 text-base focus:outline-none focus:border-cyber-primary focus:shadow-[0_0_15px_rgba(0,240,255,0.15)] text-white transition-all duration-300"
+        />
       </div>
+      <button
+        type="submit"
+        [disabled]="isLoading"
+        [class.opacity-50]="isLoading"
+        class="px-6 w-full py-4 bg-gradient-to-r from-cyber-primary to-cyber-accent text-black font-black text-base tracking-wider uppercase rounded-xl shadow-[0_0_25px_rgba(0,240,255,0.3)] hover:shadow-[0_0_35px_rgba(0,240,255,0.5)] transition-all duration-300 cursor-pointer transform active:scale-95 whitespace-nowrap"
+      >
+        <span *ngIf="isLoading" class="flex items-center justify-center">
+          <svg class="animate-spin h-5 w-5 mr-3 text-black" viewBox="0 0 24 24">
+            <circle
+              class="opacity-25"
+              cx="12"
+              cy="12"
+              r="10"
+              stroke="currentColor"
+              stroke-width="4"
+            ></circle>
+            <path
+              class="opacity-75"
+              fill="currentColor"
+              d="M4 12a8 8 0 018-8v8H4z"
+            ></path>
+          </svg>
+          Signing In...
+        </span>
 
-      <!-- SIGN IN BUTTON -->
-      <div class="pt-2">
-        <button type="submit" 
-                class="w-full bg-gradient-to-r from-cyber-primary to-cyber-accent text-black font-black uppercase text-base tracking-wider py-4 rounded-xl transition-all duration-300 cursor-pointer transform active:scale-95 hover:shadow-[0_0_25px_rgba(0,240,255,0.35)]">
-          Sign In
-        </button>
-      </div>
-
+        <span *ngIf="!isLoading">Sign In</span>
+      </button>
     </form>
   </div>
 </div>

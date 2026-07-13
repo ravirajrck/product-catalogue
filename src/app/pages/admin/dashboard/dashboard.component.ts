@@ -8,7 +8,7 @@ import { Router, RouterModule } from '@angular/router';
 @Component({
   selector: 'app-dashboard',
   standalone: true,
-  imports: [CommonModule, FormsModule,RouterModule],
+  imports: [CommonModule, FormsModule, RouterModule],
   templateUrl: './dashboard.component.html',
   styleUrls: ['./dashboard.component.css'],
 })
@@ -34,15 +34,6 @@ export class DashboardComponent implements OnInit {
   loading = false; // Form submission loader
   loadingData = true; // [[NEW]] Shimmer loader for initial data fetch
 
-  productName = '';
-  productPrice: number | null = null;
-  productOriginalPrice: number | null = null;
-  productDescription = '';
-  productCategoryId = '';
-  productImageUrl = [];
-
-
-  showProductModal = false;
   showCategoryModal = false;
 
   ngOnInit() {
@@ -89,11 +80,6 @@ export class DashboardComponent implements OnInit {
 
   productEdit(product: any = null) {
     this.router.navigate(['/admin/manage-product', product.id]);
-  }
-
-  closeProductModal() {
-    this.showProductModal = false;
-    this.cancelProductEdit();
   }
 
   // ======= CATEGORY ACTIONS =======
@@ -144,61 +130,6 @@ export class DashboardComponent implements OnInit {
     }
   }
 
-  // ======= PRODUCT ACTIONS (CRUD) =======
-  async onSaveProduct() {
-    if (!this.productName || !this.productPrice || !this.productCategoryId) {
-      alert('Please fill all mandatory fields!');
-      return;
-    }
-
-    this.loading = true;
-    const productData = {
-      name: this.productName,
-      price: this.productPrice,
-      originalPrice: this.productOriginalPrice || this.productPrice,
-      description: this.productDescription,
-      categoryId: this.productCategoryId,
-      imageUrl: this.productImageUrl || 'https://via.placeholder.com/150',
-    };
-
-    try {
-      if (this.isEditingProduct) {
-        await this.dataService.updateProduct(
-          this.currentEditingProductId,
-          productData,
-        );
-        alert('Product successfully updated!');
-        this.closeProductModal();
-      } else {
-        await this.dataService.addProduct(productData);
-        alert('Product successfully added!');
-        this.closeProductModal();
-      }
-    } catch (err) {
-      console.error(err);
-    } finally {
-      this.loading = false;
-    }
-  }
-
-  editProduct(product: any) {
-    this.isEditingProduct = true;
-    this.currentEditingProductId = product.id;
-
-    this.productName = product.name;
-    this.productPrice = product.price;
-    this.productOriginalPrice = product.originalPrice;
-    this.productDescription = product.description;
-    this.productCategoryId = product.categoryId;
-    this.productImageUrl = product.imageUrl;
-  }
-
-  cancelProductEdit() {
-    this.isEditingProduct = false;
-    this.currentEditingProductId = '';
-    this.resetProductForm();
-  }
-
   async removeProduct(id: string, name: string) {
     if (
       confirm(`Kya aap sach me product "${name}" ko delete karna chahte hain?`)
@@ -206,32 +137,14 @@ export class DashboardComponent implements OnInit {
       try {
         await this.dataService.deleteProduct(id);
         alert('Product successfully deleted!');
-        if (this.currentEditingProductId === id) {
-          this.cancelProductEdit();
-        }
       } catch (err) {
         console.error(err);
       }
     }
   }
 
-  resetProductForm() {
-    this.productName = '';
-    this.productPrice = null;
-    this.productOriginalPrice = null;
-    this.productDescription = '';
-    this.productCategoryId = '';
-    // this.productImageUrl = '';
-  }
-
-  onLogout() {
-    this.authService.logout();
-  }
   onImageError(event: any) {
     // अगर इमेज लोड नहीं हो पाती, तो उसे 'noimage.png' से रिप्लेस कर दें
     event.target.src = 'noimage.png';
   }
-
-
-
 }

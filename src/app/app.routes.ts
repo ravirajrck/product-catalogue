@@ -9,6 +9,8 @@ import { HomeComponent } from './pages/customer/home/home.component';
 import { AdminHomeComponent } from './pages/admin/admin-home/admin-home.component';
 import { SavedProductsComponent } from './pages/customer/saved-products/saved-products.component';
 import { AddProductComponent } from './pages/admin/add-product/add-product.component';
+import { authGuard } from './core/guards/auth.guard';
+import { guestGuard } from './core/guards/guest.guard';
 
 export const routes: Routes = [
   {
@@ -25,17 +27,20 @@ export const routes: Routes = [
   // Suggestion
   {
     path: 'admin',
+    canActivate: [authGuard],
     component: AdminHomeComponent,
     children: [
       { path: 'dashboard', component: DashboardComponent },
       { path: 'manage-product', component: AddProductComponent },
       { path: 'manage-product/:id', component: AddProductComponent },
+      { path: '', redirectTo: 'dashboard', pathMatch: 'full' },
     ],
   },
 
   {
     path: 'admin-login',
     component: LoginComponent,
+    canActivate: [guestGuard],
   },
 
   {

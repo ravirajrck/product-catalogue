@@ -1,0 +1,6 @@
+/* Active hone par link ka color aur border change ho jayega */
+.active-link {
+  color: #d9ff02 !important; /* Aapka cyber primary color */
+  border-bottom: 2px solid #e5ff00;
+  font-weight: bold;
+}

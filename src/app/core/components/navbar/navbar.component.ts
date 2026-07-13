@@ -10,6 +10,7 @@ import {
   RouterModule,
 } from '@angular/router';
 import { AuthService } from '../../services/auth.service';
+import { authState } from '@angular/fire/auth';
 @Component({
   selector: 'app-navbar',
   imports: [CommonModule, RouterModule],
@@ -18,7 +19,6 @@ import { AuthService } from '../../services/auth.service';
 })
 export class NavbarComponent {
   isSidebarOpen: boolean = false; // Sidebar state track karne ke liye
-
   public authService = inject(AuthService);
   // Toggle function jo click hone par true/false karega
   toggleSidebar() {
@@ -28,8 +28,14 @@ export class NavbarComponent {
   private cdr = inject(ChangeDetectorRef); // ChangeDetector inject karein
   isLoading = false;
   private timer: any; // Timeout ko store karne ke liye
+  isLoggedIn$ = authState(this.authService.auth);
 
   ngOnInit() {
+    // this.authService.currentUser$.subscribe((user) => {
+    //   this.isLoggedIn = !!user;
+    //   this.cdr.detectChanges();
+    // });
+
     this.router.events.subscribe((event) => {
       if (event instanceof NavigationStart) {
         this.isLoading = true;
@@ -57,6 +63,6 @@ export class NavbarComponent {
 
   onLogout() {
     this.authService.logout();
-    this.router.navigate(['/login']);
+    this.router.navigate(['login']);
   }
 }

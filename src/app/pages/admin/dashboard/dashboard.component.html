@@ -128,7 +128,7 @@
                     class="relative w-16 h-16 rounded-xl overflow-hidden border border-white/10 bg-black/40 p-0.5"
                   >
                     <img
-                      [      [src]="prod.imageUrl || 'noimage.png'"
+                      [src]="prod?.images?.[0]?.url || 'assets/noimage.png'"
                       (error)="onImageError($event)"
                       class="w-full h-full object-cover rounded-lg"
                       alt="product image"

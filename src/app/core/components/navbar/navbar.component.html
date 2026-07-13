@@ -35,15 +35,23 @@
 
     <div class="hidden md:flex items-center space-x-4">
       <a
-        *ngIf="!authService.isLoggedIn()"
+        *ngIf="isLoggedIn$ | async"
+          routerLinkActive="active-class"
+        routerLink="/admin/dashboard"
+        class="text-xs font-mono text-gray-400 hover:text-white transition-all cursor-pointer"
+      >
+        DASHBOARD
+      </a>
+
+      <a
         routerLink="/store"
+        routerLinkActive="active-class"
         class="text-xs font-mono text-gray-400 hover:text-white transition-all cursor-pointer"
       >
         CATALOG
       </a>
 
       <a
-        *ngIf="!authService.isLoggedIn()"
         routerLink="/saved"
         class="flex items-center space-x-2 text-xs font-mono text-white bg-cyber-primary/10 hover:bg-cyber-primary/20 border border-cyber-primary/30 px-4 py-2 rounded-full transition-all cursor-pointer"
       >
@@ -60,7 +68,7 @@
       </a>
 
       <a
-        *ngIf="authService.isLoggedIn()"
+        *ngIf="isLoggedIn$ | async"
         (click)="onLogout()"
         class="flex items-center space-x-2 text-xs font-mono text-white bg-cyber-primary/10 hover:bg-cyber-primary/20 border border-cyber-primary/30 px-4 py-2 rounded-full transition-all cursor-pointer"
       >
@@ -79,6 +87,15 @@
         </svg>
         <span>Logout</span>
       </a>
+
+      <a
+        routerLink="/admin-login"
+        routerLinkActive="active-class"
+        class="text-xs font-mono text-gray-400 hover:text-white transition-all cursor-pointer"
+      >
+        Login
+      </a>
+
     </div>
 
     <button
@@ -120,16 +137,24 @@
     <div class="flex flex-col space-y-4">
       <div class="flex flex-col space-y-4">
         <a
-          *ngIf="!authService.isLoggedIn()"
+          *ngIf="isLoggedIn$ | async"
+          routerLink="/admin/dashboard"
+          (click)="isSidebarOpen = false"
+          class="flex items-center justify-center space-x-2 w-full py-4 bg-white/5 border border-white/10 rounded-xl text-white font-bold uppercase tracking-widest text-sm hover:bg-white/10 transition-all"
+        >
+          <span>Dashboard</span>
+        </a>
+
+        <a
           routerLink="/store"
           (click)="isSidebarOpen = false"
+            routerLinkActive="active-class"
           class="flex items-center justify-center space-x-2 w-full py-4 bg-white/5 border border-white/10 rounded-xl text-white font-bold uppercase tracking-widest text-sm hover:bg-white/10 transition-all"
         >
           <span>View Catalog</span>
         </a>
 
         <a
-          *ngIf="!authService.isLoggedIn()"
           routerLink="/saved"
           (click)="isSidebarOpen = false"
           class="flex items-center justify-center space-x-2 w-full py-4 bg-cyber-primary/10 border border-cyber-primary/30 rounded-xl text-cyber-primary font-bold uppercase tracking-widest text-sm hover:bg-cyber-primary/20 transition-all"
@@ -143,9 +168,8 @@
         </a>
 
         <a
-          *ngIf="authService.isLoggedIn()"
-          (click)="onLogout()"
-          (click)="isSidebarOpen = false"
+          *ngIf="isLoggedIn$ | async"
+          (click)="onLogout(); isSidebarOpen = false"
           class="flex items-center justify-center space-x-2 w-full py-4 bg-cyber-primary/10 border border-cyber-primary/30 rounded-xl text-cyber-primary font-bold uppercase tracking-widest text-sm hover:bg-cyber-primary/20 transition-all"
         >
           <svg

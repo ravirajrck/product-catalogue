@@ -1,8 +1,8 @@
 import { ApplicationConfig, provideZoneChangeDetection } from '@angular/core';
 import { provideRouter } from '@angular/router';
 import { routes } from './app.routes';
-import { initializeApp, provideFirebaseApp } from '@angular/fire/app';
-import { getAuth, provideAuth } from '@angular/fire/auth';
+import { getApp, initializeApp, provideFirebaseApp } from '@angular/fire/app';
+import { browserSessionPersistence, getAuth, initializeAuth, provideAuth } from '@angular/fire/auth';
 import { getFirestore, provideFirestore } from '@angular/fire/firestore';
 import { provideHttpClient } from '@angular/common/http';
 
@@ -21,7 +21,12 @@ export const appConfig: ApplicationConfig = {
     provideZoneChangeDetection({ eventCoalescing: true }), 
     provideRouter(routes),
     provideFirebaseApp(() => initializeApp(firebaseConfig)),
-    provideAuth(() => getAuth()),
+   provideAuth(() => {
+      const app = getApp(); // Jo app upar initialize hui hai, use get karein
+      return initializeAuth(app, {
+        persistence: browserSessionPersistence
+      });
+    }),
     provideFirestore(() => getFirestore()),
     provideHttpClient()
   ]

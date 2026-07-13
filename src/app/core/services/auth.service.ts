@@ -11,9 +11,10 @@ import { Router } from '@angular/router';
   providedIn: 'root',
 })
 export class AuthService {
-  private auth = inject(Auth);
+  public auth = inject(Auth);
   private router = inject(Router);
 
+  
   // Yeh check karne ke liye ki admin logged in hai ya nahi (Reactive state)
   currentUser$ = user(this.auth);
 
@@ -30,7 +31,6 @@ export class AuthService {
         },
       );
     } catch (error) {
-      console.error('Auth Error:', error);
       alert('Invalid Email or Password! Please try again.');
     }
   }
@@ -45,5 +45,10 @@ export class AuthService {
   isLoggedIn(): boolean {
     // Yahan check karein ki user logged in hai ya nahi (e.g., token check)
     return !!localStorage.getItem('adminToken');
+  }
+  
+  // Naya check function
+  async isAdminLoggedIn(): Promise<boolean> {
+    return !!this.auth.currentUser;
   }
 }

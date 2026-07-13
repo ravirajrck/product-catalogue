@@ -38,13 +38,25 @@
       >
         <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
           <div>
-            <label class="block text-base font-bold text-gray-300 mb-2"
-              >Product Name *</label
-            >
+            <label class="block text-base font-bold text-gray-300 mb-2">
+              Product Name *
+            </label>
             <input
               formControlName="name"
+              type="text"
+              placeholder="Enter product name (e.g., Cyber Helmet)"
               class="w-full bg-black/50 border border-white/10 rounded-xl px-4 py-4 text-white focus:border-cyber-primary outline-none"
             />
+
+            <div
+              *ngIf="
+                productForm.get('name')?.invalid &&
+                productForm.get('name')?.touched
+              "
+              class="text-red-500 text-sm mt-1"
+            >
+              Product name is required.
+            </div>
           </div>
           <div>
             <label class="block text-base font-bold text-gray-300 mb-2"
@@ -52,13 +64,24 @@
             >
             <select
               formControlName="categoryId"
-              class="w-full bg-black/50 border border-white/10 rounded-xl px-4 py-4 text-white focus:border-cyber-primary outline-none"
+              class="w-full bg-black/50 border border-white/10 rounded-xl px-4 py-4 text-white focus:border-cyber-primary outline-none appearance-none"
             >
-              <option value="" disabled>Select Category</option>
+              <option value="" disabled selected>Select Category</option>
+
               <option *ngFor="let cat of categoriesList" [value]="cat.id">
                 {{ cat.name }}
               </option>
             </select>
+
+            <div
+              *ngIf="
+                productForm.get('categoryId')?.invalid &&
+                productForm.get('categoryId')?.touched
+              "
+              class="text-red-500 text-sm mt-1"
+            >
+              Please select a category.
+            </div>
           </div>
         </div>
 
@@ -68,10 +91,24 @@
               >M.R.P (₹)</label
             >
             <input
+              step="0"
               type="number"
               formControlName="originalPrice"
+              placeholder="0,000"
+              min="1"
+              (keypress)="onlyNumbers($event)"
               class="w-full bg-black/50 border border-white/10 rounded-xl px-4 py-4 text-white focus:border-cyber-primary outline-none"
             />
+
+            <div
+              *ngIf="
+                productForm.get('originalPrice')?.invalid &&
+                productForm.get('originalPrice')?.touched
+              "
+              class="text-red-500 text-sm mt-1"
+            >
+              Please enter a valid price.
+            </div>
           </div>
           <div>
             <label class="block text-base font-bold text-gray-300 mb-2"
@@ -80,8 +117,20 @@
             <input
               type="number"
               formControlName="price"
+              placeholder="0,000"
+              min="1"
+              (keypress)="onlyNumbers($event)"
               class="w-full bg-black/50 border border-white/10 rounded-xl px-4 py-4 text-white focus:border-cyber-primary outline-none"
             />
+            <div
+              *ngIf="
+                productForm.get('price')?.invalid &&
+                productForm.get('price')?.touched
+              "
+              class="text-red-500 text-sm mt-1"
+            >
+              Please enter a valid price.
+            </div>
           </div>
         </div>
 
@@ -92,67 +141,112 @@
           <textarea
             formControlName="description"
             rows="4"
-            class="w-full bg-black/50 border border-white/10 rounded-xl px-4 py-4 text-white focus:border-cyber-primary outline-none"
+            placeholder="Write a detailed product description..."
+            maxlength="2000"
+            class="w-full bg-black/50 border border-white/10 rounded-xl px-4 py-4 text-white focus:border-cyber-primary outline-none resize-none"
           ></textarea>
-        </div>
-      </div>
-    </div>
-
-    <div class="space-y-6">
-      <div
-        class="glass-panel bg-cyber-card/70 border border-white/5 p-6 rounded-2xl shadow-2xl"
-      >
-        <label class="block text-base font-bold text-gray-300 mb-4"
-          >Product Images</label
-        >
-
-        <div formArrayName="images" class="grid grid-cols-1 gap-4">
           <div
-            *ngFor="let img of imageArray.controls; let i = index"
-            class="relative group aspect-video bg-black/50 border border-white/10 rounded-xl overflow-hidden"
+            *ngIf="
+              productForm.get('description')?.invalid &&
+              productForm.get('description')?.touched
+            "
+            class="text-red-500 text-sm mt-1"
           >
-            <img
-              *ngIf="img.value"
-              [src]="img.value"
-              class="w-full h-full object-cover"
-            />
-            <div
-              *ngIf="!img.value"
-              class="flex items-center justify-center h-full text-gray-600"
+            <span *ngIf="productForm.get('description')?.errors?.['required']"
+              >Description is required.</span
             >
-              No Image
-            </div>
-
-            <div
-              class="absolute inset-0 bg-black/60 opacity-0 group-hover:opacity-100 flex items-center justify-center gap-2 transition-all"
+            <span *ngIf="productForm.get('description')?.errors?.['minlength']"
+              >Description must be at least 10 characters long.</span
             >
-              <button
-                type="button"
-                (click)="uploadImage(i)"
-                class="bg-cyber-primary text-black font-bold px-3 py-1 rounded text-xs"
-              >
-                UPLOAD
-              </button>
-              <button
-                type="button"
-                *ngIf="img.value"
-                (click)="removeImage(i)"
-                class="bg-red-600 text-white font-bold px-3 py-1 rounded text-xs"
-              >
-                X
-              </button>
-            </div>
+          </div>
+          <div class="text-right text-xs text-gray-500 mt-1">
+            {{ productForm.get("description")?.value?.length || 0 }}/500
           </div>
         </div>
-      </div>
 
-      <button
-        type="submit"
-        [disabled]="isSaving || productForm.invalid"
-        class="w-full bg-gradient-to-r from-cyber-primary to-cyber-accent text-black font-black uppercase text-base tracking-wider py-4 rounded-xl shadow-[0_0_20px_rgba(0,240,255,0.3)] hover:shadow-[0_0_30px_rgba(0,240,255,0.5)] transition-all"
-      >
-        {{ isSaving ? "Saving..." : "Save Product" }}
-      </button>
+        <div class="space-y-6">
+          <div>
+            <div formArrayName="images" class="space-y-4">
+              <div
+                *ngFor="let img of imageArray.controls; let i = index"
+                [formGroupName]="i"
+              >
+                <label class="block text-base font-bold text-gray-300 mb-4"
+                  >Product Images ({{ i + 1 }})</label
+                >
+                <div class="flex items-center gap-2">
+                  <input
+                    type="text"
+                    formControlName="url"
+                    placeholder="Paste image URL here..."
+                    class="flex-1 bg-black/50 border border-white/10 rounded-xl px-4 py-3 text-white focus:border-cyber-primary outline-none"
+                  />
+
+                  <button
+                    type="button"
+                    (click)="uploadImage(i)"
+                    class="bg-cyber-primary text-black px-4 py-3 rounded-xl font-bold cursor-pointer"
+                  >
+                    Upload
+                  </button>
+                </div>
+                <div
+                  *ngIf="img.get('url')?.value"
+                  class="relative w-28 h-28 m-6 group"
+                >
+                  <div
+                    class="w-full h-full border-2 border-white/10 rounded-lg overflow-hidden shadow-inner"
+                  >
+                    <img
+                      [src]="img.get('url')?.value"
+                      class="w-full h-full object-cover"
+                    />
+                  </div>
+
+                  <button
+                    type="button"
+                    (click)="removeImage(i)"
+                    class="absolute -top-3 -right-3 bg-red-600 text-white rounded-full w-7 h-7 flex items-center justify-center font-black text-sm border-2 border-white shadow-2xl transition-all hover:scale-110 cursor-pointer"
+                  >
+                    ×
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <button
+            type="submit"
+            [disabled]="isSaving || productForm.invalid"
+            [class.opacity-50]="isSaving"
+            class="w-full bg-gradient-to-r from-cyber-primary to-cyber-accent text-black font-black uppercase text-base tracking-wider py-4 rounded-xl shadow-[0_0_20px_rgba(0,240,255,0.3)] hover:shadow-[0_0_30px_rgba(0,240,255,0.5)] transition-all duration-300 flex items-center justify-center cursor-pointer"
+          >
+            <span *ngIf="isSaving" class="flex items-center">
+              <svg
+                class="animate-spin h-5 w-5 mr-3 text-black"
+                viewBox="0 0 24 24"
+              >
+                <circle
+                  class="opacity-25"
+                  cx="12"
+                  cy="12"
+                  r="10"
+                  stroke="currentColor"
+                  stroke-width="4"
+                ></circle>
+                <path
+                  class="opacity-75"
+                  fill="currentColor"
+                  d="M4 12a8 8 0 018-8v8H4z"
+                ></path>
+              </svg>
+              Saving Product...
+            </span>
+
+            <span *ngIf="!isSaving">Save Product</span>
+          </button>
+        </div>
+      </div>
     </div>
   </form>
 </div>
