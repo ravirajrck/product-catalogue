@@ -14,11 +14,10 @@ import { guestGuard } from './core/guards/guest.guard';
 
 export const routes: Routes = [
   {
-    path: '',
+    path: 'store',
     component: HomeComponent, // Yeh aapka main wrapper component hai
     children: [
-      { path: '', redirectTo: 'store', pathMatch: 'full' }, // Default store load hoga
-      { path: 'store', component: CustomerStoreComponent },
+      { path: '', component: CustomerStoreComponent },
       { path: 'product/:id', component: ProductDetailComponent },
       { path: 'saved', component: SavedProductsComponent },
     ],
@@ -37,6 +36,7 @@ export const routes: Routes = [
     ],
   },
 
+  { path: '', redirectTo: 'store', pathMatch: 'full' }, // Default store load hoga
   {
     path: 'admin-login',
     component: LoginComponent,

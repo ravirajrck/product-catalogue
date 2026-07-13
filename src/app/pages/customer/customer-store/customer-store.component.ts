@@ -96,14 +96,30 @@ export class CustomerStoreComponent implements OnInit {
 
   // WhatsApp Checkout Action Link
   onOrderNow(product: any) {
-    const textMessage = `Hello! I want to order this product:\n\n*Name:* ${product.name}\n*Price:* ₹${product.price}\n\nPlease share confirmation and payment details!`;
-    const whatsappUrl = `https://wa.me/91XXXXXXXXXX?text=${encodeURIComponent(textMessage)}`; // 👈 XXXXXXXXXX ki jagah apna link phone number daal dena
+    const currentUrl = window.location.href+'/product/'+product.id
+    const textMessage = `Hello! I want to order this product:
+*🔗 Product Link:*
+${currentUrl}
+
+*📦 Product Details:*
+*Name:* ${product.name}
+*Price:* ₹${product.price}
+*Original Price:* ₹${product.originalPrice}
+
+*📝 Description:*
+${product.description}
+
+*🖼️ Images:*
+${product.images.map((img: any, i: number) => (img.url ? `Image ${i + 1}: ${img.url}` : '')).join('\n')}
+
+Please let me know about the availability!`;
+    const whatsappUrl = `https://wa.me/919644692189?text=${encodeURIComponent(textMessage)}`; // 👈 XXXXXXXXXX ki jagah apna link phone number daal dena
     window.open(whatsappUrl, '_blank');
   }
 
   // Navigate karne ka function
   viewProduct(productId: string) {
-    this.router.navigate(['/product', productId]);
+    this.router.navigate(['/store/product', productId]);
   }
 
   onImageError(event: any) {

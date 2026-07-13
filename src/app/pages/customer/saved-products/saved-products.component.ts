@@ -43,7 +43,7 @@ export class SavedProductsComponent {
 
   // Navigate karne ka function
   viewProduct(productId: string) {
-    this.router.navigate(['/product', productId]);
+    this.router.navigate(['/store/product', productId]);
   }
 
   onImageError(event: any) {
