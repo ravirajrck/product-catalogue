@@ -1,106 +1,95 @@
-<header
+<!-- <header
   class="sticky top-0 z-50 bg-slate-950/70 border-b border-cyber-primary/30 backdrop-blur-xl px-6 md:px-12 py-4 relative"
+> -->
+<header
+  class="sticky top-0 z-50 bg-white border-b border-orange-100 px-6 md:px-12 py-3 relative"
 >
+  <!-- Loading Bar -->
   <div
-    class="absolute bottom-0 left-0 h-[2px] bg-cyber-primary transition-all duration-300 ease-out"
+    class="absolute bottom-0 left-0 h-[2px] bg-[#FF7620] ease-out transition-all"
+    [class.duration-300]="isLoading"
+    [class.duration-0]="!isLoading"
     [class.w-full]="isLoading"
     [class.w-0]="!isLoading"
-    [class.opacity-100]="isLoading"
-    [class.opacity-0]="!isLoading"
-  >
-    <div class="absolute inset-0 shadow-[0_0_10px_rgba(0,240,255,0.8)]"></div>
-  </div>
+  ></div>
 
   <div class="max-w-[1600px] mx-auto flex justify-between items-center">
-    <div class="flex items-center space-x-3 group cursor-pointer">
-      <div
-        class="relative w-9 h-9 bg-black/60 border border-cyber-primary/40 rounded-xl flex items-center justify-center overflow-hidden shadow-[0_0_15px_rgba(0,240,255,0.2)]"
-      >
-        <span
-          class="absolute w-1.5 h-1.5 rounded-full bg-cyber-primary animate-ping"
-        ></span>
-        <span class="text-xs font-mono font-black text-cyber-primary">RCK</span>
+    <!-- Logo -->
+    <a href="/" class="block w-[120px] cursor-pointer" aria-label="Go to Home">
+      <img src="SANATAN3LOGO.svg" alt="Logo" class="w-full h-auto" />
+    </a>
+
+    <!-- Desktop Menu Container -->
+    <div class="hidden md:flex flex-col items-end space-y-2">
+      <!-- Row 1: Helpline Number -->
+      <div class="flex items-center">
+        <a
+          href="tel:+919876543210"
+          class="text-[12px] text-slate-400 hover:text-[#FF7620] tracking-widest transition-all"
+        >
+          Helpline Number -9876543210
+        </a>
       </div>
-      <div class="flex flex-col">
-        <span
-          class="text-lg font-black tracking-widest text-white uppercase leading-none"
-          >RCK <span class="text-cyber-primary">Computer</span></span
+
+      <!-- Row 2: Navigation Links -->
+      <div class="flex items-center space-x-6">
+        <a
+          routerLink="/store/home"
+          routerLinkActive="text-[#FF7620]"
+          class="text-xs font-bold uppercase tracking-widest text-slate-600 hover:text-[#FF7620] transition-all"
         >
-        <span
-          class="text-[9px] font-mono text-gray-500 uppercase tracking-widest mt-1"
-          >RCK DIGITECH PLATFORM</span
+          Home
+        </a>
+        <a
+          *ngIf="isLoggedIn$ | async"
+          routerLink="/admin/dashboard"
+          routerLinkActive="text-[#FF7620]"
+          class="text-xs font-bold uppercase tracking-widest text-slate-600 hover:text-[#FF7620] transition-all"
         >
+          Dashboard
+        </a>
+
+        <a
+          routerLink="/store"
+          routerLinkActive="text-[#FF7620]"
+          class="text-xs font-bold uppercase tracking-widest text-slate-600 hover:text-[#FF7620] transition-all"
+        >
+          Store
+        </a>
+
+        <a
+          routerLink="/store/saved"
+          class="flex items-center space-x-2 text-xs font-bold uppercase tracking-widest text-[#FF7620] bg-orange-50 border border-orange-200 px-4 py-2 rounded-full hover:bg-orange-100 transition-all"
+        >
+          <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24">
+            <path
+              d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"
+            />
+          </svg>
+          <span>SAVED</span>
+        </a>
+
+        <a
+          *ngIf="isLoggedIn$ | async"
+          (click)="onLogout()"
+          class="flex items-center space-x-2 text-xs font-bold uppercase tracking-widest text-[#FF7620] bg-orange-50 border border-orange-200 px-4 py-2 rounded-full hover:bg-orange-100 transition-all cursor-pointer"
+        >
+          <span>Logout</span>
+        </a>
+
+        <a
+          *ngIf="!(isLoggedIn$ | async)"
+          routerLink="/admin-login"
+          class="text-xs font-bold uppercase tracking-widest text-slate-600 hover:text-[#FF7620] transition-all"
+        >
+          Login
+        </a>
       </div>
     </div>
-
-    <div class="hidden md:flex items-center space-x-4">
-      <a
-        *ngIf="isLoggedIn$ | async"
-          routerLinkActive="active-class"
-        routerLink="/admin/dashboard"
-        class="text-xs font-mono text-gray-400 hover:text-white transition-all cursor-pointer"
-      >
-        DASHBOARD
-      </a>
-
-      <a
-        routerLink="/store"
-        routerLinkActive="active-class"
-        class="text-xs font-mono text-gray-400 hover:text-white transition-all cursor-pointer"
-      >
-        CATALOG
-      </a>
-
-      <a
-        routerLink="/store/saved"
-        class="flex items-center space-x-2 text-xs font-mono text-white bg-cyber-primary/10 hover:bg-cyber-primary/20 border border-cyber-primary/30 px-4 py-2 rounded-full transition-all cursor-pointer"
-      >
-        <svg
-          class="w-4 h-4 text-cyber-primary"
-          fill="currentColor"
-          viewBox="0 0 24 24"
-        >
-          <path
-            d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"
-          />
-        </svg>
-        <span>SAVED PRODUCT</span>
-      </a>
-
-      <a
-        *ngIf="isLoggedIn$ | async"
-        (click)="onLogout()"
-        class="flex items-center space-x-2 text-xs font-mono text-white bg-cyber-primary/10 hover:bg-cyber-primary/20 border border-cyber-primary/30 px-4 py-2 rounded-full transition-all cursor-pointer"
-      >
-        <svg
-          class="w-5 h-5"
-          fill="none"
-          stroke="currentColor"
-          viewBox="0 0 24 24"
-          stroke-width="2"
-        >
-          <path
-            stroke-linecap="round"
-            stroke-linejoin="round"
-            d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"
-          />
-        </svg>
-        <span>Logout</span>
-      </a>
-
-      <a
-        routerLink="/admin-login"
-        routerLinkActive="active-class"
-        class="text-xs font-mono text-gray-400 hover:text-white transition-all cursor-pointer"
-      >
-        Login
-      </a>
-
-    </div>
-
+    <!-- Mobile Trigger -->
     <button
       (click)="isSidebarOpen = !isSidebarOpen"
-      class="md:hidden p-2 text-cyber-primary border border-cyber-primary/30 rounded-lg hover:bg-cyber-primary/10 transition-all"
+      class="md:hidden p-2 text-[#FF7620] rounded-lg hover:bg-orange-50 transition-all cursor-pointer"
     >
       <svg
         class="w-6 h-6"
@@ -118,75 +107,108 @@
     </button>
   </div>
 </header>
-<div *ngIf="isSidebarOpen" class="fixed inset-0 z-[60] md:hidden">
+<div
+  class="fixed inset-0 z-[60] md:hidden"
+  [class.hidden]="!isSidebarOpen && !isAnimating"
+>
+  <!-- Backdrop (Click event par closeSidebar call hoga) -->
   <div
-    (click)="isSidebarOpen = false"
-    class="absolute inset-0 bg-black/60 backdrop-blur-sm"
+    (click)="closeSidebar()"
+    class="absolute inset-0 bg-black/20 backdrop-blur-sm transition-opacity duration-300"
   ></div>
 
+  <!-- Sidebar Container -->
   <div
-    class="absolute left-0 top-0 h-full w-[280px] glass-panel bg-slate-950 border-r border-cyber-primary/30 p-6 shadow-[0_0_30px_rgba(0,240,255,0.1)]"
+    class="absolute left-0 top-0 h-full w-[280px] bg-white border-r border-orange-100 p-4 shadow-2xl flex flex-col"
+    [class.animate-in]="isSidebarOpen && !isAnimating"
+    [class.animate-out]="isAnimating"
   >
-    <button
-      (click)="isSidebarOpen = false"
-      class="text-white mb-8 font-black uppercase tracking-widest text-sm hover:text-cyber-primary transition-colors"
+    <!-- Top: Close Button -->
+    <!-- Cross Icon (Call closeSidebar) -->
+    <div class="flex justify-end mb-1">
+      <button
+        (click)="closeSidebar()"
+        class="text-slate-500 hover:text-[#FF7620] font-bold text-lg cursor-pointer"
+      >
+        ✕
+      </button>
+    </div>
+
+    <!-- Logo (Center) -->
+    <div class="flex flex-col items-center justify-center mb-8">
+      <a href="/" class="block w-[125px] cursor-pointer">
+        <img src="SANATAN3LOGO.svg" alt="Logo" class="w-full h-auto" />
+      </a>
+    </div>
+
+    <!-- Links (Middle) -->
+    <div class="flex flex-col space-y-3 flex-grow">
+      <a
+        *ngIf="isLoggedIn$ | async"
+        routerLink="/admin/dashboard"
+        (click)="isSidebarOpen = false"
+        class="w-full py-3 px-4 bg-slate-50 rounded-lg text-slate-700 font-bold uppercase text-xs hover:bg-orange-50 hover:text-[#FF7620] transition-all"
+      >
+        Dashboard
+      </a>
+      <a
+        routerLink="/store"
+        (click)="isSidebarOpen = false"
+        class="w-full py-3 px-4 bg-slate-50 rounded-lg text-slate-700 font-bold uppercase text-xs hover:bg-orange-50 hover:text-[#FF7620] transition-all"
+      >
+        Store
+      </a>
+      <a
+        routerLink="/store/saved"
+        (click)="isSidebarOpen = false"
+        class="w-full py-3 px-4 bg-slate-50 rounded-lg text-slate-700 font-bold uppercase text-xs hover:bg-orange-50 hover:text-[#FF7620] transition-all"
+      >
+        Saved
+      </a>
+      <a
+        *ngIf="isLoggedIn$ | async"
+        (click)="onLogout(); isSidebarOpen = false"
+        class="w-full py-3 px-4 bg-slate-50 rounded-lg text-slate-700 font-bold uppercase text-xs hover:bg-orange-50 hover:text-[#FF7620] transition-all cursor-pointer"
+      >
+        Logout
+      </a>
+    </div>
+
+    <!-- Bottom: Contact Info - Clean, Compact & Centered -->
+    <div
+      class="flex flex-col items-center mt-auto border-t border-orange-100 pt-5 pb-4 space-y-1 w-full bg-slate-50/50"
     >
-      ✕ Close
-    </button>
+      <!-- Contact Link -->
+      <span
+        class="text-[10px] font-black text-slate-400 uppercase tracking-[0.2em]"
+        >Helpline Number</span
+      >
+      <a
+        href="tel:+919876543210"
+        class="text-[11px] font-bold text-slate-700 hover:text-[#FF7620] tracking-wide transition-colors"
+      >
+        +91 98765-43210
+      </a>
 
-    <div class="flex flex-col space-y-4">
-      <div class="flex flex-col space-y-4">
-        <a
-          *ngIf="isLoggedIn$ | async"
-          routerLink="/admin/dashboard"
-          (click)="isSidebarOpen = false"
-          class="flex items-center justify-center space-x-2 w-full py-4 bg-white/5 border border-white/10 rounded-xl text-white font-bold uppercase tracking-widest text-sm hover:bg-white/10 transition-all"
-        >
-          <span>Dashboard</span>
-        </a>
+      <!-- Email -->
+      <a
+        href="mailto:ravirajchoudhary@gmail.com"
+        class="text-[11px] font-medium text-slate-500 hover:text-[#FF7620] transition-colors"
+      >
+        RAVIRAJCHOUDHARYGMAIL.COM
+      </a>
 
-        <a
-          routerLink="/store"
-          (click)="isSidebarOpen = false"
-            routerLinkActive="active-class"
-          class="flex items-center justify-center space-x-2 w-full py-4 bg-white/5 border border-white/10 rounded-xl text-white font-bold uppercase tracking-widest text-sm hover:bg-white/10 transition-all"
+      <!-- Website & Address (Tight grouping) -->
+      <div class="flex flex-col items-center pt-2 gap-0.5">
+        <span
+          class="text-[10px] font-black text-slate-400 uppercase tracking-[0.2em]"
+          >WWW.SANATAN.COM</span
         >
-          <span>View Catalog</span>
-        </a>
-
-        <a
-          routerLink="/store/saved"
-          (click)="isSidebarOpen = false"
-          class="flex items-center justify-center space-x-2 w-full py-4 bg-cyber-primary/10 border border-cyber-primary/30 rounded-xl text-cyber-primary font-bold uppercase tracking-widest text-sm hover:bg-cyber-primary/20 transition-all"
+        <span
+          class="text-[9px] font-bold text-slate-400 uppercase tracking-wider text-center px-4 leading-tight"
         >
-          <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
-            <path
-              d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"
-            />
-          </svg>
-          <span>My Collection</span>
-        </a>
-
-        <a
-          *ngIf="isLoggedIn$ | async"
-          (click)="onLogout(); isSidebarOpen = false"
-          class="flex items-center justify-center space-x-2 w-full py-4 bg-cyber-primary/10 border border-cyber-primary/30 rounded-xl text-cyber-primary font-bold uppercase tracking-widest text-sm hover:bg-cyber-primary/20 transition-all"
-        >
-          <svg
-            class="w-5 h-5"
-            fill="none"
-            stroke="currentColor"
-            viewBox="0 0 24 24"
-            stroke-width="2"
-          >
-            <path
-              stroke-linecap="round"
-              stroke-linejoin="round"
-              d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"
-            />
-          </svg>
-          <span>Logout</span>
-        </a>
+          NEW RADHA VALLABH MARKET, KHARGONE
+        </span>
       </div>
     </div>
   </div>

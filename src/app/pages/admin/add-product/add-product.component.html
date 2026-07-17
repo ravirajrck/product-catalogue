@@ -1,30 +1,32 @@
 <div
-  class="min-h-screen bg-cyber-bg p-4 sm:p-8 text-white selection:bg-cyber-primary selection:text-black"
+  class="min-h-screen bg-cyber-bg text-gray-100 p-6 md:p-12 relative overflow-hidden"
 >
+  <div
+    class="absolute top-[-10%] left-1/4 w-[600px] h-[600px] bg-cyber-primary/10 rounded-full blur-[160px] pointer-events-none"
+  ></div>
+
   <div class="max-w-6xl mx-auto mb-8 relative z-10">
     <button
       (click)="goBack()"
-      class="group flex items-center gap-3 text-cyber-primary hover:text-white transition-all duration-300 cursor-pointer"
+      class="group flex items-center gap-3 text-slate-500 hover:text-[#FF7620] transition-all duration-300 cursor-pointer"
     >
       <div
-        class="w-10 h-10 rounded-full border border-cyber-primary/30 flex items-center justify-center group-hover:bg-cyber-primary/20 group-hover:border-cyber-primary transition-all shrink-0 relative"
+        class="w-10 h-10 rounded-full border border-slate-300 flex items-center justify-center group-hover:bg-[#FF7620]/10 group-hover:border-[#FF7620] transition-all shrink-0 relative"
       >
         <div class="absolute inset-0 flex items-center justify-center pb-1">
           <span class="text-xl">←</span>
         </div>
       </div>
-      <span class="uppercase font-bold tracking-widest text-sm"
-        >Back to Dashboard</span
-      >
+      <span class="font-bold tracking-widest text-sm">Back to Dashboard</span>
     </button>
   </div>
 
   <div class="max-w-6xl mx-auto mb-8 relative z-10">
-    <h1 class="text-3xl font-black uppercase tracking-widest text-white">
+    <h1 class="text-3xl font-black uppercase tracking-widest text-slate-900">
       {{ isEditing ? "Edit Product" : "Add New Product" }}
     </h1>
-    <p class="text-sm text-gray-400 mt-1">
-      Deploy new inventory to your cyber-store.
+    <p class="text-sm text-slate-500 mt-1">
+      Deploy new inventory to your store.
     </p>
   </div>
   <form
@@ -38,14 +40,14 @@
       >
         <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
           <div>
-            <label class="block text-base font-bold text-gray-300 mb-2">
+            <label class="block text-base font-bold text-slate-700 mb-2">
               Product Name *
             </label>
             <input
               formControlName="name"
               type="text"
-              placeholder="Enter product name (e.g., Cyber Helmet)"
-              class="w-full bg-black/50 border border-white/10 rounded-xl px-4 py-4 text-white focus:border-cyber-primary outline-none"
+              placeholder="Enter product name (e.g., Wireless Mouse)"
+              class="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-4 text-slate-900 focus:border-[#FF7620] focus:ring-1 focus:ring-[#FF7620] outline-none transition-all"
             />
 
             <div
@@ -59,12 +61,12 @@
             </div>
           </div>
           <div>
-            <label class="block text-base font-bold text-gray-300 mb-2"
-              >Category *</label
-            >
+            <label class="block text-base font-bold text-slate-700 mb-2">
+              Category *
+            </label>
             <select
               formControlName="categoryId"
-              class="w-full bg-black/50 border border-white/10 rounded-xl px-4 py-4 text-white focus:border-cyber-primary outline-none appearance-none"
+              class="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-4 text-slate-900 focus:border-[#FF7620] focus:ring-1 focus:ring-[#FF7620] outline-none appearance-none transition-all"
             >
               <option value="" disabled selected>Select Category</option>
 
@@ -87,9 +89,9 @@
 
         <div class="grid grid-cols-2 gap-6 mt-6">
           <div>
-            <label class="block text-base font-bold text-gray-300 mb-2"
-              >M.R.P (₹)</label
-            >
+            <label class="block text-base font-bold text-slate-700 mb-2">
+              M.R.P (₹)
+            </label>
             <input
               step="0"
               type="number"
@@ -97,7 +99,7 @@
               placeholder="0,000"
               min="1"
               (keypress)="onlyNumbers($event)"
-              class="w-full bg-black/50 border border-white/10 rounded-xl px-4 py-4 text-white focus:border-cyber-primary outline-none"
+              class="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-4 text-slate-900 focus:border-[#FF7620] focus:ring-1 focus:ring-[#FF7620] outline-none transition-all"
             />
 
             <div
@@ -111,16 +113,16 @@
             </div>
           </div>
           <div>
-            <label class="block text-base font-bold text-gray-300 mb-2"
-              >Selling Price (₹) *</label
-            >
+            <label class="block text-base font-bold text-slate-700 mb-2">
+              Selling Price (₹) *
+            </label>
             <input
               type="number"
               formControlName="price"
               placeholder="0,000"
               min="1"
               (keypress)="onlyNumbers($event)"
-              class="w-full bg-black/50 border border-white/10 rounded-xl px-4 py-4 text-white focus:border-cyber-primary outline-none"
+              class="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-4 text-slate-900 focus:border-[#FF7620] focus:ring-1 focus:ring-[#FF7620] outline-none transition-all"
             />
             <div
               *ngIf="
@@ -135,15 +137,15 @@
         </div>
 
         <div class="mt-6">
-          <label class="block text-base font-bold text-gray-300 mb-2"
-            >Description</label
-          >
+          <label class="block text-base font-bold text-slate-700 mb-2">
+            Description
+          </label>
           <textarea
             formControlName="description"
             rows="4"
             placeholder="Write a detailed product description..."
             maxlength="2000"
-            class="w-full bg-black/50 border border-white/10 rounded-xl px-4 py-4 text-white focus:border-cyber-primary outline-none resize-none"
+            class="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-4 text-slate-900 focus:border-[#FF7620] focus:ring-1 focus:ring-[#FF7620] outline-none resize-none transition-all"
           ></textarea>
           <div
             *ngIf="
@@ -159,8 +161,8 @@
               >Description must be at least 10 characters long.</span
             >
           </div>
-          <div class="text-right text-xs text-gray-500 mt-1">
-            {{ productForm.get("description")?.value?.length || 0 }}/500
+          <div class="text-right text-xs text-slate-400 mt-1 font-bold">
+            {{ productForm.get("description")?.value?.length || 0 }}/2000
           </div>
         </div>
 
@@ -170,8 +172,9 @@
               <div
                 *ngFor="let img of imageArray.controls; let i = index"
                 [formGroupName]="i"
+                class="bg-slate-50 p-4 rounded-2xl border border-slate-100"
               >
-                <label class="block text-base font-bold text-gray-300 mb-4"
+                <label class="block text-base font-bold text-slate-700 mb-4"
                   >Product Images ({{ i + 1 }})</label
                 >
                 <div class="flex items-center gap-2">
@@ -179,23 +182,31 @@
                     type="text"
                     formControlName="url"
                     placeholder="Paste image URL here..."
-                    class="flex-1 bg-black/50 border border-white/10 rounded-xl px-4 py-3 text-white focus:border-cyber-primary outline-none"
+                    class="flex-1 bg-white border border-slate-200 rounded-xl px-4 py-3 text-slate-900 focus:border-[#FF7620] focus:ring-1 focus:ring-[#FF7620] outline-none transition-all"
                   />
 
                   <button
                     type="button"
                     (click)="uploadImage(i)"
-                    class="bg-cyber-primary text-black px-4 py-3 rounded-xl font-bold cursor-pointer"
+                    class="bg-[#FF7620] text-white px-4 py-3 rounded-xl font-bold cursor-pointer hover:bg-orange-600 transition-all"
                   >
                     Upload
                   </button>
                 </div>
+
+                <div
+                  *ngIf="img.get('url')?.invalid && img.get('url')?.touched"
+                  class="text-red-500 text-sm mt-1"
+                >
+                  Please provide a valid image URL or upload an image.
+                </div>
+
                 <div
                   *ngIf="img.get('url')?.value"
-                  class="relative w-28 h-28 m-6 group"
+                  class="relative w-28 h-28 m-6"
                 >
                   <div
-                    class="w-full h-full border-2 border-white/10 rounded-lg overflow-hidden shadow-inner"
+                    class="w-full h-full border border-slate-200 rounded-lg overflow-hidden"
                   >
                     <img
                       [src]="img.get('url')?.value"
@@ -206,7 +217,7 @@
                   <button
                     type="button"
                     (click)="removeImage(i)"
-                    class="absolute -top-3 -right-3 bg-red-600 text-white rounded-full w-7 h-7 flex items-center justify-center font-black text-sm border-2 border-white shadow-2xl transition-all hover:scale-110 cursor-pointer"
+                    class="absolute -top-3 -right-3 bg-red-500 text-white rounded-full w-7 h-7 flex items-center justify-center font-black text-sm border-2 border-white shadow-lg hover:scale-110 cursor-pointer transition-all"
                   >
                     ×
                   </button>
@@ -214,16 +225,45 @@
               </div>
             </div>
           </div>
-
-          <button
+          <!-- <button
             type="submit"
-            [disabled]="isSaving || productForm.invalid"
+            [disabled]="isSaving"
             [class.opacity-50]="isSaving"
-            class="w-full bg-gradient-to-r from-cyber-primary to-cyber-accent text-black font-black uppercase text-base tracking-wider py-4 rounded-xl shadow-[0_0_20px_rgba(0,240,255,0.3)] hover:shadow-[0_0_30px_rgba(0,240,255,0.5)] transition-all duration-300 flex items-center justify-center cursor-pointer"
+            class="w-full bg-white text-slate-900 border border-slate-200 font-black uppercase text-base tracking-widest py-4 rounded-xl shadow-sm hover:border-[#FF7620] hover:text-[#FF7620] transition-all duration-300 transform hover:-translate-y-0.5 active:scale-[0.98] flex items-center justify-center cursor-pointer"
           >
             <span *ngIf="isSaving" class="flex items-center">
               <svg
-                class="animate-spin h-5 w-5 mr-3 text-black"
+                class="animate-spin h-5 w-5 mr-3 text-[#FF7620]"
+                viewBox="0 0 24 24"
+              >
+                <circle
+                  class="opacity-25"
+                  cx="12"
+                  cy="12"
+                  r="10"
+                  stroke="currentColor"
+                  stroke-width="4"
+                ></circle>
+                <path
+                  class="opacity-75"
+                  fill="currentColor"
+                  d="M4 12a8 8 0 018-8v8H4z"
+                ></path>
+              </svg>
+              Saving...
+            </span>
+
+            <span *ngIf="!isSaving">Save Product</span>
+          </button> -->
+          <button
+            type="submit"
+            [disabled]="isSaving"
+            [class.opacity-50]="isSaving"
+            class="w-full bg-[#FF7620] text-white font-black uppercase text-base tracking-widest py-4 rounded-xl shadow-lg shadow-orange-100 hover:bg-orange-600 transition-all duration-300 flex items-center justify-center cursor-pointer"
+          >
+            <span *ngIf="isSaving" class="flex items-center">
+              <svg
+                class="animate-spin h-5 w-5 mr-3 text-white"
                 viewBox="0 0 24 24"
               >
                 <circle

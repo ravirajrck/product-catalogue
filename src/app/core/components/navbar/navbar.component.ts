@@ -54,6 +54,22 @@ export class NavbarComponent {
     });
   }
 
+  // Component.ts
+isAnimating = false; // Animation state manage karne ke liye
+
+closeSidebar() {
+  this.isAnimating = true; // Animation start
+  setTimeout(() => {
+    this.isSidebarOpen = false;
+    this.isAnimating = false;
+  }, 300); // 300ms ka wait karega
+}
+
+openSidebar() {
+  this.isSidebarOpen = true;
+  this.isAnimating = false;
+}
+
   // YE HAIN VO ZAROORI STEP
   ngOnDestroy() {
     if (this.timer) {

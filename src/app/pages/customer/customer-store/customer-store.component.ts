@@ -119,7 +119,7 @@ Please let me know about the availability!`;
 
   // Navigate karne ka function
   viewProduct(productId: string) {
-    this.router.navigate(['/store/product', productId]);
+    this.router.navigate(['/store/product', productId],{queryParams: { type: 'store' }});
   }
 
   onImageError(event: any) {

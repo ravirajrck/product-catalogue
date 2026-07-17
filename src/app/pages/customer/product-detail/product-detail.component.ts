@@ -19,9 +19,14 @@ export class ProductDetailComponent implements OnInit {
   product: any = null;
   loading = true;
   activeImage: string = ''; // Slider ke liye
-
+sourceType: string = '';
   async ngOnInit() {
     window.scrollTo({ top: 0, behavior: 'smooth' });
+    this.route.queryParams.subscribe(params => {
+      this.sourceType = params['type']; // Yahan 'store' milega
+      console.log('Coming from:', this.sourceType);
+    });
+
     const id = this.route.snapshot.paramMap.get('id');
     if (id) {
       this.product = await this.dataService.getProductById(id);

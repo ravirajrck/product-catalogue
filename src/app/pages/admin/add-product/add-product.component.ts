@@ -36,6 +36,8 @@ export class AddProductComponent {
   }
 
   ngOnInit() {
+    const urlPattern =
+      /^(https?:\/\/)?([\da-z\.-]+)\.([a-z\.]{2,6})([\/\w \.-]*)*\/?$/;
     window.scrollTo({ top: 0, behavior: 'smooth' });
     this.dataService.getCategories().subscribe({
       next: (data) => {
@@ -68,7 +70,9 @@ export class AddProductComponent {
       // 3 images ka array (Empty strings)
       // images: this.fb.array(['', '', '']),
       images: this.fb.array([
-        this.fb.group({ url: [''] }),
+        this.fb.group({
+          url: ['', Validators.required],
+        }),
         this.fb.group({ url: [''] }),
         this.fb.group({ url: [''] }),
       ]),
@@ -141,6 +145,7 @@ export class AddProductComponent {
   }
 
   async onSaveProduct() {
+    this.productForm.markAllAsTouched();
     if (this.productForm.invalid) return;
 
     this.isSaving = true;

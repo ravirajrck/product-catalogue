@@ -1,179 +1,165 @@
-<div
-  class="min-h-screen bg-cyber-bg text-gray-100 relative overflow-x-hidden selection:bg-cyber-primary selection:text-black flex flex-col font-sans"
+<main
+  class="max-w-[1600px] w-full mx-auto px-6 py-8 flex-1 flex flex-col relative z-10"
 >
   <div
-    class="absolute top-[-10%] left-1/4 w-[600px] h-[600px] bg-cyber-accent/10 rounded-full blur-[160px] pointer-events-none"
-  ></div>
-  <div
-    class="absolute bottom-10 right-1/4 w-[500px] h-[500px] bg-cyber-primary/5 rounded-full blur-[140px] pointer-events-none"
-  ></div>
+    class="flex flex-col md:flex-row justify-between items-start md:items-center gap-6 mb-10 bg-cyber-card p-1 rounded-2xl"
+  >
+    <div>
+      <h1 class="text-3xl font-black text-slate-900 tracking-wider uppercase">
+        Saved Items [ {{ savedProducts.length }} ]
+      </h1>
+      <p class="text-sm text-slate-500 mt-1">
+        Review your hand-picked items and favorites.
+      </p>
+    </div>
+  </div>
 
-  <main
-    class="max-w-[1600px] w-full mx-auto px-6 py-8 flex-1 flex flex-col relative z-10"
+  <div
+    *ngIf="isLoading"
+    class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 2xl:grid-cols-6 gap-5 items-stretch"
   >
     <div
-      class="flex flex-col md:flex-row justify-between items-start md:items-center gap-6 mb-10 bg-cyber-card/40 p-4 rounded-2xl border border-white/5"
+      *ngFor="let placeholder of [1, 2, 3, 4, 5, 6]"
+      class="bg-white border border-slate-100 rounded-2xl p-4 overflow-hidden space-y-4 animate-pulse shadow-sm"
     >
-      <div class="flex items-center gap-6 w-full md:w-auto">
+      <!-- Image Placeholder -->
+      <div class="aspect-square w-full bg-slate-200 rounded-xl"></div>
+
+      <!-- Title Placeholder -->
+      <div class="h-4 bg-slate-200 rounded w-2/3"></div>
+
+      <!-- Description Placeholder -->
+      <div class="h-3 bg-slate-100 rounded w-full"></div>
+
+      <!-- Footer/Price Placeholder -->
+      <div class="flex justify-between items-center pt-2">
+        <div class="h-5 bg-slate-200 rounded w-1/4"></div>
+        <div class="h-7 bg-slate-200 rounded w-1/3"></div>
+      </div>
+    </div>
+  </div>
+
+  <div
+    *ngIf="!isLoading && savedProducts.length > 0; else noDataLayout"
+    class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 2xl:grid-cols-6 gap-5 flex-1 items-stretch"
+  >
+    <div
+      *ngFor="let prod of savedProducts"
+      (click)="viewProduct(prod.id)"
+      class="bg-white border border-slate-100 rounded-2xl overflow-hidden flex flex-col transition-all duration-300 group hover:shadow-lg hover:border-slate-200 cursor-pointer"
+    >
+      <!-- Image Section -->
+      <div class="relative w-full aspect-square overflow-hidden bg-slate-50">
+        <img
+          [src]="prod.imageUrl || 'noimage.png'"
+          (error)="onImageError($event)"
+          class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+          alt="{{ prod.name }}"
+        />
+
+        <!-- Saved/Like Button (Always active in this view) -->
         <button
-          (click)="goBack()"
-          class="group flex items-center gap-2 text-cyber-primary hover:text-white transition-all duration-300"
-        >
-          <div
-            class="w-10 h-10 rounded-full border border-cyber-primary/30 flex items-center justify-center group-hover:bg-cyber-primary/20 transition-all"
-          >
-            <span class="text-xl">←</span>
-          </div>
-        </button>
-
-        <div>
-          <h1 class="text-3xl font-black text-white tracking-wider uppercase">
-            // Saved Items
-          </h1>
-          <p class="text-sm font-mono text-gray-400 mt-1">
-            Your personal collection.
-          </p>
-        </div>
-      </div>
-
-      <div
-        class="hidden md:block text-xs font-mono text-gray-500 uppercase tracking-widest"
-      >
-        [ {{ savedProducts.length }} Items ]
-      </div>
-    </div>
-
-    <div
-      *ngIf="isLoading"
-      class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 2xl:grid-cols-6 gap-5"
-    >
-      <div
-        *ngFor="let placeholder of [1, 2, 3, 4, 5, 6]"
-        class="bg-cyber-card/20 border border-white/5 rounded-2xl p-4 overflow-hidden space-y-4 animate-pulse"
-      >
-        <div class="aspect-square w-full bg-white/5 rounded-xl"></div>
-        <div class="h-4 bg-white/10 rounded w-2/3"></div>
-        <div class="h-3 bg-white/5 rounded w-full"></div>
-        <div class="flex justify-between items-center pt-2">
-          <div class="h-5 bg-white/10 rounded w-1/4"></div>
-          <div class="h-7 bg-white/10 rounded w-1/3"></div>
-        </div>
-      </div>
-    </div>
-
-    <div
-      *ngIf="!isLoading && savedProducts.length > 0; else noDataLayout"
-      class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 2xl:grid-cols-6 gap-5 flex-1"
-    >
-      <div
-        *ngFor="let prod of savedProducts"
-        (click)="viewProduct(prod.id)"
-        class="glass-panel bg-cyber-card/30 border border-white/5 rounded-2xl overflow-hidden flex flex-col transition-all duration-300 group hover:border-cyber-primary/40 hover:shadow-[0_0_25px_rgba(0,240,255,0.25)]"
-      >
-        <div
-          class="relative aspect-square w-full bg-black/40 overflow-hidden border-b border-white/5"
-        >
-          <img
-            [src]="prod.imageUrl || 'noimage.png'"
-            (error)="onImageError($event)"
-            class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
-            alt="product interface view"
-          />
-
-          <button
-            (click)="toggleSaved(prod, $event)"
-            class="absolute top-2 right-2 p-2 bg-black/60 backdrop-blur-md rounded-full border border-white/10 hover:bg-cyber-primary/20 transition-all"
-          >
-            <svg
-              class="w-4 h-4 text-cyber-primary"
-              fill="currentColor"
-              viewBox="0 0 24 24"
-            >
-              <path
-                d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"
-              />
-            </svg>
-          </button>
-        </div>
-        <div class="p-4 flex-1 flex flex-col justify-between space-y-3">
-          <div>
-            <h3
-              class="font-extrabold text-white text-sm tracking-wide group-hover:text-cyber-primary transition-colors truncate"
-            >
-              {{ prod.name }}
-            </h3>
-            <p
-              class="text-[11px] text-gray-400 mt-0.5 line-clamp-2 leading-relaxed"
-            >
-              {{ prod.description || "No descriptive overview provided." }}
-            </p>
-          </div>
-
-          <div
-            class="flex items-center justify-between pt-2 border-t border-white/5"
-          >
-            <div class="flex items-center justify-end space-x-3">
-              <span
-                class="text-cyber-primary font-black text-xl drop-shadow-[0_0_8px_rgba(0,240,255,0.3)]"
-                >₹{{ prod.price }}</span
-              >
-              <span
-                *ngIf="prod.originalPrice"
-                class="text-sm text-gray-500 line-through"
-                >₹{{ prod.originalPrice }}</span
-              >
-            </div>
-
-            <button
-              (click)="onOrderNow(prod); $event.stopPropagation()"
-              class="px-3 py-1.5 bg-gradient-to-r from-cyber-secondary to-pink-600 hover:from-pink-600 hover:to-cyber-secondary text-white font-black text-[10px] tracking-wider uppercase rounded-lg shadow-[0_0_10px_rgba(255,0,127,0.15)] hover:shadow-[0_0_20px_rgba(255,0,127,0.3)] transition-all duration-300 cursor-pointer flex items-center space-x-1 transform active:scale-95"
-            >
-              <span>Buy</span>
-              <svg
-                class="w-3 h-3"
-                fill="none"
-                stroke="currentColor"
-                viewBox="0 0 24 24"
-              >
-                <path
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                  stroke-width="2.5"
-                  d="M14 5l7 7m0 0l-7 7m7-7H3"
-                ></path>
-              </svg>
-            </button>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <ng-template #noDataLayout>
-      <div
-        *ngIf="!isLoading"
-        class="text-center py-20 text-gray-500 text-sm font-mono tracking-widest uppercase flex flex-col items-center justify-center space-y-3 flex-1 bg-cyber-card/10 rounded-2xl border border-white/5"
-      >
-        <div
-          class="w-10 h-10 rounded-full bg-white/5 flex items-center justify-center border border-white/5 text-gray-500"
+          (click)="toggleSaved(prod, $event)"
+          class="absolute top-3 right-3 p-2 bg-white/80 backdrop-blur-sm rounded-full shadow-sm hover:bg-white transition-all"
         >
           <svg
-            class="w-5 h-5"
-            fill="none"
-            stroke="currentColor"
+            class="w-4 h-4 text-[#FF7620]"
+            fill="currentColor"
             viewBox="0 0 24 24"
           >
             <path
-              stroke-linecap="round"
-              stroke-linejoin="round"
-              stroke-width="2"
-              d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4"
-            ></path>
+              d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"
+            />
           </svg>
-        </div>
-        <h3 class="text-base font-bold text-white uppercase tracking-wider">
-          No Products Located
-        </h3>
+        </button>
       </div>
-    </ng-template>
-  </main>
-</div>
+
+      <!-- Product Info (Flex-1 for fixed layout) -->
+      <div class="p-4 flex flex-col flex-1">
+        <div class="flex-1">
+          <h3
+            class="font-bold text-slate-900 text-sm tracking-wide group-hover:text-[#FF7620] transition-colors truncate"
+          >
+            {{ prod.name }}
+          </h3>
+          <p class="text-xs text-slate-500 mt-1 line-clamp-2 leading-relaxed">
+            {{ prod.description || "No descriptive overview provided." }}
+          </p>
+        </div>
+
+        <!-- Price & Action (Sticky at bottom) -->
+        <div
+          class="flex items-center justify-between pt-4 mt-4 border-t border-slate-50"
+        >
+          <div class="flex flex-col">
+            <span class="text-[#FF7620] font-black text-lg"
+              >₹{{ prod.price }}</span
+            >
+            <span
+              *ngIf="prod.originalPrice"
+              class="text-[10px] text-slate-400 line-through"
+            >
+              ₹{{ prod.originalPrice }}
+            </span>
+          </div>
+
+          <button
+            (click)="onOrderNow(prod); $event.stopPropagation()"
+            class="px-4 py-2 bg-slate-900 hover:bg-[#FF7620] text-white font-bold text-xs uppercase tracking-wider rounded-xl transition-all duration-300 flex items-center gap-1 active:scale-95"
+          >
+            <span>Buy</span>
+            <svg
+              class="w-3 h-3"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2.5"
+                d="M14 5l7 7m0 0l-7 7m7-7H3"
+              ></path>
+            </svg>
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <ng-template #noDataLayout>
+    <div
+      *ngIf="!isLoading"
+      class="text-center py-20 px-6 text-slate-500 text-sm font-medium tracking-wide flex flex-col items-center justify-center space-y-4 flex-1 bg-white border border-slate-100 rounded-3xl shadow-sm"
+    >
+      <!-- Icon Container -->
+      <div
+        class="w-16 h-16 rounded-full bg-slate-50 flex items-center justify-center border border-slate-100 text-slate-400"
+      >
+        <svg
+          class="w-8 h-8"
+          fill="none"
+          stroke="currentColor"
+          viewBox="0 0 24 24"
+        >
+          <path
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            stroke-width="1.5"
+            d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4"
+          ></path>
+        </svg>
+      </div>
+
+      <!-- Message -->
+      <div>
+        <h3 class="text-lg font-black text-slate-900 uppercase tracking-widest">
+          No Saved Items
+        </h3>
+        <p class="mt-2 text-slate-400">
+          Your collection is empty. Start exploring our catalog.
+        </p>
+      </div>
+    </div>
+  </ng-template>
+</main>

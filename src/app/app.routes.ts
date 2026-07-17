@@ -11,6 +11,7 @@ import { SavedProductsComponent } from './pages/customer/saved-products/saved-pr
 import { AddProductComponent } from './pages/admin/add-product/add-product.component';
 import { authGuard } from './core/guards/auth.guard';
 import { guestGuard } from './core/guards/guest.guard';
+import { LandingPageComponent } from './pages/customer/landing-page/landing-page.component';
 
 export const routes: Routes = [
   {
@@ -20,6 +21,7 @@ export const routes: Routes = [
       { path: '', component: CustomerStoreComponent },
       { path: 'product/:id', component: ProductDetailComponent },
       { path: 'saved', component: SavedProductsComponent },
+       { path: 'home', component: LandingPageComponent },
     ],
   },
 
@@ -31,7 +33,7 @@ export const routes: Routes = [
     children: [
       { path: 'dashboard', component: DashboardComponent },
       { path: 'manage-product', component: AddProductComponent },
-      { path: 'manage-product/:id', component: AddProductComponent },
+      { path: 'manage-product/:id', component: AddProductComponent, },
       { path: '', redirectTo: 'dashboard', pathMatch: 'full' },
     ],
   },
