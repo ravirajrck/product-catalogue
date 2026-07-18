@@ -20,11 +20,14 @@ export class SidebarService {
     }
   }
 
-  close() {
-    this.isAnimating = true;
-    setTimeout(() => {
-      this._isOpen.next(false);
-      this.isAnimating = false;
-    }, 300);
-  }
+// SidebarService ke andar:
+close() {
+  this.isAnimating = true; // Animation shuru hogi
+  
+  // 300ms (animation duration) ka wait karein
+  setTimeout(() => {
+    this._isOpen.next(false); // Sidebar state band
+    this.isAnimating = false; // Animation state reset
+  }, 300);
+}
 }
