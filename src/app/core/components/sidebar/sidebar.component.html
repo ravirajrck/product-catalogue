@@ -37,11 +37,33 @@
 
     <!-- Main Links (Middle) -->
     <div class="mt-6 pt-4 border-t border-slate-100 flex flex-col space-y-0.5">
+      <!-- Home -->
+      <a
+        routerLink="/store/home"
+        (click)="sidebarService.close()"
+        class="flex items-center gap-3 text-s font-bold text-slate-600 uppercase hover:text-[#FF7620] transition-colors cursor-pointer py-1"
+      >
+        <svg
+          class="w-5 h-5"
+          fill="none"
+          stroke="currentColor"
+          viewBox="0 0 24 24"
+        >
+          <path
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            stroke-width="2"
+            d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"
+          ></path>
+        </svg>
+        Home
+      </a>
+
       <!-- Dashboard -->
       <a
         *ngIf="isLoggedIn$ | async"
         routerLink="/admin/dashboard"
-        (click)="(sidebarService.close)"
+        (click)="sidebarService.close()"
         class="flex items-center gap-3 text-s font-bold text-slate-600 uppercase hover:text-[#FF7620] transition-colors cursor-pointer py-1"
       >
         <svg
@@ -63,7 +85,7 @@
       <!-- Store -->
       <a
         routerLink="/store"
-        (click)="(sidebarService.close)"
+        (click)="sidebarService.close()"
         class="flex items-center gap-3 text-s font-bold text-slate-600 uppercase hover:text-[#FF7620] transition-colors cursor-pointer py-1"
       >
         <svg
@@ -85,7 +107,7 @@
       <!-- Saved -->
       <a
         routerLink="/store/saved"
-        (click)="(sidebarService.close)"
+        (click)="sidebarService.close()"
         class="flex items-center gap-3 text-s font-bold text-slate-600 uppercase hover:text-[#FF7620] transition-colors cursor-pointer py-1"
       >
         <svg
@@ -130,29 +152,29 @@
     <!-- NEW SECTION: Policy Links (List View) -->
     <div class="mt-6 pt-4 border-t border-slate-100 flex flex-col space-y-0.5">
       <a
-        routerLink="/about"
-        (click)="(sidebarService.close)"
+        routerLink="/store//about"
+        (click)="sidebarService.close()"
         class="flex items-center justify-between text-s text-slate-600 uppercase hover:text-[#FF7620] transition-colors cursor-pointer py-1"
       >
         About Us
       </a>
       <a
-        routerLink="/privacy"
-        (click)="(sidebarService.close)"
+        routerLink="/store/privacy"
+        (click)="sidebarService.close()"
         class="flex items-center justify-between text-s text-slate-600 uppercase hover:text-[#FF7620] transition-colors cursor-pointer py-1"
       >
         Privacy Policy
       </a>
       <a
-        routerLink="/terms"
-        (click)="(sidebarService.close)"
+        routerLink="/store//terms"
+        (click)="sidebarService.close()"
         class="flex items-center justify-between text-s text-slate-600 uppercase hover:text-[#FF7620] transition-colors cursor-pointer py-1"
       >
         Terms & Conditions
       </a>
       <a
-        routerLink="/contact"
-        (click)="(sidebarService.close)"
+        routerLink="/store//contact"
+        (click)="sidebarService.close()"
         class="flex items-center justify-between text-s text-slate-600 uppercase hover:text-[#FF7620] transition-colors cursor-pointer py-1"
       >
         Support Center
