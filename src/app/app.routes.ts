@@ -1,7 +1,7 @@
 import { Routes } from '@angular/router';
 // import { HomeComponent } from './pages/customer/home/home.component';
 // import { ProductDetailComponent } from './pages/customer/product-detail/product-detail.component';
-import { LoginComponent } from './pages/admin/login/login.component';
+import { LoginComponent } from './pages/admin/auth/login/login.component';
 import { DashboardComponent } from './pages/admin/dashboard/dashboard.component';
 import { CustomerStoreComponent } from './pages/customer/customer-store/customer-store.component';
 import { ProductDetailComponent } from './pages/customer/product-detail/product-detail.component';
@@ -12,6 +12,10 @@ import { AddProductComponent } from './pages/admin/add-product/add-product.compo
 import { authGuard } from './core/guards/auth.guard';
 import { guestGuard } from './core/guards/guest.guard';
 import { LandingPageComponent } from './pages/customer/landing-page/landing-page.component';
+import { AboutComponent } from './pages/about/about.component';
+import { ContactComponent } from './pages/contact/contact.component';
+import { PrivacyComponent } from './pages/privacy/privacy.component';
+import { TermsComponent } from './pages/terms/terms.component';
 
 export const routes: Routes = [
   {
@@ -21,7 +25,11 @@ export const routes: Routes = [
       { path: '', component: CustomerStoreComponent },
       { path: 'product/:id', component: ProductDetailComponent },
       { path: 'saved', component: SavedProductsComponent },
-       { path: 'home', component: LandingPageComponent },
+      { path: 'home', component: LandingPageComponent },
+      { path: 'about', component: AboutComponent },
+      { path: 'privacy', component: PrivacyComponent },
+      { path: 'terms', component: TermsComponent },
+      { path: 'contact', component: ContactComponent },
     ],
   },
 
@@ -33,7 +41,7 @@ export const routes: Routes = [
     children: [
       { path: 'dashboard', component: DashboardComponent },
       { path: 'manage-product', component: AddProductComponent },
-      { path: 'manage-product/:id', component: AddProductComponent, },
+      { path: 'manage-product/:id', component: AddProductComponent },
       { path: '', redirectTo: 'dashboard', pathMatch: 'full' },
     ],
   },

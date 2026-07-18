@@ -11,6 +11,7 @@ import {
 } from '@angular/router';
 import { AuthService } from '../../services/auth.service';
 import { authState } from '@angular/fire/auth';
+import { SidebarService } from '../../services/sidebar.service';
 @Component({
   selector: 'app-navbar',
   imports: [CommonModule, RouterModule],
@@ -18,24 +19,16 @@ import { authState } from '@angular/fire/auth';
   styleUrl: './navbar.component.css',
 })
 export class NavbarComponent {
-  isSidebarOpen: boolean = false; // Sidebar state track karne ke liye
   public authService = inject(AuthService);
-  // Toggle function jo click hone par true/false karega
-  toggleSidebar() {
-    this.isSidebarOpen = !this.isSidebarOpen;
-  }
+  public sidebarService = inject(SidebarService); // Service inject ki
   private router = inject(Router);
-  private cdr = inject(ChangeDetectorRef); // ChangeDetector inject karein
+  private cdr = inject(ChangeDetectorRef);
+
   isLoading = false;
-  private timer: any; // Timeout ko store karne ke liye
+  private timer: any;
   isLoggedIn$ = authState(this.authService.auth);
 
   ngOnInit() {
-    // this.authService.currentUser$.subscribe((user) => {
-    //   this.isLoggedIn = !!user;
-    //   this.cdr.detectChanges();
-    // });
-
     this.router.events.subscribe((event) => {
       if (event instanceof NavigationStart) {
         this.isLoading = true;
@@ -54,31 +47,14 @@ export class NavbarComponent {
     });
   }
 
-  // Component.ts
-isAnimating = false; // Animation state manage karne ke liye
-
-closeSidebar() {
-  this.isAnimating = true; // Animation start
-  setTimeout(() => {
-    this.isSidebarOpen = false;
-    this.isAnimating = false;
-  }, 300); // 300ms ka wait karega
-}
-
-openSidebar() {
-  this.isSidebarOpen = true;
-  this.isAnimating = false;
-}
-
-  // YE HAIN VO ZAROORI STEP
   ngOnDestroy() {
     if (this.timer) {
-      clearTimeout(this.timer); // Component hatne par timeout cancel ho jayega
+      clearTimeout(this.timer);
     }
   }
 
   onLogout() {
     this.authService.logout();
-    this.router.navigate(['login']);
+    this.router.navigate(['/admin-login']);
   }
 }

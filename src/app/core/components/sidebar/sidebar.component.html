@@ -1,0 +1,185 @@
+<div
+  class="fixed inset-0 z-[60] "
+  [class.hidden]="
+    !(sidebarService.sidebarOpen$ | async) && !sidebarService.isAnimating
+  "
+>
+  <!-- Backdrop -->
+  <div
+    (click)="sidebarService.close()"
+    class="absolute inset-0 bg-black/20 backdrop-blur-sm transition-opacity duration-300"
+  ></div>
+
+  <!-- Sidebar Container -->
+  <div
+    class="absolute left-0 top-0 h-full w-[280px] bg-white border-r border-orange-100 p-4 shadow-2xl flex flex-col transition-transform duration-300"
+    [class.translate-x-0]="sidebarService.sidebarOpen$ | async"
+    [class.-translate-x-full]="!(sidebarService.sidebarOpen$ | async)"
+  >
+    <!-- Top: Close Button -->
+    <div class="flex justify-end mb-1">
+      <button
+        (click)="sidebarService.close()"
+        class="text-slate-500 hover:text-[#FF7620] font-bold text-lg cursor-pointer"
+      >
+        ✕
+      </button>
+    </div>
+
+    <!-- Logo (Center) -->
+    <div class="flex flex-col items-center justify-center mb-8">
+      <a href="/" class="block w-[200px] cursor-pointer">
+        <img src="SANATAN3LOGO.svg" alt="Logo" class="w-full h-auto" />
+      </a>
+    </div>
+
+    <!-- Main Links (Middle) -->
+    <div class="flex flex-col space-y-4 py-2">
+      <!-- Dashboard -->
+      <a
+        *ngIf="isLoggedIn$ | async"
+        routerLink="/admin/dashboard"
+        (click)="(sidebarService.close)"
+        class="flex items-center gap-3 text-xs font-bold text-slate-600 uppercase hover:text-[#FF7620] transition-colors cursor-pointer"
+      >
+        <svg
+          class="w-5 h-5"
+          fill="none"
+          stroke="currentColor"
+          viewBox="0 0 24 24"
+        >
+          <path
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            stroke-width="2"
+            d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zM14 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zM14 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z"
+          ></path>
+        </svg>
+        Dashboard
+      </a>
+
+      <!-- Store -->
+      <a
+        routerLink="/store"
+        (click)="(sidebarService.close)"
+        class="flex items-center gap-3 text-xs font-bold text-slate-600 uppercase hover:text-[#FF7620] transition-colors cursor-pointer"
+      >
+        <svg
+          class="w-5 h-5"
+          fill="none"
+          stroke="currentColor"
+          viewBox="0 0 24 24"
+        >
+          <path
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            stroke-width="2"
+            d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z"
+          ></path>
+        </svg>
+        Store
+      </a>
+
+      <!-- Saved -->
+      <a
+        routerLink="/store/saved"
+        (click)="(sidebarService.close)"
+        class="flex items-center gap-3 text-xs font-bold text-slate-600 uppercase hover:text-[#FF7620] transition-colors cursor-pointer"
+      >
+        <svg
+          class="w-5 h-5"
+          fill="none"
+          stroke="currentColor"
+          viewBox="0 0 24 24"
+        >
+          <path
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            stroke-width="2"
+            d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"
+          ></path>
+        </svg>
+        Saved
+      </a>
+
+      <!-- Logout -->
+      <a
+        *ngIf="isLoggedIn$ | async"
+        (click)="onLogout(); (sidebarService.close)"
+        class="flex items-center gap-3 text-xs font-bold text-red-500 uppercase hover:text-red-700 transition-colors cursor-pointer mt-2 pt-4 border-t border-slate-100"
+      >
+        <svg
+          class="w-5 h-5"
+          fill="none"
+          stroke="currentColor"
+          viewBox="0 0 24 24"
+        >
+          <path
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            stroke-width="2"
+            d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"
+          ></path>
+        </svg>
+        Logout
+      </a>
+    </div>
+
+    <!-- NEW SECTION: Policy Links (List View) -->
+    <div class="mt-6 pt-4 border-t border-slate-100 flex flex-col space-y-2">
+      <a
+        routerLink="/about"
+        (click)="(sidebarService.close)"
+        class="flex items-center justify-between text-s font-bold text-slate-600 uppercase hover:text-[#FF7620] transition-colors cursor-pointer py-1"
+      >
+        About Us
+      </a>
+      <a
+        routerLink="/privacy"
+        (click)="(sidebarService.close)"
+        class="flex items-center justify-between text-s font-bold text-slate-600 uppercase hover:text-[#FF7620] transition-colors cursor-pointer py-1"
+      >
+        Privacy Policy
+      </a>
+      <a
+        routerLink="/terms"
+        (click)="(sidebarService.close)"
+        class="flex items-center justify-between text-s font-bold text-slate-600 uppercase hover:text-[#FF7620] transition-colors cursor-pointer py-1"
+      >
+        Terms & Conditions
+      </a>
+      <a
+        routerLink="/contact"
+        (click)="(sidebarService.close)"
+        class="flex items-center justify-between text-s font-bold text-slate-600 uppercase hover:text-[#FF7620] transition-colors cursor-pointer py-1"
+      >
+        Support Center
+      </a>
+    </div>
+
+    <!-- Bottom: Contact Info -->
+    <div
+      class="flex flex-col items-center mt-auto border-t border-orange-100 pt-5 pb-4 space-y-1 w-full bg-slate-50/50"
+    >
+      <span class="text-slate-400">Helpline Number</span>
+      <a
+        href="tel:+919876543210"
+        class="text-slate-700 font-semibold hover:text-[#FF7620] transition-colors"
+      >
+        +91 98765-43210
+      </a>
+      <a
+        href="mailto:ravirajchoudhary@gmail.com"
+        class="text-slate-500 hover:text-[#FF7620] transition-colors"
+      >
+        sanataninfotechgmail.com
+      </a>
+      <div class="flex flex-col items-center pt-2 gap-0.5">
+        <span class="text-slate-400">www.sanataninfotech.in</span>
+        <span class="text-slate-400 text-center px-4 leading-tight">
+          New Radha-Wallbh Market Khargone (451001)
+        </span>
+      </div>
+    </div>
+  </div>
+</div>

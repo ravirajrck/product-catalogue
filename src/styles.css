@@ -28,6 +28,14 @@
 .animate-out {
   animation: slideOut 0.3s ease-in forwards;
 }
+
+/* Mobile bottom nav ke liye space */
+@media (max-width: 767px) {
+  body {
+    padding-bottom: 80px; /* Nav bar ki height ke barabar */
+  }
+}
+
 @theme {
   /* Primary Color: Aapka brand color */
   --color-brand-primary: #ff7620;

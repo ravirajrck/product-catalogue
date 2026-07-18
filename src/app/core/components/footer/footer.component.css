@@ -1,0 +1,10 @@
+/* Active hone par color aur size badh jayega */
+.active-tab {
+  color: #FF7620 !important;
+}
+
+.active-tab svg {
+  transform: scale(1.1); 
+  transition: all;
+
+}

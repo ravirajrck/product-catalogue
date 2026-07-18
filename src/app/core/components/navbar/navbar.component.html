@@ -1,6 +1,4 @@
-<!-- <header
-  class="sticky top-0 z-50 bg-slate-950/70 border-b border-cyber-primary/30 backdrop-blur-xl px-6 md:px-12 py-4 relative"
-> -->
+
 <header
   class="sticky top-0 z-50 bg-white border-b border-orange-100 px-6 md:px-12 py-3 relative"
 >
@@ -36,7 +34,7 @@
         <a
           routerLink="/store/home"
           routerLinkActive="text-[#FF7620]"
-          class="text-xs font-bold uppercase tracking-widest text-slate-600 hover:text-[#FF7620] transition-all"
+          class="text-s font-bold uppercase tracking-widest text-slate-600 hover:text-[#FF7620] transition-all"
         >
           Home
         </a>
@@ -44,7 +42,7 @@
           *ngIf="isLoggedIn$ | async"
           routerLink="/admin/dashboard"
           routerLinkActive="text-[#FF7620]"
-          class="text-xs font-bold uppercase tracking-widest text-slate-600 hover:text-[#FF7620] transition-all"
+          class="text-s font-bold uppercase tracking-widest text-slate-600 hover:text-[#FF7620] transition-all"
         >
           Dashboard
         </a>
@@ -52,14 +50,14 @@
         <a
           routerLink="/store"
           routerLinkActive="text-[#FF7620]"
-          class="text-xs font-bold uppercase tracking-widest text-slate-600 hover:text-[#FF7620] transition-all"
+          class="text-s font-bold uppercase tracking-widest text-slate-600 hover:text-[#FF7620] transition-all"
         >
           Store
         </a>
 
         <a
           routerLink="/store/saved"
-          class="flex items-center space-x-2 text-xs font-bold uppercase tracking-widest text-[#FF7620] bg-orange-50 border border-orange-200 px-4 py-2 rounded-full hover:bg-orange-100 transition-all"
+          class="flex items-center space-x-2 text-s font-bold uppercase tracking-widest text-[#FF7620] bg-orange-50 border border-orange-200 px-4 py-2 rounded-full hover:bg-orange-100 transition-all"
         >
           <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24">
             <path
@@ -72,7 +70,7 @@
         <a
           *ngIf="isLoggedIn$ | async"
           (click)="onLogout()"
-          class="flex items-center space-x-2 text-xs font-bold uppercase tracking-widest text-[#FF7620] bg-orange-50 border border-orange-200 px-4 py-2 rounded-full hover:bg-orange-100 transition-all cursor-pointer"
+          class="flex items-center space-x-2 text-s font-bold uppercase tracking-widest text-[#FF7620] bg-orange-50 border border-orange-200 px-4 py-2 rounded-full hover:bg-orange-100 transition-all cursor-pointer"
         >
           <span>Logout</span>
         </a>
@@ -80,7 +78,7 @@
         <a
           *ngIf="!(isLoggedIn$ | async)"
           routerLink="/admin-login"
-          class="text-xs font-bold uppercase tracking-widest text-slate-600 hover:text-[#FF7620] transition-all"
+          class="text-s font-bold uppercase tracking-widest text-slate-600 hover:text-[#FF7620] transition-all"
         >
           Login
         </a>
@@ -88,7 +86,7 @@
     </div>
     <!-- Mobile Trigger -->
     <button
-      (click)="isSidebarOpen = !isSidebarOpen"
+  (click)="sidebarService.toggle()"
       class="md:hidden p-2 text-[#FF7620] rounded-lg hover:bg-orange-50 transition-all cursor-pointer"
     >
       <svg
@@ -107,109 +105,3 @@
     </button>
   </div>
 </header>
-<div
-  class="fixed inset-0 z-[60] md:hidden"
-  [class.hidden]="!isSidebarOpen && !isAnimating"
->
-  <!-- Backdrop (Click event par closeSidebar call hoga) -->
-  <div
-    (click)="closeSidebar()"
-    class="absolute inset-0 bg-black/20 backdrop-blur-sm transition-opacity duration-300"
-  ></div>
-
-  <!-- Sidebar Container -->
-  <div
-    class="absolute left-0 top-0 h-full w-[280px] bg-white border-r border-orange-100 p-4 shadow-2xl flex flex-col"
-    [class.animate-in]="isSidebarOpen && !isAnimating"
-    [class.animate-out]="isAnimating"
-  >
-    <!-- Top: Close Button -->
-    <!-- Cross Icon (Call closeSidebar) -->
-    <div class="flex justify-end mb-1">
-      <button
-        (click)="closeSidebar()"
-        class="text-slate-500 hover:text-[#FF7620] font-bold text-lg cursor-pointer"
-      >
-        ✕
-      </button>
-    </div>
-
-    <!-- Logo (Center) -->
-    <div class="flex flex-col items-center justify-center mb-8">
-      <a href="/" class="block w-[125px] cursor-pointer">
-        <img src="SANATAN3LOGO.svg" alt="Logo" class="w-full h-auto" />
-      </a>
-    </div>
-
-    <!-- Links (Middle) -->
-    <div class="flex flex-col space-y-3 flex-grow">
-      <a
-        *ngIf="isLoggedIn$ | async"
-        routerLink="/admin/dashboard"
-        (click)="isSidebarOpen = false"
-        class="w-full py-3 px-4 bg-slate-50 rounded-lg text-slate-700 font-bold uppercase text-xs hover:bg-orange-50 hover:text-[#FF7620] transition-all"
-      >
-        Dashboard
-      </a>
-      <a
-        routerLink="/store"
-        (click)="isSidebarOpen = false"
-        class="w-full py-3 px-4 bg-slate-50 rounded-lg text-slate-700 font-bold uppercase text-xs hover:bg-orange-50 hover:text-[#FF7620] transition-all"
-      >
-        Store
-      </a>
-      <a
-        routerLink="/store/saved"
-        (click)="isSidebarOpen = false"
-        class="w-full py-3 px-4 bg-slate-50 rounded-lg text-slate-700 font-bold uppercase text-xs hover:bg-orange-50 hover:text-[#FF7620] transition-all"
-      >
-        Saved
-      </a>
-      <a
-        *ngIf="isLoggedIn$ | async"
-        (click)="onLogout(); isSidebarOpen = false"
-        class="w-full py-3 px-4 bg-slate-50 rounded-lg text-slate-700 font-bold uppercase text-xs hover:bg-orange-50 hover:text-[#FF7620] transition-all cursor-pointer"
-      >
-        Logout
-      </a>
-    </div>
-
-    <!-- Bottom: Contact Info - Clean, Compact & Centered -->
-    <div
-      class="flex flex-col items-center mt-auto border-t border-orange-100 pt-5 pb-4 space-y-1 w-full bg-slate-50/50"
-    >
-      <!-- Contact Link -->
-      <span
-        class="text-[10px] font-black text-slate-400 uppercase tracking-[0.2em]"
-        >Helpline Number</span
-      >
-      <a
-        href="tel:+919876543210"
-        class="text-[11px] font-bold text-slate-700 hover:text-[#FF7620] tracking-wide transition-colors"
-      >
-        +91 98765-43210
-      </a>
-
-      <!-- Email -->
-      <a
-        href="mailto:ravirajchoudhary@gmail.com"
-        class="text-[11px] font-medium text-slate-500 hover:text-[#FF7620] transition-colors"
-      >
-        RAVIRAJCHOUDHARYGMAIL.COM
-      </a>
-
-      <!-- Website & Address (Tight grouping) -->
-      <div class="flex flex-col items-center pt-2 gap-0.5">
-        <span
-          class="text-[10px] font-black text-slate-400 uppercase tracking-[0.2em]"
-          >WWW.SANATAN.COM</span
-        >
-        <span
-          class="text-[9px] font-bold text-slate-400 uppercase tracking-wider text-center px-4 leading-tight"
-        >
-          NEW RADHA VALLABH MARKET, KHARGONE
-        </span>
-      </div>
-    </div>
-  </div>
-</div>
