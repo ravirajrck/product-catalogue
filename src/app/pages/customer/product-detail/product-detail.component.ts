@@ -30,7 +30,7 @@ sourceType: string = '';
     const id = this.route.snapshot.paramMap.get('id');
     if (id) {
       this.product = await this.dataService.getProductById(id);
-      this.activeImage = this.product.imageUrl; // Default image
+      this.activeImage = this.product?.images?.[0]?.url; // Default image
       this.loading = false;
     }
   }

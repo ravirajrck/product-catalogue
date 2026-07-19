@@ -1,5 +1,5 @@
 import { ApplicationConfig, provideZoneChangeDetection } from '@angular/core';
-import { provideRouter } from '@angular/router';
+import { provideRouter, withInMemoryScrolling } from '@angular/router';
 import { routes } from './app.routes';
 import { getApp, initializeApp, provideFirebaseApp } from '@angular/fire/app';
 import { browserSessionPersistence, getAuth, initializeAuth, provideAuth } from '@angular/fire/auth';
@@ -19,7 +19,10 @@ const firebaseConfig = {
 export const appConfig: ApplicationConfig = {
   providers: [
     provideZoneChangeDetection({ eventCoalescing: true }), 
-    provideRouter(routes),
+    provideRouter(routes,withInMemoryScrolling({
+        scrollPositionRestoration: 'enabled', // Page change hote hi top par scroll karega
+        anchorScrolling: 'enabled'            // Agar anchor links hain to wahan scroll karega
+      })),
     provideFirebaseApp(() => initializeApp(firebaseConfig)),
    provideAuth(() => {
       const app = getApp(); // Jo app upar initialize hui hai, use get karein

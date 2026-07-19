@@ -1,8 +1,6 @@
 <div
   class="min-h-screen bg-cyber-bg text-gray-100 p-6 md:p-12 relative overflow-hidden"
 >
-
-
   <div class="max-w-6xl mx-auto mb-8 relative z-10">
     <button
       (click)="goBack()"
@@ -15,7 +13,9 @@
           <span class="text-xl">←</span>
         </div>
       </div>
-      <span class="font-bold tracking-widest text-sm">Back to {{sourceType | titlecase}}</span>
+      <span class="font-bold tracking-widest text-sm"
+        >Back to {{ sourceType | titlecase }}</span
+      >
     </button>
   </div>
 
@@ -24,7 +24,7 @@
       Product Details
     </h1>
     <p class="text-sm text-slate-500 mt-1">
-   Explore features and specifications below.
+      Explore features and specifications below.
     </p>
   </div>
 
@@ -38,15 +38,15 @@
         class="flex flex-row lg:flex-col gap-3 justify-center lg:justify-start"
       >
         <div
-          *ngFor="let img of [product.imageUrl, product.image2, product.image3]"
-          (click)="changeImage(img)"
+          *ngFor="let img of product.images"
+          (click)="changeImage(img?.url)"
           [class.border-[#FF7620]]="
-            activeImage === img || (!activeImage && img === product.imageUrl)
+            activeImage === img?.url || (!activeImage && img?.url === img?.url)
           "
           class="w-20 h-20 border-2 rounded-xl cursor-pointer overflow-hidden transition-all border-slate-200 hover:border-[#FF7620] bg-slate-50"
         >
           <img
-            [src]="img"
+            [src]="img?.url"
             (error)="onImageError($event)"
             class="w-full h-full object-cover"
           />
@@ -57,7 +57,7 @@
         class="border border-slate-100 rounded-3xl p-2 shadow-sm flex-1 h-[400px] flex items-center justify-center overflow-hidden bg-white"
       >
         <img
-          [src]="activeImage || product.imageUrl"
+          [src]="activeImage || product.imageUrl?.[0]?.url"
           (error)="onImageError($event)"
           class="max-h-full object-contain rounded-2xl"
         />
@@ -79,7 +79,7 @@
           >
           <span
             *ngIf="product.originalPrice"
-            class="text-lg text-slate-400 line-through"
+            class="text-lg font-black text-slate-400 line-through"
             >₹{{ product.originalPrice }}</span
           >
         </div>
