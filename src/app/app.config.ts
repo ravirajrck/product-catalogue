@@ -11,6 +11,7 @@ import {
 import { getFirestore, provideFirestore } from '@angular/fire/firestore';
 import { provideHttpClient } from '@angular/common/http';
 import { provideToastr } from 'ngx-toastr';
+import { provideAnimations } from '@angular/platform-browser/animations';
 
 const firebaseConfig = {
   apiKey: 'AIzaSyBVBuGH4sbA4D0xJjYDz8Tq7M9ZJX6kdoc',
@@ -48,5 +49,6 @@ export const appConfig: ApplicationConfig = {
       closeButton: true,
       preventDuplicates: true,
     }),
+    provideAnimations(),
   ],
 };
