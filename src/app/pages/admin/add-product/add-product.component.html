@@ -177,7 +177,7 @@
                 <label class="block text-base font-bold text-slate-700 mb-4"
                   >Product Images ({{ i + 1 }})</label
                 >
-                <div class="flex items-center gap-2">
+                <div class="flex  items-center gap-2">
                   <input
                     type="text"
                     formControlName="url"
@@ -185,12 +185,24 @@
                     class="flex-1 bg-white border border-slate-200 rounded-xl px-4 py-3 text-slate-900 focus:border-[#FF7620] focus:ring-1 focus:ring-[#FF7620] outline-none transition-all"
                   />
 
+                  <!-- Agar URL nahi hai toh 'Upload' button dikhega -->
                   <button
+                    *ngIf="!img.get('url')?.value"
                     type="button"
                     (click)="uploadImage(i)"
-                    class="bg-[#FF7620] text-white px-4 py-3 rounded-xl font-bold cursor-pointer hover:bg-orange-600 transition-all"
+                    class="bg-[#FF7620] text-white px-4 py-3 rounded-xl font-bold cursor-pointer hover:bg-orange-600 transition-all shrink-0"
                   >
                     Upload
+                  </button>
+
+                  <!-- Agar URL hai toh 'Change' button dikhega taaki user naya upload kar sake -->
+                  <button
+                    *ngIf="img.get('url')?.value"
+                    type="button"
+                    (click)="uploadImage(i)"
+                    class="bg-slate-800 text-white px-4 py-3 rounded-xl font-bold cursor-pointer hover:bg-slate-900 transition-all shrink-0"
+                  >
+                    Change
                   </button>
                 </div>
 
@@ -201,12 +213,13 @@
                   Please provide a valid image URL or upload an image.
                 </div>
 
+                <!-- Preview Box -->
                 <div
                   *ngIf="img.get('url')?.value"
-                  class="relative w-28 h-28 m-6"
+                  class="relative w-28 h-28 mt-4"
                 >
                   <div
-                    class="w-full h-full border border-slate-200 rounded-lg overflow-hidden"
+                    class="w-full h-full border border-slate-200 rounded-lg overflow-hidden bg-white shadow-sm"
                   >
                     <img
                       [src]="img.get('url')?.value"

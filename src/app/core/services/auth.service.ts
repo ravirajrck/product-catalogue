@@ -19,26 +19,34 @@ export class AuthService {
   currentUser$ = user(this.auth);
 
   // Login Function
-  async login(email: string, pass: string) {
+async login(email: string, pass: string) {
     try {
-      await signInWithEmailAndPassword(this.auth, email, pass).then(
-        (userCredential) => {
-          // Firebase se UID mil gayi
-          const uid = userCredential.user?.uid;
+      // Await ka use karke seedha response lein
+      const userCredential = await signInWithEmailAndPassword(this.auth, email, pass);
+      
+      // Firebase se UID mil gayi
+      const uid = userCredential.user?.uid;
 
-          localStorage.setItem('adminToken', uid);
-          this.router.navigate(['/admin/dashboard']);
-        },
-      );
+      if (uid) {
+        localStorage.setItem('adminToken', uid);
+        this.router.navigate(['/admin/dashboard']);
+      }
     } catch (error) {
-      alert('Invalid Email or Password! Please try again.');
+      console.error('Login error:', error);
+      // Error ko aage component tak throw karein taaki toastr show ho sake
+      throw error; 
     }
   }
 
-  // Logout Function
+// Logout Function
   async logout() {
-    await signOut(this.auth);
-    localStorage.removeItem('adminToken');
+    try {
+      await signOut(this.auth);
+      localStorage.removeItem('adminToken');
+    } catch (error) {
+      console.error('Logout error:', error);
+      throw error; // Component tak error bhejne ke liye
+    }
   }
 
   // auth.service.ts

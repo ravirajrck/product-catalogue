@@ -1,6 +1,7 @@
 <div
   (click)="onCardClick()"
-  class="bg-white border border-slate-100 rounded-2xl overflow-hidden flex flex-col transition-all duration-300 group hover:shadow-lg hover:border-slate-200 cursor-pointer h-full"
+  class="bg-white border border-slate-100 rounded-2xl overflow-hidden flex flex-col transition-all duration-300 group hover:shadow-lg hover:border-slate-200 cursor-pointer h-full relative"
+  [class.opacity-75]="product.inStock === false"
 >
   <!-- Image Section -->
   <div class="relative aspect-square w-full bg-slate-50 overflow-hidden">
@@ -11,64 +12,120 @@
       [alt]="product.name"
     />
 
-    <!-- Like Button -->
-    <button
-      type="button"
-      (click)="onToggleSaved($event)"
-      class="absolute top-3 right-3 p-2 bg-white/80 backdrop-blur-sm rounded-full shadow-sm hover:bg-white transition-all cursor-pointer"
+    <!-- Out of Stock Badge Overlay -->
+    <div
+      *ngIf="product.inStock === false"
+      class="absolute inset-0 bg-slate-900/40 backdrop-blur-[2px] flex items-center justify-center p-2 text-center"
     >
-      <svg
-        class="w-4 h-4"
-        [class.text-[#FF7620]]="saved"
-        [class.text-slate-400]="!saved"
-        fill="currentColor"
-        viewBox="0 0 24 24"
+      <span
+        class="bg-orange-400 text-white font-bold text-[11px] sm:text-xs uppercase px-3 py-1.5 rounded-lg shadow-md tracking-wider"
       >
-        <path
-          d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"
-        />
-      </svg>
-    </button>
+        Out of Stock
+      </span>
+    </div>
+
+    <!-- Like Button -->
+   <!-- Like Button with Animation & Loading State -->
+<button
+  type="button"
+  (click)="onToggleSaved($event)"
+  class="absolute top-3 right-3 p-2 bg-white/90 backdrop-blur-sm rounded-full shadow-md hover:bg-white transition-all cursor-pointer z-10 group active:scale-90 disabled:cursor-wait"
+  [disabled]="isLoading" 
+>
+  <!-- Heart Icon (Default State) -->
+  <svg
+    *ngIf="!isLoading"
+    class="w-4 h-4 transition-colors duration-300"
+    [class.text-[#FF7620]]="saved"
+    [class.text-slate-400]="!saved"
+    [class.group-hover:text-[#FF7620]]="!saved"
+    fill="currentColor"
+    viewBox="0 0 24 24"
+  >
+    <path
+      d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"
+    />
+  </svg>
+
+  <!-- Loading Spinner (Shows during API/Storage call) -->
+  <svg
+    *ngIf="isLoading"
+    class="w-4 h-4 animate-spin text-slate-400"
+    xmlns="http://www.w3.org/2000/svg"
+    fill="none"
+    viewBox="0 0 24 24"
+  >
+    <circle
+      class="opacity-25"
+      cx="12"
+      cy="12"
+      r="10"
+      stroke="currentColor"
+      stroke-width="4"
+    ></circle>
+    <path
+      class="opacity-75"
+      fill="currentColor"
+      d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
+    ></path>
+  </svg>
+</button>
   </div>
 
   <!-- Product Info -->
-  <div class="p-4 flex-1 flex flex-col justify-between">
+  <div class="p-3 sm:p-4 flex-1 flex flex-col justify-between">
     <div>
       <h3
-        class="font-bold text-slate-800 text-base tracking-wide group-hover:text-[#FF7620] transition-colors truncate"
+        class="font-bold text-slate-800 text-sm sm:text-base tracking-wide group-hover:text-[#FF7620] transition-colors truncate"
       >
         {{ product.name | titlecase }}
       </h3>
       <p
-        class="font-medium text-sm text-slate-400 mt-1 mb-2 line-clamp-2 leading-relaxed"
+        class="font-medium text-xs sm:text-sm text-slate-400 mt-1 mb-2 line-clamp-2 leading-relaxed"
       >
         {{ product.description || "" }}
       </p>
     </div>
 
-    <!-- Price & Action -->
+    <!-- Price & Action (Fully Responsive & Safe for Long Numbers) -->
     <div
-      class="flex items-center justify-between pt-4 mt-2 border-t border-slate-50"
+      class="flex flex-col sm:flex-row sm:items-center justify-between pt-3 mt-2 border-t border-slate-50 gap-2.5"
     >
-      <div class="flex items-center">
-        <span class="text-[#FF7620] font-bold text-xl">
-          <i class="fa-solid fa-indian-rupee-sign"></i>{{ product.price }}
+      <!-- Price Section -->
+      <div class="flex items-baseline flex-wrap gap-x-2 min-w-0">
+        <span
+          class="text-[#FF7620] font-bold text-base sm:text-lg tracking-tight"
+        >
+          <i class="fa-solid fa-indian-rupee-sign text-lg"></i>
+          <span class="ms-0.5">{{ product.price }}</span>
         </span>
         <span
           *ngIf="product.originalPrice"
-          class="text-sm text-slate-500 ms-2 pt-1 line-through font-medium"
+          class="text-xs text-slate-400 line-through font-medium"
         >
-          <i class="fa-solid fa-indian-rupee-sign"></i
-          >{{ product.originalPrice }}
+          <i class="fa-solid fa-indian-rupee-sign text-xs"></i>
+          <span class="ms-0.5">{{ product.originalPrice }}</span>
         </span>
       </div>
 
+      <!-- Conditional Buy / Sold Out Button -->
       <button
         type="button"
-        (click)="onBuyClick($event)"
-        class="bg-slate-900 text-white px-4 py-2 rounded-lg text-sm font-bold hover:bg-[#FF7620] transition-colors cursor-pointer"
+        (click)="
+          product.inStock !== false
+            ? onBuyClick($event)
+            : $event.stopPropagation()
+        "
+        [disabled]="product.inStock === false"
+        class="w-full sm:w-auto px-4 py-2 rounded-lg text-xs sm:text-sm font-bold transition-all text-center shrink-0"
+        [ngClass]="{
+          'bg-slate-900 text-white hover:bg-[#FF7620] cursor-pointer active:scale-95':
+            product.inStock !== false,
+          'bg-slate-100 text-slate-400 cursor-not-allowed':
+            product.inStock === false,
+        }"
       >
-        <span>Buy</span>
+        <span>{{ product.inStock !== false ? "Buy" : "Sold Out" }}</span>
       </button>
     </div>
   </div>

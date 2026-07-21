@@ -8,10 +8,10 @@ import {
   ReactiveFormsModule,
   Validators,
 } from '@angular/forms';
-import { BrowserModule } from '@angular/platform-browser';
 import { Location } from '@angular/common';
 import { DataService } from '../../../core/services/data.service';
 import { ActivatedRoute, RouterLink } from '@angular/router';
+import { ToastrService } from 'ngx-toastr'; // Toastr import kiya gaya hai
 
 @Component({
   selector: 'app-add-product',
@@ -22,10 +22,12 @@ import { ActivatedRoute, RouterLink } from '@angular/router';
 export class AddProductComponent {
   private dataService = inject(DataService);
   private route = inject(ActivatedRoute);
+  private toastr = inject(ToastrService); // Toastr service inject ki gayi hai
+  private location: any = inject(Location);
+
   productForm!: FormGroup;
   isSaving = false;
   categoriesList: any[] = [];
-  private location: any = inject(Location);
   isEditing = false;
   productId: string | null = null;
 
@@ -39,11 +41,15 @@ export class AddProductComponent {
     const urlPattern =
       /^(https?:\/\/)?([\da-z\.-]+)\.([a-z\.]{2,6})([\/\w \.-]*)*\/?$/;
     window.scrollTo({ top: 0, behavior: 'smooth' });
+
     this.dataService.getCategories().subscribe({
       next: (data) => {
         this.categoriesList = data;
       },
-      error: (err) => console.error(err),
+      error: (err) => {
+        console.error(err);
+        this.toastr.error('Failed to load categories!', 'Error');
+      },
     });
 
     this.route.paramMap.subscribe((params) => {
@@ -67,14 +73,16 @@ export class AddProductComponent {
           Validators.maxLength(2000),
         ],
       ],
-      // 3 images ka array (Empty strings)
-      // images: this.fb.array(['', '', '']),
       images: this.fb.array([
         this.fb.group({
           url: ['', Validators.required],
         }),
-        this.fb.group({ url: [''] }),
-        this.fb.group({ url: [''] }),
+        this.fb.group({
+          url: ['', Validators.required],
+        }),
+        this.fb.group({
+          url: ['', Validators.required],
+        }),
       ]),
     });
   }
@@ -97,16 +105,28 @@ export class AddProductComponent {
       if (product.images && Array.isArray(product.images)) {
         this.imageArray.clear(); // Purane khali fields hatao
         product.images.forEach((img: any) => {
-          this.imageArray.push(this.fb.group({ url: [img.url] }));
+          this.imageArray.push(
+            this.fb.group({ url: [img.url, Validators.required] }),
+          ); // Ensure validation is attached
         });
 
         // Agar 3 se kam images hain, toh baki khali fields wapas add karein
         while (this.imageArray.length < 3) {
-          this.imageArray.push(this.fb.group({ url: [''] }));
+          // Pehli image required ho sakti hai, baki optional ya teeno required rakh sakte hain
+          const isFirst = this.imageArray.length === 0;
+          this.imageArray.push(
+            this.fb.group({
+              url: ['', isFirst ? Validators.required : null],
+            }),
+          );
         }
       }
+
+      // 3. Yahan form array ko touched mark kar dein taaki agar khali ho toh error dikhe
+      this.imageArray.markAllAsTouched();
     } catch (error) {
       console.error('Error loading product:', error);
+      this.toastr.error('Failed to load product details for editing.', 'Error');
     }
   }
 
@@ -131,6 +151,9 @@ export class AddProductComponent {
           this.imageArray.at(index).patchValue({
             url: result.info.secure_url,
           });
+          this.toastr.success('Image uploaded successfully!', 'Success');
+        } else if (error) {
+          this.toastr.error('Image upload failed. Please try again!', 'Error');
         }
       },
     );
@@ -142,35 +165,47 @@ export class AddProductComponent {
     this.imageArray.at(index).patchValue({
       url: '',
     });
+    this.toastr.info('Image removed', 'Removed');
   }
 
   async onSaveProduct() {
     this.productForm.markAllAsTouched();
-    if (this.productForm.invalid) return;
+
+    // 1. Check karein ki kam se kam pehli image bhari hai ya nahi
+    const imagesArray = this.imageArray.value;
+    const hasAtLeastOneImage = imagesArray.some(
+      (img: any) => img.url && img.url.trim() !== '',
+    );
+
+    // 2. Agar form invalid hai YA ek bhi image nahi hai, toh rok dein
+    if (this.productForm.invalid || !hasAtLeastOneImage) {
+      this.toastr.warning(
+        'Please fill in all required fields.',
+        'Validation Error',
+      );
+      return;
+    }
 
     this.isSaving = true;
     try {
       const productData = this.productForm.value;
 
       if (this.isEditing && this.productId) {
-        // UPDATE MODE
         await this.dataService.updateProduct(this.productId, productData);
-        alert('Product updated successfully!');
+        this.toastr.success('Product updated successfully!', 'Success');
       } else {
-        // ADD MODE
         await this.dataService.addProduct(productData);
-        alert('Product added successfully!');
+        this.toastr.success('Product added successfully!', 'Success');
       }
 
-      this.goBack(); // Savvy way to return
+      this.goBack();
     } catch (error) {
       console.error('Error saving product: ', error);
-      alert('Failed to save. Please try again.');
+      this.toastr.error('Failed to save product. Please try again.', 'Error');
     } finally {
       this.isSaving = false;
     }
   }
-
   onlyNumbers(event: Event) {
     // 'event' ko KeyboardEvent mein cast karein
     const keyboardEvent = event as KeyboardEvent;

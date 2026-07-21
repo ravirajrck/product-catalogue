@@ -62,7 +62,7 @@
       </div>
 
       <div
-        class="flex flex-col sm:flex-row  sm:items-center gap-3 w-full sm:w-auto"
+        class="flex flex-col sm:flex-row sm:items-center gap-3 w-full sm:w-auto"
       >
         <!-- Manage Categories Button -->
         <button
@@ -110,9 +110,8 @@
       </div>
     </div>
 
-  
     <!-- Table Body -->
-  <div class="overflow-x-auto">
+    <div class="overflow-x-auto">
       <table
         class="w-full text-left text-sm text-slate-600 table-fixed min-w-[850px]"
       >
@@ -204,8 +203,10 @@
                   (change)="updateStockStatus(prod)"
                   class="text-xs font-bold px-3 py-1.5 rounded-lg border transition-all cursor-pointer outline-none shadow-sm"
                   [ngClass]="{
-                    'bg-emerald-50 text-emerald-700 border-emerald-200 focus:ring-emerald-500': prod.inStock !== false,
-                    'bg-rose-50 text-rose-700 border-rose-200 focus:ring-rose-500': prod.inStock === false
+                    'bg-emerald-50 text-emerald-700 border-emerald-200 focus:ring-emerald-500':
+                      prod.inStock !== false,
+                    'bg-rose-50 text-rose-700 border-rose-200 focus:ring-rose-500':
+                      prod.inStock === false,
                   }"
                 >
                   <option [ngValue]="true">In Stock</option>
@@ -216,11 +217,16 @@
               <!-- Price -->
               <td class="py-4 px-6 text-right font-mono">
                 <div class="flex flex-col items-end">
-                  <span class="text-sm text-slate-500 line-through font-medium" *ngIf="prod.originalPrice">
-                    <i class="fa-solid fa-indian-rupee-sign"></i>{{ prod.originalPrice }}
+                  <span
+                    class="text-sm text-slate-500 line-through font-medium"
+                    *ngIf="prod.originalPrice"
+                  >
+                    <i class="fa-solid fa-indian-rupee-sign font-medium"></i
+                    ><span class="ms-0.5">{{ prod.originalPrice }}</span>
                   </span>
                   <span class="text-[#FF7620] font-black text-base">
-                    <i class="fa-solid fa-indian-rupee-sign"></i>{{ prod.price }}
+                    <i class="fa-solid fa-indian-rupee-sign text-base"></i
+                    ><span class="ms-0.5">{{ prod.price }}</span>
                   </span>
                 </div>
               </td>

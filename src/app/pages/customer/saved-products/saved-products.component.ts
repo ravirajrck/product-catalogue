@@ -4,8 +4,9 @@ import { firstValueFrom } from 'rxjs';
 import { CommonModule } from '@angular/common';
 import { Router, RouterModule } from '@angular/router';
 import { Location } from '@angular/common';
-import { NoDataComponent } from "../../../core/components/shared/no-data/no-data.component";
-import { ProductCardComponent } from "../../../core/components/shared/product-card/product-card.component";
+import { NoDataComponent } from '../../../core/components/shared/no-data/no-data.component';
+import { ProductCardComponent } from '../../../core/components/shared/product-card/product-card.component';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-saved-products',
@@ -14,11 +15,12 @@ import { ProductCardComponent } from "../../../core/components/shared/product-ca
   styleUrl: './saved-products.component.css',
 })
 export class SavedProductsComponent {
-    private location = inject(Location);
+  private location = inject(Location);
   private dataService = inject(DataService);
+  private toastr = inject(ToastrService);
   savedProducts: any[] = [];
   isLoading = true;
-  
+
   private router = inject(Router);
   async ngOnInit() {
     await this.loadSavedData();
@@ -34,7 +36,15 @@ export class SavedProductsComponent {
   // Un-save functionality
   toggleSaved(product: any, event: Event) {
     event.stopPropagation(); // Card click na ho
-    this.dataService.toggleSavedLocal(product);
+
+    const isSaved: any = this.dataService.toggleSavedLocal(product);
+
+    // Toast Notification logic
+    if (isSaved) {
+      this.toastr.success('Product saved successfully!', 'Success');
+    } else {
+      this.toastr.info('Product removed successfully!', 'Removed');
+    }
     this.loadSavedData(); // List ko turant refresh karega
   }
   onOrderNow(product: any) {
@@ -45,14 +55,16 @@ export class SavedProductsComponent {
 
   // Navigate karne ka function
   viewProduct(productId: string) {
-    this.router.navigate(['/store/product', productId],{queryParams: { type: 'saved' }});
+    this.router.navigate(['/store/product', productId], {
+      queryParams: { type: 'saved' },
+    });
   }
 
   onImageError(event: any) {
     // अगर इमेज लोड नहीं हो पाती, तो उसे 'noimage.png' से रिप्लेस कर दें
     event.target.src = 'noimage.png';
   }
-    goBack() {
+  goBack() {
     this.location.back();
   }
 }

@@ -12,6 +12,7 @@ import {
 import { AuthService } from '../../services/auth.service';
 import { authState } from '@angular/fire/auth';
 import { SidebarService } from '../../services/sidebar.service';
+import { ToastrService } from 'ngx-toastr';
 @Component({
   selector: 'app-navbar',
   imports: [CommonModule, RouterModule],
@@ -23,6 +24,7 @@ export class NavbarComponent {
   public sidebarService = inject(SidebarService); // Service inject ki
   private router = inject(Router);
   private cdr = inject(ChangeDetectorRef);
+  private toastr = inject(ToastrService);
 
   isLoading = false;
   private timer: any;
@@ -53,8 +55,14 @@ export class NavbarComponent {
     }
   }
 
-  onLogout() {
-    this.authService.logout();
-    this.router.navigate(['/admin-login']);
+  async onLogout() {
+    try {
+      await this.authService.logout(); // Agar logout API promise hai
+      this.toastr.info('Logged out successfully!', 'Session Ended');
+      this.router.navigate(['/admin-login']);
+    } catch (err) {
+      console.error('Logout failed:', err);
+      this.toastr.error('Failed to logout. Please try again!', 'Error');
+    }
   }
 }

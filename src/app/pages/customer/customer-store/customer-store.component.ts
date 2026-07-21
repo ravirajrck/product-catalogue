@@ -7,13 +7,21 @@ import { FooterComponent } from '../../../core/components/footer/footer.componen
 import { Router } from '@angular/router';
 import { NavbarComponent } from '../../../core/components/navbar/navbar.component';
 import { DataService } from '../../../core/services/data.service';
-import { NoDataComponent } from "../../../core/components/shared/no-data/no-data.component";
-import { ProductCardComponent } from "../../../core/components/shared/product-card/product-card.component";
+import { NoDataComponent } from '../../../core/components/shared/no-data/no-data.component';
+import { ProductCardComponent } from '../../../core/components/shared/product-card/product-card.component';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-customer-store',
   standalone: true,
-  imports: [CommonModule, FormsModule, FooterComponent, NavbarComponent, NoDataComponent, ProductCardComponent], // 👈 NgModel error nahi aayegi
+  imports: [
+    CommonModule,
+    FormsModule,
+    FooterComponent,
+    NavbarComponent,
+    NoDataComponent,
+    ProductCardComponent,
+  ], // 👈 NgModel error nahi aayegi
   templateUrl: './customer-store.component.html',
   styleUrls: ['./customer-store.component.css'],
 })
@@ -27,6 +35,7 @@ export class CustomerStoreComponent implements OnInit {
   selectedCategory: string = 'all';
   isLoading: boolean = true; // ⚡ Shimmer control variable
   private router = inject(Router);
+  private toastr = inject(ToastrService);
   constructor(private firestore: Firestore) {}
 
   ngOnInit(): void {
@@ -98,7 +107,7 @@ export class CustomerStoreComponent implements OnInit {
 
   // WhatsApp Checkout Action Link
   onOrderNow(product: any) {
-    const currentUrl = window.location.href+'/product/'+product.id
+    const currentUrl = window.location.href + '/product/' + product.id;
     const textMessage = `Hello! I want to order this product:
 *🔗 Product Link:*
 ${currentUrl}
@@ -121,7 +130,9 @@ Please let me know about the availability!`;
 
   // Navigate karne ka function
   viewProduct(productId: string) {
-    this.router.navigate(['/store/product', productId],{queryParams: { type: 'store' }});
+    this.router.navigate(['/store/product', productId], {
+      queryParams: { type: 'store' },
+    });
   }
 
   onImageError(event: any) {
@@ -134,7 +145,14 @@ Please let me know about the availability!`;
   // Save/Toggle Logic
   toggleSaved(prod: any, event: Event) {
     event.stopPropagation(); // Parent card click na ho
-    this.dataService.toggleSavedLocal(prod);
+    const isSaved: any = this.dataService.toggleSavedLocal(prod);
+
+    // Toast Notification logic
+    if (isSaved) {
+      this.toastr.success('Product saved successfully!', 'Success');
+    } else {
+      this.toastr.info('Product removed successfully!', 'Removed');
+    }
   }
 
   // Check karne ke liye ki product saved hai ya nahi

@@ -5,6 +5,7 @@ import { DataService } from '../../../core/services/data.service';
 import { AuthService } from '../../../core/services/auth.service';
 import { Router, RouterModule } from '@angular/router';
 import { ClickBtnComponent } from '../../../core/components/shared/click-btn/click-btn.component';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-dashboard',
@@ -16,6 +17,7 @@ import { ClickBtnComponent } from '../../../core/components/shared/click-btn/cli
 export class DashboardComponent implements OnInit {
   private dataService = inject(DataService);
   private authService = inject(AuthService);
+  private toastr = inject(ToastrService);
   private router = inject(Router);
   // Category State
   newCategoryName = '';
@@ -86,21 +88,23 @@ export class DashboardComponent implements OnInit {
   // ======= CATEGORY ACTIONS =======
   async onSaveCategory() {
     if (!this.newCategoryName.trim()) return;
+
     try {
       if (this.isEditingCategory) {
         await this.dataService.updateCategory(
           this.currentEditingCategoryId,
           this.newCategoryName.trim(),
         );
-        alert('Category updated successfully!');
+        this.toastr.success('Category updated successfully!', 'Success');
         this.cancelCategoryEdit();
       } else {
         await this.dataService.addCategory(this.newCategoryName.trim());
-        alert('Category added successfully!');
+        this.toastr.success('Category added successfully!', 'Success');
         this.newCategoryName = '';
       }
     } catch (err) {
       console.error(err);
+      this.toastr.error('Something went wrong. Please try again!', 'Error');
     }
   }
 
@@ -118,28 +122,31 @@ export class DashboardComponent implements OnInit {
 
   async removeCategory(id: string, categoryName: string) {
     if (
-      confirm(
-        `Kya aap sach me "${categoryName}" category delete karna chahte hain?`,
-      )
+      confirm(`Are you sure you want to delete the category "${categoryName}"?`)
     ) {
       try {
         await this.dataService.deleteCategory(id);
-        alert('Category deleted successfully!');
+        this.toastr.success('Category deleted successfully!', 'Success');
       } catch (err) {
         console.error(err);
+        this.toastr.error(
+          'Failed to delete category. Please try again!',
+          'Error',
+        );
       }
     }
   }
-
   async removeProduct(id: string, name: string) {
-    if (
-      confirm(`Kya aap sach me product "${name}" ko delete karna chahte hain?`)
-    ) {
+    if (confirm(`Are you sure you want to delete the product "${name}"?`)) {
       try {
         await this.dataService.deleteProduct(id);
-        alert('Product successfully deleted!');
+        this.toastr.success('Product deleted successfully!', 'Success');
       } catch (err) {
         console.error(err);
+        this.toastr.error(
+          'Failed to delete product. Please try again!',
+          'Error',
+        );
       }
     }
   }
@@ -158,9 +165,16 @@ export class DashboardComponent implements OnInit {
       .updateProductStock(prod.id, prod.inStock)
       .then(() => {
         console.log(`Stock updated for ${prod.name}:`, prod.inStock);
+        // Success Toast
+        this.toastr.success(`Stock updated successfully!`, 'Success');
       })
       .catch((err) => {
         console.error('Failed to update stock:', err);
+        // Error Toast
+        this.toastr.error(
+          'Failed to update stock status. Please try again!',
+          'Error',
+        );
       });
   }
 }

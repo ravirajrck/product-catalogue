@@ -1,9 +1,19 @@
 import { Injectable, inject } from '@angular/core';
-import { Firestore, collection, addDoc, collectionData, doc, updateDoc, deleteDoc, getDoc, getDocs } from '@angular/fire/firestore';
+import {
+  Firestore,
+  collection,
+  addDoc,
+  collectionData,
+  doc,
+  updateDoc,
+  deleteDoc,
+  getDoc,
+  getDocs,
+} from '@angular/fire/firestore';
 import { Observable } from 'rxjs';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class DataService {
   private firestore = inject(Firestore);
@@ -50,7 +60,7 @@ export class DataService {
     const productDocRef = doc(this.firestore, `products/${productId}`);
     return updateDoc(productDocRef, { inStock: inStock });
   }
-  
+
   // [[NEW]] 4. Delete Product
   deleteProduct(productId: string) {
     const productDocRef = doc(this.firestore, `products/${productId}`);
@@ -61,7 +71,7 @@ export class DataService {
   async getProductById(id: string): Promise<any> {
     const docRef = doc(this.firestore, 'products', id);
     const docSnap = await getDoc(docRef);
-    
+
     if (docSnap.exists()) {
       return { id: docSnap.id, ...docSnap.data() };
     } else {
@@ -73,49 +83,53 @@ export class DataService {
   async getCategoryById(id: string): Promise<any> {
     const docRef = doc(this.firestore, 'categories', id);
     const docSnap = await getDoc(docRef);
-    
+
     if (docSnap.exists()) {
       return { id: docSnap.id, ...docSnap.data() };
     }
     return { name: 'Uncategorized' };
   }
 
-
   // src/app/core/services/data.service.ts
 
-getSavedProductsFromList(allProducts: any[]): any[] {
-  // 1. LocalStorage se IDs nikaalo
-  const savedIds = JSON.parse(localStorage.getItem('saved_products') || '[]');
-  
-  if (savedIds.length === 0) return [];
+  getSavedProductsFromList(allProducts: any[]): any[] {
+    // 1. LocalStorage se IDs nikaalo
+    const savedIds = JSON.parse(localStorage.getItem('saved_products') || '[]');
 
-  // 2. Apni pehle se load ki hui list ko filter karo
-  return allProducts.filter(prod => savedIds.includes(prod.id));
-}
+    if (savedIds.length === 0) return [];
 
-// 1. Sirf ID save/remove karein (Price nahi)
-toggleSavedLocal(product: any) {
-  let savedIds = JSON.parse(localStorage.getItem('saved_products') || '[]');
-  const index = savedIds.indexOf(product.id);
-  
-  if (index > -1) {
-    savedIds.splice(index, 1); // Remove
-  } else {
-    savedIds.push(product.id); // Sirf ID save karein
+    // 2. Apni pehle se load ki hui list ko filter karo
+    return allProducts.filter((prod) => savedIds.includes(prod.id));
   }
-  localStorage.setItem('saved_products', JSON.stringify(savedIds));
-}
 
-// 2. Check karne ke liye
-isProductSaved(productId: string): boolean {
-  const savedIds = JSON.parse(localStorage.getItem('saved_products') || '[]');
-  return savedIds.includes(productId);
-}
+  // 1. Sirf ID save/remove karein (Price nahi)
+  toggleSavedLocal(product: any): boolean {
+    let savedIds = JSON.parse(localStorage.getItem('saved_products') || '[]');
+    const index = savedIds.indexOf(product.id);
+    let isSaved = false;
 
-// DataService ke andar ye method add karein
-async getAllProductsFromFirestore(): Promise<any[]> {
-  const productsCollection = collection(this.firestore, 'products');
-  const snapshot = await getDocs(productsCollection);
-  return snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
-}
+    if (index > -1) {
+      savedIds.splice(index, 1); // Remove
+      isSaved = false;
+    } else {
+      savedIds.push(product.id); // Add
+      isSaved = true;
+    }
+
+    localStorage.setItem('saved_products', JSON.stringify(savedIds));
+    return isSaved; // Yeh batayega ki save hua ya remove
+  }
+
+  // 2. Check karne ke liye
+  isProductSaved(productId: string): boolean {
+    const savedIds = JSON.parse(localStorage.getItem('saved_products') || '[]');
+    return savedIds.includes(productId);
+  }
+
+  // DataService ke andar ye method add karein
+  async getAllProductsFromFirestore(): Promise<any[]> {
+    const productsCollection = collection(this.firestore, 'products');
+    const snapshot = await getDocs(productsCollection);
+    return snapshot.docs.map((doc) => ({ id: doc.id, ...doc.data() }));
+  }
 }

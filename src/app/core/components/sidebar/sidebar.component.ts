@@ -11,6 +11,7 @@ import {
 import { AuthService } from '../../services/auth.service';
 import { CommonModule } from '@angular/common';
 import { SidebarService } from '../../services/sidebar.service';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-sidebar',
@@ -21,12 +22,19 @@ import { SidebarService } from '../../services/sidebar.service';
 export class SidebarComponent {
   public authService = inject(AuthService);
   private router = inject(Router);
+  private toastr = inject(ToastrService);
   public sidebarService = inject(SidebarService); // Service inject ki
 
   isLoggedIn$ = authState(this.authService.auth);
 
-  onLogout() {
-    this.authService.logout();
-    this.router.navigate(['/admin-login']); // Sahi route name check karein
+  async onLogout() {
+    try {
+      await this.authService.logout();
+      this.toastr.info('Logged out successfully!', 'Session Ended');
+      this.router.navigate(['/admin-login']);
+    } catch (err) {
+      console.error('Logout failed:', err);
+      this.toastr.error('Failed to logout. Please try again!', 'Error');
+    }
   }
 }
