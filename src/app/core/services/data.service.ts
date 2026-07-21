@@ -46,6 +46,11 @@ export class DataService {
     return updateDoc(productDocRef, updatedData);
   }
 
+  updateProductStock(productId: string, inStock: boolean) {
+    const productDocRef = doc(this.firestore, `products/${productId}`);
+    return updateDoc(productDocRef, { inStock: inStock });
+  }
+  
   // [[NEW]] 4. Delete Product
   deleteProduct(productId: string) {
     const productDocRef = doc(this.firestore, `products/${productId}`);

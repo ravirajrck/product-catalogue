@@ -5,10 +5,10 @@
     class="flex flex-col md:flex-row justify-between items-start md:items-center gap-6 mb-10 bg-cyber-card p-1 rounded-2xl"
   >
     <div>
-      <h1 class="text-3xl font-black text-slate-900 tracking-wider uppercase">
-        Saved Items [ {{ savedProducts.length }} ]
+      <h1 class="text-3xl font-bold text-slate-900 tracking-wider uppercase">
+        Saved Items ( {{ savedProducts.length }} )
       </h1>
-      <p class="text-sm text-slate-500 mt-1">
+      <p class="text-sm font-medium text-slate-500 mt-1">
         Review your hand-picked items and favorites.
       </p>
     </div>
@@ -43,123 +43,23 @@
     *ngIf="!isLoading && savedProducts.length > 0; else noDataLayout"
     class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 2xl:grid-cols-6 gap-5 flex-1 items-stretch"
   >
-    <div
-      *ngFor="let prod of savedProducts"
-      (click)="viewProduct(prod.id)"
-      class="bg-white border border-slate-100 rounded-2xl overflow-hidden flex flex-col transition-all duration-300 group hover:shadow-lg hover:border-slate-200 cursor-pointer"
-    >
-      <!-- Image Section -->
-      <div class="relative w-full aspect-square overflow-hidden bg-slate-50">
-        <img
-          [src]="prod.imageUrl || 'noimage.png'"
-          (error)="onImageError($event)"
-          class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
-          alt="{{ prod.name }}"
-        />
-
-        <!-- Saved/Like Button (Always active in this view) -->
-        <button
-          (click)="toggleSaved(prod, $event)"
-          class="absolute top-3 right-3 p-2 bg-white/80 backdrop-blur-sm rounded-full shadow-sm hover:bg-white transition-all"
-        >
-          <svg
-            class="w-4 h-4 text-[#FF7620]"
-            fill="currentColor"
-            viewBox="0 0 24 24"
-          >
-            <path
-              d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"
-            />
-          </svg>
-        </button>
-      </div>
-
-      <!-- Product Info (Flex-1 for fixed layout) -->
-      <div class="p-4 flex flex-col flex-1">
-        <div class="flex-1">
-          <h3
-            class="font-bold text-slate-900 text-sm tracking-wide group-hover:text-[#FF7620] transition-colors truncate"
-          >
-            {{ prod.name }}
-          </h3>
-          <p class="text-xs text-slate-500 mt-1 line-clamp-2 leading-relaxed">
-            {{ prod.description || "No descriptive overview provided." }}
-          </p>
-        </div>
-
-        <!-- Price & Action (Sticky at bottom) -->
-        <div
-          class="flex items-center justify-between pt-4 mt-4 border-t border-slate-50"
-        >
-          <div class="flex flex-col">
-            <span class="text-[#FF7620] font-black text-lg"
-              >₹{{ prod.price }}</span
-            >
-            <span
-              *ngIf="prod.originalPrice"
-              class="text-[10px] text-slate-400 line-through"
-            >
-              ₹{{ prod.originalPrice }}
-            </span>
-          </div>
-
-          <button
-            (click)="onOrderNow(prod); $event.stopPropagation()"
-            class="px-4 py-2 bg-slate-900 hover:bg-[#FF7620] text-white font-bold text-xs uppercase tracking-wider rounded-xl transition-all duration-300 flex items-center gap-1 active:scale-95"
-          >
-            <span>Buy</span>
-            <svg
-              class="w-3 h-3"
-              fill="none"
-              stroke="currentColor"
-              viewBox="0 0 24 24"
-            >
-              <path
-                stroke-linecap="round"
-                stroke-linejoin="round"
-                stroke-width="2.5"
-                d="M14 5l7 7m0 0l-7 7m7-7H3"
-              ></path>
-            </svg>
-          </button>
-        </div>
-      </div>
+    <div *ngFor="let prod of savedProducts" class="h-full">
+      <app-product-card
+        [product]="prod"
+        [saved]="true"
+        (cardClick)="viewProduct($event)"
+        (toggleSaved)="toggleSaved($event.product, $event.event)"
+        (buyNow)="onOrderNow($event)"
+      ></app-product-card>
     </div>
   </div>
 
   <ng-template #noDataLayout>
-    <div
+    <app-no-data
       *ngIf="!isLoading"
-      class="text-center py-20 px-6 text-slate-500 text-sm font-medium tracking-wide flex flex-col items-center justify-center space-y-4 flex-1 bg-white border border-slate-100 rounded-3xl shadow-sm"
+      title="No Saved Items"
+      subtitle="Your collection is empty. Start exploring our catalog."
     >
-      <!-- Icon Container -->
-      <div
-        class="w-16 h-16 rounded-full bg-slate-50 flex items-center justify-center border border-slate-100 text-slate-400"
-      >
-        <svg
-          class="w-8 h-8"
-          fill="none"
-          stroke="currentColor"
-          viewBox="0 0 24 24"
-        >
-          <path
-            stroke-linecap="round"
-            stroke-linejoin="round"
-            stroke-width="1.5"
-            d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4"
-          ></path>
-        </svg>
-      </div>
-
-      <!-- Message -->
-      <div>
-        <h3 class="text-lg font-black text-slate-900 uppercase tracking-widest">
-          No Saved Items
-        </h3>
-        <p class="mt-2 text-slate-400">
-          Your collection is empty. Start exploring our catalog.
-        </p>
-      </div>
-    </div>
+    </app-no-data>
   </ng-template>
 </main>

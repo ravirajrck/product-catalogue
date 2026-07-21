@@ -1,109 +1,224 @@
 <div class="min-h-screen bg-slate-50">
-  
   <!-- 1. FULL SIZE HERO SLIDESHOW BANNER -->
-  <section class="relative w-full h-[80vh] min-h-[600px] bg-slate-900 flex items-center overflow-hidden group">
-    
+  <section
+    class="relative w-full h-[80vh] min-h-[600px] bg-slate-900 flex items-center overflow-hidden group"
+  >
     <!-- Slide 1 -->
-    <div class="absolute inset-0 transition-opacity duration-1000 ease-in-out" 
-         [ngClass]="{'opacity-100 z-20': currentSlide === 0, 'opacity-0 z-10 pointer-events-none': currentSlide !== 0}">
-      <div class="absolute inset-0 bg-gradient-to-r from-black/80 via-black/50 to-transparent z-10"></div>
-      <img src="https://images.unsplash.com/photo-1556742049-0cf34b6e6820" class="absolute w-full h-full object-cover" />
-      <div class="relative z-20 h-full flex flex-col justify-center max-w-7xl mx-auto px-6 text-white">
-        <span class="bg-[#FF7620] w-max px-4 py-1 text-xs font-bold uppercase rounded-full mb-4">New Collection 2026</span>
-        <h1 class="text-5xl md:text-7xl font-black mb-6 leading-tight">Upgrade Your <br> Tech Lifestyle</h1>
-        <button class="bg-white text-slate-900 px-8 py-3 w-max rounded-xl font-bold hover:bg-[#FF7620] hover:text-white transition-all shadow-lg">Shop Now</button>
+    <div
+      class="absolute inset-0 transition-opacity duration-1000 ease-in-out"
+      [ngClass]="{
+        'opacity-100 z-20': currentSlide === 0,
+        'opacity-0 z-10 pointer-events-none': currentSlide !== 0,
+      }"
+    >
+      <div
+        class="absolute inset-0 bg-gradient-to-r from-black/80 via-black/50 to-transparent z-10"
+      ></div>
+      <img
+        src="https://images.unsplash.com/photo-1556742049-0cf34b6e6820"
+        class="absolute w-full h-full object-cover"
+      />
+      <div
+        class="relative z-20 h-full flex flex-col justify-center max-w-7xl mx-auto px-6 text-white"
+      >
+        <span
+          class="bg-[#FF7620] w-max px-4 py-1 text-xs font-bold uppercase rounded-full mb-4"
+          >New Collection 2026</span
+        >
+        <h1 class="text-5xl md:text-7xl font-black mb-6 leading-tight">
+          Upgrade Your <br />
+          Tech Lifestyle
+        </h1>
+        <button
+          class="bg-white text-slate-900 px-8 py-3 w-max rounded-xl font-bold hover:bg-[#FF7620] hover:text-white transition-all shadow-lg"
+        >
+          Shop Now
+        </button>
       </div>
     </div>
 
     <!-- Slide 2 -->
-    <div class="absolute inset-0 transition-opacity duration-1000 ease-in-out" 
-         [ngClass]="{'opacity-100 z-20': currentSlide === 1, 'opacity-0 z-10 pointer-events-none': currentSlide !== 1}">
-      <div class="absolute inset-0 bg-gradient-to-r from-black/80 via-black/50 to-transparent z-10"></div>
-      <img src="https://images.unsplash.com/photo-1519389950473-47ba0277781c" class="absolute w-full h-full object-cover" />
-      <div class="relative z-20 h-full flex flex-col justify-center max-w-7xl mx-auto px-6 text-white">
-        <span class="bg-[#FF7620] w-max px-4 py-1 text-xs font-bold uppercase rounded-full mb-4">Top Performance</span>
-        <h1 class="text-5xl md:text-7xl font-black mb-6 leading-tight">Build Your <br> Dream Setup</h1>
-        <button class="bg-white text-slate-900 px-8 py-3 w-max rounded-xl font-bold hover:bg-[#FF7620] hover:text-white transition-all shadow-lg">Explore Deals</button>
+    <div
+      class="absolute inset-0 transition-opacity duration-1000 ease-in-out"
+      [ngClass]="{
+        'opacity-100 z-20': currentSlide === 1,
+        'opacity-0 z-10 pointer-events-none': currentSlide !== 1,
+      }"
+    >
+      <div
+        class="absolute inset-0 bg-gradient-to-r from-black/80 via-black/50 to-transparent z-10"
+      ></div>
+      <img
+        src="https://images.unsplash.com/photo-1519389950473-47ba0277781c"
+        class="absolute w-full h-full object-cover"
+      />
+      <div
+        class="relative z-20 h-full flex flex-col justify-center max-w-7xl mx-auto px-6 text-white"
+      >
+        <span
+          class="bg-[#FF7620] w-max px-4 py-1 text-xs font-bold uppercase rounded-full mb-4"
+          >Top Performance</span
+        >
+        <h1 class="text-5xl md:text-7xl font-black mb-6 leading-tight">
+          Build Your <br />
+          Dream Setup
+        </h1>
+        <button
+          class="bg-white text-slate-900 px-8 py-3 w-max rounded-xl font-bold hover:bg-[#FF7620] hover:text-white transition-all shadow-lg"
+        >
+          Explore Deals
+        </button>
       </div>
     </div>
 
     <!-- Slide 3 -->
-    <div class="absolute inset-0 transition-opacity duration-1000 ease-in-out" 
-         [ngClass]="{'opacity-100 z-20': currentSlide === 2, 'opacity-0 z-10 pointer-events-none': currentSlide !== 2}">
-      <div class="absolute inset-0 bg-gradient-to-r from-black/80 via-black/50 to-transparent z-10"></div>
-      <img src="https://images.unsplash.com/photo-1544731612-de7f96ffe55f" class="absolute w-full h-full object-cover" />
-      <div class="relative z-20 h-full flex flex-col justify-center max-w-7xl mx-auto px-6 text-white">
-        <span class="bg-[#FF7620] w-max px-4 py-1 text-xs font-bold uppercase rounded-full mb-4">Premium Support</span>
-        <h1 class="text-5xl md:text-7xl font-black mb-6 leading-tight">Reliable IT <br> Solutions</h1>
-        <button class="bg-white text-slate-900 px-8 py-3 w-max rounded-xl font-bold hover:bg-[#FF7620] hover:text-white transition-all shadow-lg">Contact Us</button>
+    <div
+      class="absolute inset-0 transition-opacity duration-1000 ease-in-out"
+      [ngClass]="{
+        'opacity-100 z-20': currentSlide === 2,
+        'opacity-0 z-10 pointer-events-none': currentSlide !== 2,
+      }"
+    >
+      <div
+        class="absolute inset-0 bg-gradient-to-r from-black/80 via-black/50 to-transparent z-10"
+      ></div>
+      <img
+        src="https://images.unsplash.com/photo-1544731612-de7f96ffe55f"
+        class="absolute w-full h-full object-cover"
+      />
+      <div
+        class="relative z-20 h-full flex flex-col justify-center max-w-7xl mx-auto px-6 text-white"
+      >
+        <span
+          class="bg-[#FF7620] w-max px-4 py-1 text-xs font-bold uppercase rounded-full mb-4"
+          >Premium Support</span
+        >
+        <h1 class="text-5xl md:text-7xl font-black mb-6 leading-tight">
+          Reliable IT <br />
+          Solutions
+        </h1>
+        <button
+          class="bg-white text-slate-900 px-8 py-3 w-max rounded-xl font-bold hover:bg-[#FF7620] hover:text-white transition-all shadow-lg"
+        >
+          Contact Us
+        </button>
       </div>
     </div>
 
     <!-- Left & Right Arrows (Hover pe dikhenge) -->
-    <button (click)="prevSlide()" class="absolute left-4 md:left-8 top-1/2 -translate-y-1/2 z-30 bg-white/20 hover:bg-[#FF7620] backdrop-blur-sm text-white p-4 rounded-full opacity-0 group-hover:opacity-100 transition-all duration-300">
+    <button
+      (click)="prevSlide()"
+      class="absolute left-4 md:left-8 top-1/2 -translate-y-1/2 z-30 bg-white/20 hover:bg-[#FF7620] backdrop-blur-sm text-white p-4 rounded-full opacity-0 group-hover:opacity-100 transition-all duration-300"
+    >
       <span class="text-xl font-black">❮</span>
     </button>
-    <button (click)="nextSlide()" class="absolute right-4 md:right-8 top-1/2 -translate-y-1/2 z-30 bg-white/20 hover:bg-[#FF7620] backdrop-blur-sm text-white p-4 rounded-full opacity-0 group-hover:opacity-100 transition-all duration-300">
+    <button
+      (click)="nextSlide()"
+      class="absolute right-4 md:right-8 top-1/2 -translate-y-1/2 z-30 bg-white/20 hover:bg-[#FF7620] backdrop-blur-sm text-white p-4 rounded-full opacity-0 group-hover:opacity-100 transition-all duration-300"
+    >
       <span class="text-xl font-black">❯</span>
     </button>
 
     <!-- Slider Dots -->
     <div class="absolute bottom-20 left-1/2 -translate-x-1/2 z-30 flex gap-3">
-      <div (click)="goToSlide(0)" [ngClass]="currentSlide === 0 ? 'bg-[#FF7620] w-10' : 'bg-white/50 w-3 hover:bg-white'" class="h-3 rounded-full cursor-pointer transition-all duration-300"></div>
-      <div (click)="goToSlide(1)" [ngClass]="currentSlide === 1 ? 'bg-[#FF7620] w-10' : 'bg-white/50 w-3 hover:bg-white'" class="h-3 rounded-full cursor-pointer transition-all duration-300"></div>
-      <div (click)="goToSlide(2)" [ngClass]="currentSlide === 2 ? 'bg-[#FF7620] w-10' : 'bg-white/50 w-3 hover:bg-white'" class="h-3 rounded-full cursor-pointer transition-all duration-300"></div>
+      <div
+        (click)="goToSlide(0)"
+        [ngClass]="
+          currentSlide === 0
+            ? 'bg-[#FF7620] w-10'
+            : 'bg-white/50 w-3 hover:bg-white'
+        "
+        class="h-3 rounded-full cursor-pointer transition-all duration-300"
+      ></div>
+      <div
+        (click)="goToSlide(1)"
+        [ngClass]="
+          currentSlide === 1
+            ? 'bg-[#FF7620] w-10'
+            : 'bg-white/50 w-3 hover:bg-white'
+        "
+        class="h-3 rounded-full cursor-pointer transition-all duration-300"
+      ></div>
+      <div
+        (click)="goToSlide(2)"
+        [ngClass]="
+          currentSlide === 2
+            ? 'bg-[#FF7620] w-10'
+            : 'bg-white/50 w-3 hover:bg-white'
+        "
+        class="h-3 rounded-full cursor-pointer transition-all duration-300"
+      ></div>
     </div>
   </section>
 
   <!-- 2. QUICK CATEGORY ICONS -->
   <section class="py-10 max-w-7xl mx-auto px-6 -mt-10 relative z-30">
     <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
-      <div class="bg-white p-6 rounded-2xl shadow-xl flex flex-col items-center hover:text-[#FF7620] hover:-translate-y-2 transition-all cursor-pointer">
-        <span class="text-4xl mb-2">💻</span> <span class="font-bold">Laptops</span>
+      <div
+        class="bg-white p-6 rounded-2xl shadow-xl flex flex-col items-center hover:text-[#FF7620] hover:-translate-y-2 transition-all cursor-pointer"
+      >
+        <span class="text-4xl mb-2">💻</span>
+        <span class="font-bold">Laptops</span>
       </div>
-      <div class="bg-white p-6 rounded-2xl shadow-xl flex flex-col items-center hover:text-[#FF7620] hover:-translate-y-2 transition-all cursor-pointer">
-        <span class="text-4xl mb-2">📱</span> <span class="font-bold">Mobiles</span>
+      <div
+        class="bg-white p-6 rounded-2xl shadow-xl flex flex-col items-center hover:text-[#FF7620] hover:-translate-y-2 transition-all cursor-pointer"
+      >
+        <span class="text-4xl mb-2">📱</span>
+        <span class="font-bold">Mobiles</span>
       </div>
-      <div class="bg-white p-6 rounded-2xl shadow-xl flex flex-col items-center hover:text-[#FF7620] hover:-translate-y-2 transition-all cursor-pointer">
-        <span class="text-4xl mb-2">🎧</span> <span class="font-bold">Accessories</span>
+      <div
+        class="bg-white p-6 rounded-2xl shadow-xl flex flex-col items-center hover:text-[#FF7620] hover:-translate-y-2 transition-all cursor-pointer"
+      >
+        <span class="text-4xl mb-2">🎧</span>
+        <span class="font-bold">Accessories</span>
       </div>
-      <div class="bg-white p-6 rounded-2xl shadow-xl flex flex-col items-center hover:text-[#FF7620] hover:-translate-y-2 transition-all cursor-pointer">
-        <span class="text-4xl mb-2">⌨️</span> <span class="font-bold">Peripherals</span>
+      <div
+        class="bg-white p-6 rounded-2xl shadow-xl flex flex-col items-center hover:text-[#FF7620] hover:-translate-y-2 transition-all cursor-pointer"
+      >
+        <span class="text-4xl mb-2">⌨️</span>
+        <span class="font-bold">Peripherals</span>
       </div>
     </div>
   </section>
 
   <!-- 3. FEATURED PRODUCTS -->
-  <section class="py-16 max-w-7xl mx-auto px-6">
-    <div class="flex justify-between items-end mb-10">
-      <h2 class="text-3xl font-black text-slate-800">Featured Products</h2>
-      <!-- <a href="/store" class="text-[#FF7620] font-bold hover:underline">View All →</a> -->
-    </div>
-    
-    <div class="grid grid-cols-2 md:grid-cols-4 gap-6">
-      <div *ngFor="let i of [1,2,3,4]" class="bg-white p-4 rounded-2xl shadow-sm hover:shadow-xl transition-all border border-slate-100 group">
-        <div class="overflow-hidden rounded-xl mb-4">
-          <img src="https://images.unsplash.com/photo-1593642702821-c8da6771f0c6" class="w-full h-40 object-cover group-hover:scale-110 transition-transform duration-500">
-        </div>
-        <h3 class="font-bold text-slate-800">Ultra Pro Laptop</h3>
-        <p class="text-slate-400 text-sm mb-2">High Performance</p>
-        <div class="flex justify-between items-center mt-4">
-          <span class="font-black text-xl text-[#FF7620]">₹45,999</span>
-          <button class="bg-slate-900 text-white px-4 py-2 rounded-lg text-sm font-bold cursor-pointer hover:bg-[#FF7620] transition-colors">Add</button>
-        </div>
+<section class="py-16 max-w-7xl mx-auto px-6">
+  <h2 class="text-3xl font-black text-slate-800 mb-10">Featured Products</h2>
+  
+  <!-- CSS Only Slider -->
+  <div class="flex gap-6 overflow-x-auto pb-6 snap-x no-scrollbar">
+    <div *ngFor="let i of [1,2,3,4,5,6]" class="min-w-[260px] md:min-w-[280px] snap-center bg-white p-4 rounded-2xl shadow-sm border border-slate-100">
+      <div class="overflow-hidden rounded-xl mb-4">
+        <img src="https://images.unsplash.com/photo-1593642702821-c8da6771f0c6" class="w-full h-40 object-cover">
+      </div>
+      <h3 class="font-bold text-slate-800">Ultra Pro Laptop</h3>
+      <div class="flex justify-between items-center mt-4">
+        <span class="font-black text-xl text-[#FF7620]">₹45,999</span>
+        <button class="bg-slate-900 text-white px-4 py-2 rounded-lg text-sm font-bold">Add</button>
       </div>
     </div>
-  </section>
+  </div>
+</section>
 
   <!-- 4. FLASH SALE BANNER -->
   <section class="bg-[#FF7620] py-16 text-white text-center">
-    <h2 class="text-4xl font-black uppercase mb-4 tracking-tight">Limited Time Deal</h2>
-    <p class="mb-8 text-lg opacity-90 max-w-lg mx-auto">Grab up to 40% OFF on all IT services & hardware. Offer ends soon!</p>
-    <button class="bg-white text-[#FF7620] px-10 py-4 rounded-full font-black uppercase tracking-widest shadow-lg hover:scale-105 transition-transform">Shop The Sale</button>
+    <h2 class="text-4xl font-black uppercase mb-4 tracking-tight">
+      Limited Time Deal
+    </h2>
+    <p class="mb-8 text-lg opacity-90 max-w-lg mx-auto">
+      Grab up to 40% OFF on all IT services & hardware. Offer ends soon!
+    </p>
+    <button
+      class="bg-white text-[#FF7620] px-10 py-4 rounded-full font-black uppercase tracking-widest shadow-lg hover:scale-105 transition-transform"
+    >
+      Shop The Sale
+    </button>
   </section>
 
   <!-- 5. TRUST BADGES -->
-  <section class="py-16 max-w-7xl mx-auto px-6 grid grid-cols-1 md:grid-cols-3 gap-8 text-center border-b border-slate-200">
+  <section
+    class="py-16 max-w-7xl mx-auto px-6 grid grid-cols-1 md:grid-cols-3 gap-8 text-center border-b border-slate-200"
+  >
     <div class="p-6">
       <div class="text-5xl mb-4">🚚</div>
       <h4 class="font-black text-xl mb-2 text-slate-800">Fast Delivery</h4>
@@ -120,5 +235,4 @@
       <p class="text-slate-500">We are always here to help you out.</p>
     </div>
   </section>
-
 </div>

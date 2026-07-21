@@ -1,0 +1,14 @@
+/* Swiper Container ko width aur height dena zaroori hai */
+swiper-container {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+/* Slides ke beech gap aur layout sahi karne ke liye */
+swiper-slide {
+  height: auto;
+  display: flex;
+  justify-content: center;
+}
+

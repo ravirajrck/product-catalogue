@@ -4,11 +4,12 @@ import { FormsModule } from '@angular/forms';
 import { DataService } from '../../../core/services/data.service';
 import { AuthService } from '../../../core/services/auth.service';
 import { Router, RouterModule } from '@angular/router';
+import { ClickBtnComponent } from '../../../core/components/shared/click-btn/click-btn.component';
 
 @Component({
   selector: 'app-dashboard',
   standalone: true,
-  imports: [CommonModule, FormsModule, RouterModule],
+  imports: [CommonModule, FormsModule, RouterModule, ClickBtnComponent],
   templateUrl: './dashboard.component.html',
   styleUrls: ['./dashboard.component.css'],
 })
@@ -143,8 +144,23 @@ export class DashboardComponent implements OnInit {
     }
   }
 
+  viewProduct(productId: string) {
+    this.router.navigate(['/store/product', productId]); // Apne route ke hisab se path set kar lein
+  }
+
   onImageError(event: any) {
     // अगर इमेज लोड नहीं हो पाती, तो उसे 'noimage.png' से रिप्लेस कर दें
     event.target.src = 'noimage.png';
+  }
+
+  updateStockStatus(prod: any) {
+    this.dataService
+      .updateProductStock(prod.id, prod.inStock)
+      .then(() => {
+        console.log(`Stock updated for ${prod.name}:`, prod.inStock);
+      })
+      .catch((err) => {
+        console.error('Failed to update stock:', err);
+      });
   }
 }

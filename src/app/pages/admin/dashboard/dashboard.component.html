@@ -7,10 +7,10 @@
     class="flex flex-col md:flex-row justify-between items-start md:items-center gap-6 mb-10 bg-cyber-card p-1 rounded-2xl"
   >
     <div>
-      <h1 class="text-3xl font-black text-slate-900 tracking-wider uppercase">
+      <h1 class="text-3xl font-bold text-slate-900 tracking-wider uppercase">
         Product Management
       </h1>
-      <p class="text-sm text-slate-500 mt-1">
+      <p class="text-sm font-medium text-slate-500 mt-1">
         Organize your inventory, manage categories, and oversee store
         operations.
       </p>
@@ -18,129 +18,252 @@
   </div>
 
   <div
-    class="flex flex-col lg:flex-row justify-between items-start lg:items-center gap-6 mb-8 glass-panel bg-cyber-card/60 p-6 rounded-2xl border border-white/5"
+    class="flex flex-col lg:flex-row justify-between items-start lg:items-center gap-6 mb-8 glass-panel bg-cyber-card/60 rounded-2xl border border-white/5"
   >
     <div
       class="flex flex-col sm:flex-row items-stretch sm:items-center gap-4 w-full lg:w-auto flex-1 lg:flex-none justify-end"
     >
-      <div class="relative flex-1 sm:flex-none sm:w-80">
+      <div class="relative flex items-center w-full md:max-w-md group">
         <!-- Input Field -->
         <input
           type="text"
           [(ngModel)]="searchTerm"
-          placeholder="Search products locally..."
-          class="w-full bg-slate-50 border border-slate-200 rounded-xl pl-4 pr-12 py-3 text-sm text-slate-900 placeholder-slate-400 focus:outline-none focus:border-[#FF7620] focus:ring-2 focus:ring-[#FF7620]/10 transition-all"
+          placeholder="Search products..."
+          class="w-full bg-white border border-slate-200 rounded-xl pl-11 pr-10 py-3.5 text-base text-slate-900 placeholder-slate-400 focus:outline-none focus:border-[#FF7620] focus:ring-1 focus:ring-[#FF7620] transition-all duration-300 shadow-sm"
         />
+
+        <!-- Icon -->
+        <div
+          class="absolute left-4 text-slate-400 group-focus-within:text-[#FF7620] transition-colors duration-300 pointer-events-none"
+        >
+          <svg
+            class="w-5 h-5"
+            fill="none"
+            stroke="currentColor"
+            viewBox="0 0 24 24"
+          >
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="2.5"
+              d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
+            ></path>
+          </svg>
+        </div>
 
         <!-- Clear Button -->
         <button
           *ngIf="searchTerm"
           (click)="clearSearch()"
-          class="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 hover:text-[#FF7620] text-lg font-bold p-1 cursor-pointer transition-colors focus:outline-none"
+          class="absolute right-4 text-slate-400 hover:text-[#FF7620] transition-colors font-bold text-xl cursor-pointer"
         >
           &times;
         </button>
       </div>
 
-      <div class="flex items-center gap-3">
+      <div
+        class="flex flex-col sm:flex-row  sm:items-center gap-3 w-full sm:w-auto"
+      >
         <!-- Manage Categories Button -->
         <button
           (click)="showCategoryModal = true"
-          class="px-5 py-3 border border-slate-200 hover:border-slate-300 bg-white hover:bg-slate-50 text-slate-600 font-bold text-xs uppercase tracking-wider rounded-xl transition-all cursor-pointer whitespace-nowrap"
+          class="px-6 py-3 bg-slate-900 hover:bg-[#FF7620] text-white border border-slate-200 hover:border-slate-300 font-bold text-xs uppercase tracking-wider duration-300 rounded-xl transition-all cursor-pointer whitespace-nowrap inline-flex items-center justify-center no-underline"
         >
           Manage Categories
         </button>
 
-        <!-- Add New Product Button -->
-        <button
+        <a
           [routerLink]="['/admin', 'manage-product']"
-          class="px-6 py-3 bg-slate-900 hover:bg-[#FF7620] text-white font-black text-xs tracking-wider uppercase rounded-xl shadow-sm hover:shadow-lg transition-all duration-300 cursor-pointer active:scale-95 whitespace-nowrap"
+          class="px-6 py-3 bg-slate-900 hover:bg-[#FF7620] text-white border border-slate-200 hover:border-slate-300 font-bold text-xs uppercase tracking-wider duration-300 rounded-xl transition-all cursor-pointer whitespace-nowrap inline-flex items-center justify-center no-underline"
         >
-          + Add New Product
-        </button>
+          Add New Product
+        </a>
       </div>
     </div>
   </div>
 
-<div class="bg-white border border-slate-200 rounded-2xl shadow-sm overflow-hidden flex-1">
-  <!-- Table Header -->
-  <div class="px-6 py-5 border-b border-slate-100 bg-slate-50/50 flex flex-wrap justify-between items-center gap-4">
-    <div class="flex items-center space-x-6">
-      <h3 class="text-sm font-black text-slate-900 uppercase tracking-widest">
-        Products:
-        <span class="text-[#FF7620] text-lg font-mono ml-1">{{ filteredProducts.length }}</span>
-      </h3>
-      <span class="h-5 w-px bg-slate-200"></span>
-      <h3 class="text-sm font-black text-slate-900 uppercase tracking-widest">
-        Categories:
-        <span class="text-slate-600 text-lg font-mono ml-1">{{ categoriesList.length }}</span>
-      </h3>
+  <div
+    class="bg-white border border-slate-200 rounded-2xl shadow-sm overflow-hidden flex-1"
+  >
+    <!-- Table Header -->
+    <div
+      class="px-6 py-5 border-b border-slate-100 bg-slate-50/50 flex flex-wrap justify-between items-center gap-4"
+    >
+      <div class="flex items-center space-x-6">
+        <h3
+          class="text-sm font-semibold text-slate-900 uppercase tracking-widest"
+        >
+          Products:
+          <span class="text-[#FF7620] text-lg font-semibold ml-1">{{
+            filteredProducts.length
+          }}</span>
+        </h3>
+        <span class="h-5 w-px bg-slate-200"></span>
+        <h3
+          class="text-sm font-semibold text-slate-900 uppercase tracking-widest"
+        >
+          Categories:
+          <span class="text-[#FF7620] text-lg font-semibold ml-1">{{
+            categoriesList.length
+          }}</span>
+        </h3>
+      </div>
     </div>
-    <span class="text-[10px] font-bold px-3 py-1 bg-green-50 text-green-600 rounded-full border border-green-200 tracking-widest uppercase">
-      Live Inventory
-    </span>
-  </div>
 
-  <!-- Table Body -->
+  
+    <!-- Table Body -->
   <div class="overflow-x-auto">
-    <table class="w-full text-left text-sm text-slate-600 table-fixed min-w-[700px]">
-      <thead>
-        <tr class="border-b border-slate-100 text-[10px] font-black uppercase text-slate-400 tracking-widest bg-slate-50/50">
-          <th class="py-4 px-6 w-[15%]">Image</th>
-          <th class="py-4 px-6 w-[45%]">Product Details</th>
-          <th class="py-4 px-6 w-[20%] text-right">Price</th>
-          <th class="py-4 px-6 w-[20%] text-center">Actions</th>
-        </tr>
-      </thead>
-      <tbody class="divide-y divide-slate-100">
-        <!-- Loading State -->
-        <ng-container *ngIf="loadingData">
-          <tr *ngFor="let item of [1, 2, 3]" class="animate-pulse">
-            <td class="py-4 px-6"><div class="w-16 h-16 bg-slate-100 rounded-xl"></div></td>
-            <td class="py-4 px-6 space-y-2"><div class="h-4 bg-slate-100 rounded w-1/2"></div><div class="h-3 bg-slate-50 rounded w-3/4"></div></td>
-            <td class="py-4 px-6"><div class="h-6 bg-slate-100 rounded w-20 ml-auto"></div></td>
-            <td class="py-4 px-6"><div class="flex justify-center space-x-2"><div class="h-9 bg-slate-100 rounded-xl w-16"></div><div class="h-9 bg-slate-100 rounded-xl w-16"></div></div></td>
+      <table
+        class="w-full text-left text-sm text-slate-600 table-fixed min-w-[850px]"
+      >
+        <thead>
+          <tr
+            class="border-b border-slate-100 text-xs font-semibold uppercase text-slate-400 tracking-widest bg-slate-50/50"
+          >
+            <th class="py-4 px-4 w-[6%] text-center">No.</th>
+            <th class="py-4 px-6 w-[14%]">Image</th>
+            <th class="py-4 px-6 w-[30%]">Product Details</th>
+            <th class="py-4 px-6 w-[15%] text-center">Stock Status</th>
+            <th class="py-4 px-6 w-[12%] text-right">Price</th>
+            <th class="py-4 px-6 w-[23%] text-center">Actions</th>
           </tr>
-        </ng-container>
-
-        <!-- Data Rows -->
-        <ng-container *ngIf="!loadingData">
-          <tr *ngFor="let prod of filteredProducts" class="hover:bg-slate-50 transition-colors duration-200 group">
-            <td class="py-4 px-6">
-              <div class="w-16 h-16 rounded-xl overflow-hidden border border-slate-200 bg-slate-100">
-                <img [src]="prod?.images?.[0]?.url || 'assets/noimage.png'" (error)="onImageError($event)" class="w-full h-full object-cover" alt="product" />
-              </div>
-            </td>
-            <td class="py-4 px-6">
-              <p class="font-bold text-slate-900 text-sm tracking-wide truncate">{{ prod.name }}</p>
-              <p class="text-xs text-slate-400 mt-1 truncate">{{ prod.description || "No description provided." }}</p>
-            </td>
-            <td class="py-4 px-6 text-right font-mono">
-              <div class="flex flex-col items-end">
-                <span class="text-[10px] text-slate-300 line-through">₹{{ prod.originalPrice }}</span>
-                <span class="text-[#FF7620] font-black text-base">₹{{ prod.price }}</span>
-              </div>
-            </td>
-            <td class="py-4 px-6">
-              <div class="flex justify-center space-x-2">
-                <button (click)="productEdit(prod)" class="text-[10px] font-bold bg-slate-100 hover:bg-slate-200 text-slate-600 px-4 py-2 rounded-lg transition-all uppercase tracking-wider">Edit</button>
-                <button (click)="removeProduct(prod.id, prod.name)" class="text-[10px] font-bold bg-red-50 hover:bg-red-100 text-red-600 px-4 py-2 rounded-lg transition-all uppercase tracking-wider">Delete</button>
-              </div>
-            </td>
-          </tr>
-        </ng-container>
-         <tr *ngIf="!loadingData && filteredProducts.length === 0">
-              <td
-                colspan="4"
-                class="text-center py-20 text-gray-500 text-base font-mono uppercase tracking-wide"
-              >
-                No products found matching your search.
+        </thead>
+        <tbody class="divide-y divide-slate-100">
+          <!-- Loading State -->
+          <ng-container *ngIf="loadingData">
+            <tr *ngFor="let item of [1, 2, 3]" class="animate-pulse">
+              <td class="py-4 px-4 text-center">
+                <div class="h-4 bg-slate-100 rounded w-6 mx-auto"></div>
+              </td>
+              <td class="py-4 px-6">
+                <div class="w-16 h-16 bg-slate-100 rounded-xl"></div>
+              </td>
+              <td class="py-4 px-6 space-y-2">
+                <div class="h-4 bg-slate-100 rounded w-1/2"></div>
+                <div class="h-3 bg-slate-50 rounded w-3/4"></div>
+              </td>
+              <td class="py-4 px-6 text-center">
+                <div class="h-8 bg-slate-100 rounded-lg w-24 mx-auto"></div>
+              </td>
+              <td class="py-4 px-6">
+                <div class="h-6 bg-slate-100 rounded w-20 ml-auto"></div>
+              </td>
+              <td class="py-4 px-6">
+                <div class="flex justify-center space-x-2">
+                  <div class="h-9 bg-slate-100 rounded-xl w-14"></div>
+                  <div class="h-9 bg-slate-100 rounded-xl w-14"></div>
+                  <div class="h-9 bg-slate-100 rounded-xl w-14"></div>
+                </div>
               </td>
             </tr>
-      </tbody>
-    </table>
+          </ng-container>
+
+          <!-- Data Rows -->
+          <ng-container *ngIf="!loadingData">
+            <tr
+              *ngFor="let prod of filteredProducts; let i = index"
+              class="hover:bg-slate-50 transition-colors duration-200 group"
+            >
+              <!-- Serial Number -->
+              <td class="py-4 px-4 text-center">
+                <span class="font-bold text-slate-500 text-xs font-mono">
+                  {{ i + 1 }}
+                </span>
+              </td>
+
+              <!-- Image -->
+              <td class="py-4 px-6">
+                <div
+                  class="w-16 h-16 rounded-xl overflow-hidden border border-slate-200 bg-slate-100"
+                >
+                  <img
+                    [src]="prod?.images?.[0]?.url || 'assets/noimage.png'"
+                    (error)="onImageError($event)"
+                    class="w-full h-full object-cover"
+                    alt="product"
+                  />
+                </div>
+              </td>
+
+              <!-- Product Details -->
+              <td class="py-4 px-6">
+                <p
+                  class="font-semibold text-slate-900 text-sm tracking-wide truncate"
+                >
+                  {{ prod.name }}
+                </p>
+                <p class="text-xs text-slate-400 mt-1 truncate">
+                  {{ prod.description || "No description provided." }}
+                </p>
+              </td>
+
+              <!-- Stock Status Select Dropdown -->
+              <td class="py-4 px-6 text-center">
+                <select
+                  [(ngModel)]="prod.inStock"
+                  (change)="updateStockStatus(prod)"
+                  class="text-xs font-bold px-3 py-1.5 rounded-lg border transition-all cursor-pointer outline-none shadow-sm"
+                  [ngClass]="{
+                    'bg-emerald-50 text-emerald-700 border-emerald-200 focus:ring-emerald-500': prod.inStock !== false,
+                    'bg-rose-50 text-rose-700 border-rose-200 focus:ring-rose-500': prod.inStock === false
+                  }"
+                >
+                  <option [ngValue]="true">In Stock</option>
+                  <option [ngValue]="false">Out of Stock</option>
+                </select>
+              </td>
+
+              <!-- Price -->
+              <td class="py-4 px-6 text-right font-mono">
+                <div class="flex flex-col items-end">
+                  <span class="text-sm text-slate-500 line-through font-medium" *ngIf="prod.originalPrice">
+                    <i class="fa-solid fa-indian-rupee-sign"></i>{{ prod.originalPrice }}
+                  </span>
+                  <span class="text-[#FF7620] font-black text-base">
+                    <i class="fa-solid fa-indian-rupee-sign"></i>{{ prod.price }}
+                  </span>
+                </div>
+              </td>
+
+              <!-- Actions -->
+              <td class="py-4 px-6">
+                <div class="flex justify-center space-x-1.5">
+                  <button
+                    (click)="viewProduct(prod.id)"
+                    class="text-[10px] font-semibold bg-blue-50 hover:bg-blue-100 text-blue-600 px-2.5 py-2 rounded-lg transition-all uppercase tracking-wider cursor-pointer"
+                  >
+                    Details
+                  </button>
+                  <button
+                    (click)="productEdit(prod)"
+                    class="text-[10px] font-semibold bg-slate-100 hover:bg-slate-200 text-slate-600 px-2.5 py-2 rounded-lg transition-all uppercase tracking-wider cursor-pointer"
+                  >
+                    Edit
+                  </button>
+                  <button
+                    (click)="removeProduct(prod.id, prod.name)"
+                    class="text-[10px] font-semibold bg-red-50 hover:bg-red-100 text-red-600 px-2.5 py-2 rounded-lg transition-all uppercase tracking-wider cursor-pointer"
+                  >
+                    Delete
+                  </button>
+                </div>
+              </td>
+            </tr>
+          </ng-container>
+
+          <!-- Empty State -->
+          <tr *ngIf="!loadingData && filteredProducts.length === 0">
+            <td
+              colspan="6"
+              class="text-center py-20 text-gray-500 text-base font-mono uppercase tracking-wide"
+            >
+              No products found matching your search.
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
   </div>
-</div>
 
   <div
     *ngIf="showCategoryModal"
@@ -163,78 +286,87 @@
         </button>
       </div>
 
-  <div class="p-6 space-y-6 bg-white rounded-2xl shadow-xl border border-slate-100">
-  <!-- Add/Edit Form -->
-  <form (ngSubmit)="onSaveCategory()" class="space-y-3">
-    <label class="text-sm font-bold text-slate-700 block">
-      Category Name
-    </label>
-    <div class="flex gap-3">
-      <input
-        type="text"
-        [(ngModel)]="newCategoryName"
-        name="catName"
-        placeholder="e.g., Electronics"
-        required
-        class="flex-1 bg-slate-50 border border-slate-200 rounded-xl px-4 py-2.5 text-sm text-slate-900 placeholder-slate-400 focus:outline-none focus:border-[#FF7620] focus:ring-1 focus:ring-[#FF7620]/20 transition-all"
-      />
-      <button
-        type="submit"
-        [disabled]="!newCategoryName?.trim()"
-        class="px-6 py-2.5 bg-slate-900 hover:bg-[#FF7620] text-white font-bold rounded-xl text-xs tracking-wider uppercase shadow-sm hover:shadow transition-all cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed"
-      >
-        {{ isEditingCategory ? "Update" : "Add" }}
-      </button>
-    </div>
-    <!-- Cancel Edit Button -->
-    <button
-      type="button"
-      *ngIf="isEditingCategory"
-      (click)="cancelCategoryEdit()"
-      class="text-xs font-medium text-slate-500 hover:text-[#FF7620] hover:underline block mt-2"
-    >
-      Cancel Editing
-    </button>
-  </form>
-
-  <!-- Categories List -->
-  <div>
-    <h4 class="text-xs font-bold text-slate-500 uppercase tracking-widest mb-3 px-1">
-      Existing Categories
-    </h4>
-    <!-- List Container with Scroll -->
-    <div class="max-h-60 overflow-y-auto pr-2 space-y-2 custom-scrollbar">
       <div
-        *ngFor="let cat of categoriesList"
-        class="flex justify-between items-center bg-slate-50/50 hover:bg-slate-100 border border-slate-100 rounded-xl p-3 transition-colors group"
+        class="p-6 space-y-6 bg-white rounded-2xl shadow-xl border border-slate-100"
       >
-        <span class="text-sm font-semibold text-slate-800 truncate pr-2">
-          {{ cat.name }}
-        </span>
-        <!-- Action Buttons (Visible on hover for cleaner look) -->
-        <div class="flex space-x-3 text-xs opacity-100 md:opacity-0 md:group-hover:opacity-100 transition-opacity">
+        <!-- Add/Edit Form -->
+        <form (ngSubmit)="onSaveCategory()" class="space-y-3">
+          <label class="text-sm font-bold text-slate-700 block">
+            Category Name
+          </label>
+          <div class="flex gap-3">
+            <input
+              type="text"
+              [(ngModel)]="newCategoryName"
+              name="catName"
+              placeholder="e.g., Electronics"
+              required
+              class="flex-1 bg-slate-50 border border-slate-200 rounded-xl px-4 py-2.5 text-sm text-slate-900 placeholder-slate-400 focus:outline-none focus:border-[#FF7620] focus:ring-1 focus:ring-[#FF7620]/20 transition-all"
+            />
+            <button
+              type="submit"
+              [disabled]="!newCategoryName?.trim()"
+              class="px-6 py-2.5 bg-slate-900 hover:bg-[#FF7620] text-white font-bold rounded-xl text-xs tracking-wider uppercase shadow-sm hover:shadow transition-all cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed"
+            >
+              {{ isEditingCategory ? "Update" : "Add" }}
+            </button>
+          </div>
+          <!-- Cancel Edit Button -->
           <button
-            (click)="editCategory(cat)"
-            class="text-slate-600 hover:text-[#FF7620] font-bold cursor-pointer"
+            type="button"
+            *ngIf="isEditingCategory"
+            (click)="cancelCategoryEdit()"
+            class="text-xs font-medium text-slate-500 hover:text-[#FF7620] hover:underline block mt-2"
           >
-            Edit
+            Cancel Editing
           </button>
-          <button
-            (click)="removeCategory(cat.id, cat.name)"
-            class="text-red-600 hover:text-red-700 font-bold cursor-pointer"
+        </form>
+
+        <!-- Categories List -->
+        <div>
+          <h4
+            class="text-xs font-bold text-slate-500 uppercase tracking-widest mb-3 px-1"
           >
-            Delete
-          </button>
+            Existing Categories
+          </h4>
+          <!-- List Container with Scroll -->
+          <div class="max-h-60 overflow-y-auto pr-2 space-y-2 custom-scrollbar">
+            <div
+              *ngFor="let cat of categoriesList"
+              class="flex justify-between items-center bg-slate-50/50 hover:bg-slate-100 border border-slate-100 rounded-xl p-3 transition-colors group"
+            >
+              <span class="text-sm font-semibold text-slate-800 truncate pr-2">
+                {{ cat.name }}
+              </span>
+              <!-- Action Buttons (Visible on hover for cleaner look) -->
+              <div
+                class="flex space-x-3 text-xs opacity-100 md:opacity-0 md:group-hover:opacity-100 transition-opacity"
+              >
+                <button
+                  (click)="editCategory(cat)"
+                  class="text-slate-600 hover:text-[#FF7620] font-bold cursor-pointer"
+                >
+                  Edit
+                </button>
+                <button
+                  (click)="removeCategory(cat.id, cat.name)"
+                  class="text-red-600 hover:text-red-700 font-bold cursor-pointer"
+                >
+                  Delete
+                </button>
+              </div>
+            </div>
+
+            <!-- Empty State for List -->
+            <div
+              *ngIf="categoriesList.length === 0"
+              class="text-center py-8 text-slate-400 text-xs border border-dashed border-slate-200 rounded-xl bg-slate-50"
+            >
+              No categories created yet.
+            </div>
+          </div>
         </div>
       </div>
-
-      <!-- Empty State for List -->
-      <div *ngIf="categoriesList.length === 0" class="text-center py-8 text-slate-400 text-xs border border-dashed border-slate-200 rounded-xl bg-slate-50">
-        No categories created yet.
-      </div>
-    </div>
-  </div>
-</div>
     </div>
   </div>
 </main>

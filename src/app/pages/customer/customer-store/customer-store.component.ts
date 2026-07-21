@@ -7,11 +7,13 @@ import { FooterComponent } from '../../../core/components/footer/footer.componen
 import { Router } from '@angular/router';
 import { NavbarComponent } from '../../../core/components/navbar/navbar.component';
 import { DataService } from '../../../core/services/data.service';
+import { NoDataComponent } from "../../../core/components/shared/no-data/no-data.component";
+import { ProductCardComponent } from "../../../core/components/shared/product-card/product-card.component";
 
 @Component({
   selector: 'app-customer-store',
   standalone: true,
-  imports: [CommonModule, FormsModule, FooterComponent, NavbarComponent], // 👈 NgModel error nahi aayegi
+  imports: [CommonModule, FormsModule, FooterComponent, NavbarComponent, NoDataComponent, ProductCardComponent], // 👈 NgModel error nahi aayegi
   templateUrl: './customer-store.component.html',
   styleUrls: ['./customer-store.component.css'],
 })

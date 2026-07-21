@@ -4,10 +4,12 @@ import { firstValueFrom } from 'rxjs';
 import { CommonModule } from '@angular/common';
 import { Router, RouterModule } from '@angular/router';
 import { Location } from '@angular/common';
+import { NoDataComponent } from "../../../core/components/shared/no-data/no-data.component";
+import { ProductCardComponent } from "../../../core/components/shared/product-card/product-card.component";
 
 @Component({
   selector: 'app-saved-products',
-  imports: [CommonModule, RouterModule],
+  imports: [CommonModule, RouterModule, NoDataComponent, ProductCardComponent],
   templateUrl: './saved-products.component.html',
   styleUrl: './saved-products.component.css',
 })
