@@ -121,40 +121,51 @@ export class DataService {
     return snapshot.docs.map((doc) => ({ id: doc.id, ...doc.data() }));
   }
 
-  // ====== SERVICES & INQUIRIES (Fixed) ======
+  // ====== SERVICES & INQUIRIES ======
   
-  // Services list fetch karne ke liye
   async getServices(): Promise<any[]> {
     const servicesRef = collection(this.firestore, 'services');
-        const snapshot = await getDocs(servicesRef);
+    const snapshot = await getDocs(servicesRef);
     return snapshot.docs.map((doc) => ({ id: doc.id, ...doc.data() }));
   }
 
-
   async seedServices(servicesArray: any[]) {
-  const promises = servicesArray.map(async (service) => {
-    // Agar aap chahte hain ki ID '1', '2' hi rahe Firestore mein:
-    const serviceDocRef = doc(this.firestore, `services/${service.id}`);
-    
-    // id field ko data ke andar se hata bhi sakte hain ya rakh sakte hain
-    const { id, ...dataToSave } = service;
-    
-    return setDoc(serviceDocRef, {
-      ...dataToSave,
-      createdAt: new Date()
+    const promises = servicesArray.map(async (service) => {
+      const serviceDocRef = doc(this.firestore, `services/${service.id}`);
+      const { id, ...dataToSave } = service;
+      
+      return setDoc(serviceDocRef, {
+        ...dataToSave,
+        createdAt: new Date()
+      });
     });
-  });
 
-  await Promise.all(promises);
-  console.log('All services uploaded successfully!');
-}
+    await Promise.all(promises);
+    console.log('All services uploaded successfully!');
+  }
 
-  // User ki request/inquiry save karne ke liye
   submitServiceInquiry(inquiryData: any) {
     const inquiriesRef = collection(this.firestore, 'serviceInquiries');
     return addDoc(inquiriesRef, {
       ...inquiryData,
       createdAt: new Date()
     });
+  }
+
+  // ====== SERVICE REQUESTS / INQUIRIES MANAGEMENT ======
+
+  getServiceRequests(): Observable<any[]> {
+    const inquiriesRef = collection(this.firestore, 'serviceInquiries');
+    return collectionData(inquiriesRef, { idField: 'id' });
+  }
+
+  updateServiceRequestStatus(requestId: string, status: string) {
+    const requestDocRef = doc(this.firestore, `serviceInquiries/${requestId}`);
+    return updateDoc(requestDocRef, { status: status });
+  }
+
+  deleteServiceRequest(requestId: string) {
+    const requestDocRef = doc(this.firestore, `serviceInquiries/${requestId}`);
+    return deleteDoc(requestDocRef);
   }
 }

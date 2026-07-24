@@ -274,6 +274,78 @@
     </div>
   </div>
 
+  <!-- SERVICE REQUESTS SECTION -->
+  <div class="bg-white border border-slate-200 rounded-2xl shadow-sm overflow-hidden mt-8">
+    <div class="px-6 py-5 border-b border-slate-100 bg-slate-50/50 flex flex-wrap justify-between items-center gap-4">
+      <div class="flex items-center space-x-6">
+        <h3 class="text-sm font-semibold text-slate-900 uppercase tracking-widest">
+          Service Requests:
+          <span class="text-[#FF7620] text-lg font-semibold ml-1">{{ serviceRequestsList.length }}</span>
+        </h3>
+      </div>
+    </div>
+
+    <div class="overflow-x-auto">
+      <table class="w-full text-left text-sm text-slate-600 table-fixed min-w-[850px]">
+        <thead>
+          <tr class="border-b border-slate-100 text-xs font-semibold uppercase text-slate-400 tracking-widest bg-slate-50/50">
+            <th class="py-4 px-4 w-[6%] text-center">No.</th>
+            <th class="py-4 px-6 w-[24%]">Client / User</th>
+            <th class="py-4 px-6 w-[30%]">Service Details</th>
+            <th class="py-4 px-6 w-[20%] text-center">Status</th>
+            <th class="py-4 px-6 w-[20%] text-center">Actions</th>
+          </tr>
+        </thead>
+        <tbody class="divide-y divide-slate-100">
+          <tr *ngFor="let req of serviceRequestsList; let i = index" class="hover:bg-slate-50 transition-colors duration-200">
+            <td class="py-4 px-4 text-center">
+              <span class="font-bold text-slate-500 text-xs font-mono">{{ i + 1 }}</span>
+            </td>
+            <td class="py-4 px-6">
+              <p class="font-semibold text-slate-900 text-sm truncate">{{ req.name || req.clientName || 'N/A' }}</p>
+              <p class="text-xs text-slate-400 mt-1 truncate">{{ req.email || req.phone || 'No contact provided' }}</p>
+            </td>
+            <td class="py-4 px-6">
+              <p class="font-semibold text-slate-900 text-sm truncate">{{ req.serviceName || req.title || 'General Request' }}</p>
+              <p class="text-xs text-slate-400 mt-1 truncate">{{ req.description || req.message || 'No description' }}</p>
+            </td>
+            <td class="py-4 px-6 text-center">
+              <select
+                [(ngModel)]="req.status"
+                (change)="updateServiceRequestStatus(req)"
+                class="text-xs font-bold px-3 py-1.5 rounded-lg border transition-all cursor-pointer outline-none shadow-sm"
+                [ngClass]="{
+                  'bg-amber-50 text-amber-700 border-amber-200 focus:ring-amber-500': req.status === 'Pending',
+                  'bg-blue-50 text-blue-700 border-blue-200 focus:ring-blue-500': req.status === 'In Progress',
+                  'bg-emerald-50 text-emerald-700 border-emerald-200 focus:ring-emerald-500': req.status === 'Completed',
+                  'bg-rose-50 text-rose-700 border-rose-200 focus:ring-rose-500': req.status === 'Cancelled'
+                }"
+              >
+                <option value="Pending">Pending</option>
+                <option value="In Progress">In Progress</option>
+                <option value="Completed">Completed</option>
+                <option value="Cancelled">Cancelled</option>
+              </select>
+            </td>
+            <td class="py-4 px-6 text-center">
+              <button
+                (click)="removeServiceRequest(req.id)"
+                class="text-[10px] font-semibold bg-red-50 hover:bg-red-100 text-red-600 px-3 py-2 rounded-lg transition-all uppercase tracking-wider cursor-pointer"
+              >
+                Delete
+              </button>
+            </td>
+          </tr>
+          <tr *ngIf="serviceRequestsList.length === 0">
+            <td colspan="5" class="text-center py-10 text-gray-500 text-xs font-mono uppercase tracking-wide">
+              No service requests found.
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
   <div
     *ngIf="showCategoryModal"
     class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-md transition-all"
