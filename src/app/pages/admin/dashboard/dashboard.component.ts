@@ -19,6 +19,7 @@ export class DashboardComponent implements OnInit {
   private authService = inject(AuthService);
   private toastr = inject(ToastrService);
   private router = inject(Router);
+  
   // Category State
   newCategoryName = '';
   categoriesList: any[] = [];
@@ -34,8 +35,8 @@ export class DashboardComponent implements OnInit {
   searchTerm = '';
 
   // Loaders
-  loading = false; // Form submission loader
-  loadingData = true; // [[NEW]] Shimmer loader for initial data fetch
+  loading = false; 
+  loadingData = true; 
 
   showCategoryModal = false;
 
@@ -50,7 +51,7 @@ export class DashboardComponent implements OnInit {
       error: (err) => console.error(err),
     });
 
-    // 2. Products load karein aur fetched hone ke baad loadingData false karein
+    // 2. Products load karein
     this.dataService.getProducts().subscribe({
       next: (data) => {
         this.productsList = data;
@@ -63,7 +64,6 @@ export class DashboardComponent implements OnInit {
     });
   }
 
-  // Local Search Filter Logic
   get filteredProducts() {
     if (!this.searchTerm.trim()) {
       return this.productsList;
@@ -76,7 +76,6 @@ export class DashboardComponent implements OnInit {
     );
   }
 
-  // [[NEW]] Search clear karne ka function
   clearSearch() {
     this.searchTerm = '';
   }
@@ -87,18 +86,34 @@ export class DashboardComponent implements OnInit {
 
   // ======= CATEGORY ACTIONS =======
   async onSaveCategory() {
-    if (!this.newCategoryName.trim()) return;
+    const trimmedName = this.newCategoryName.trim();
+    if (!trimmedName) return;
+
+    // 1. Duplicate Category Check (Case-insensitive)
+    const categoryExists = this.categoriesList.some(
+      (cat) =>
+        cat.name.toLowerCase() === trimmedName.toLowerCase() &&
+        (!this.isEditingCategory || cat.id !== this.currentEditingCategoryId)
+    );
+
+    if (categoryExists) {
+      this.toastr.warning(
+        `Category "${trimmedName}" already exists! Please use a different name.`,
+        'Duplicate Category'
+      );
+      return;
+    }
 
     try {
       if (this.isEditingCategory) {
         await this.dataService.updateCategory(
           this.currentEditingCategoryId,
-          this.newCategoryName.trim(),
+          trimmedName,
         );
         this.toastr.success('Category updated successfully!', 'Success');
         this.cancelCategoryEdit();
       } else {
-        await this.dataService.addCategory(this.newCategoryName.trim());
+        await this.dataService.addCategory(trimmedName);
         this.toastr.success('Category added successfully!', 'Success');
         this.newCategoryName = '';
       }
@@ -121,6 +136,19 @@ export class DashboardComponent implements OnInit {
   }
 
   async removeCategory(id: string, categoryName: string) {
+    // 2. Check if any product is associated with this category
+    const hasAssociatedProducts = this.productsList.some(
+      (prod) => prod.categoryId === id
+    );
+
+    if (hasAssociatedProducts) {
+      this.toastr.error(
+        `Cannot delete "${categoryName}" because it has active products assigned to it. Please reassign or delete those products first.`,
+        'Action Denied'
+      );
+      return;
+    }
+
     if (
       confirm(`Are you sure you want to delete the category "${categoryName}"?`)
     ) {
@@ -136,6 +164,7 @@ export class DashboardComponent implements OnInit {
       }
     }
   }
+
   async removeProduct(id: string, name: string) {
     if (confirm(`Are you sure you want to delete the product "${name}"?`)) {
       try {
@@ -152,11 +181,10 @@ export class DashboardComponent implements OnInit {
   }
 
   viewProduct(productId: string) {
-    this.router.navigate(['/store/product', productId],{queryParams:{type:"dashboard"}}); // Apne route ke hisab se path set kar lein
+    this.router.navigate(['/store/product', productId], { queryParams: { type: 'dashboard' } });
   }
 
   onImageError(event: any) {
-    // अगर इमेज लोड नहीं हो पाती, तो उसे 'noimage.png' से रिप्लेस कर दें
     event.target.src = 'noimage.png';
   }
 
@@ -165,12 +193,10 @@ export class DashboardComponent implements OnInit {
       .updateProductStock(prod.id, prod.inStock)
       .then(() => {
         console.log(`Stock updated for ${prod.name}:`, prod.inStock);
-        // Success Toast
         this.toastr.success(`Stock updated successfully!`, 'Success');
       })
       .catch((err) => {
         console.error('Failed to update stock:', err);
-        // Error Toast
         this.toastr.error(
           'Failed to update stock status. Please try again!',
           'Error',

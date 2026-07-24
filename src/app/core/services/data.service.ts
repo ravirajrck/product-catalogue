@@ -9,6 +9,7 @@ import {
   deleteDoc,
   getDoc,
   getDocs,
+  setDoc,
 } from '@angular/fire/firestore';
 import { Observable } from 'rxjs';
 
@@ -50,7 +51,6 @@ export class DataService {
     return collectionData(productsRef, { idField: 'id' });
   }
 
-  // [[NEW]] 3. Update Product
   updateProduct(productId: string, updatedData: any) {
     const productDocRef = doc(this.firestore, `products/${productId}`);
     return updateDoc(productDocRef, updatedData);
@@ -61,13 +61,11 @@ export class DataService {
     return updateDoc(productDocRef, { inStock: inStock });
   }
 
-  // [[NEW]] 4. Delete Product
   deleteProduct(productId: string) {
     const productDocRef = doc(this.firestore, `products/${productId}`);
     return deleteDoc(productDocRef);
   }
 
-  // [[NEW]] 2. Get Single Product by ID
   async getProductById(id: string): Promise<any> {
     const docRef = doc(this.firestore, 'products', id);
     const docSnap = await getDoc(docRef);
@@ -79,7 +77,6 @@ export class DataService {
     }
   }
 
-  // [[NEW]] 3. Get Single Category by ID
   async getCategoryById(id: string): Promise<any> {
     const docRef = doc(this.firestore, 'categories', id);
     const docSnap = await getDoc(docRef);
@@ -90,46 +87,74 @@ export class DataService {
     return { name: 'Uncategorized' };
   }
 
-  // src/app/core/services/data.service.ts
-
   getSavedProductsFromList(allProducts: any[]): any[] {
-    // 1. LocalStorage se IDs nikaalo
     const savedIds = JSON.parse(localStorage.getItem('saved_products') || '[]');
-
     if (savedIds.length === 0) return [];
-
-    // 2. Apni pehle se load ki hui list ko filter karo
     return allProducts.filter((prod) => savedIds.includes(prod.id));
   }
 
-  // 1. Sirf ID save/remove karein (Price nahi)
   toggleSavedLocal(product: any): boolean {
     let savedIds = JSON.parse(localStorage.getItem('saved_products') || '[]');
     const index = savedIds.indexOf(product.id);
     let isSaved = false;
 
     if (index > -1) {
-      savedIds.splice(index, 1); // Remove
+      savedIds.splice(index, 1);
       isSaved = false;
     } else {
-      savedIds.push(product.id); // Add
+      savedIds.push(product.id);
       isSaved = true;
     }
 
     localStorage.setItem('saved_products', JSON.stringify(savedIds));
-    return isSaved; // Yeh batayega ki save hua ya remove
+    return isSaved;
   }
 
-  // 2. Check karne ke liye
   isProductSaved(productId: string): boolean {
     const savedIds = JSON.parse(localStorage.getItem('saved_products') || '[]');
     return savedIds.includes(productId);
   }
 
-  // DataService ke andar ye method add karein
   async getAllProductsFromFirestore(): Promise<any[]> {
     const productsCollection = collection(this.firestore, 'products');
     const snapshot = await getDocs(productsCollection);
     return snapshot.docs.map((doc) => ({ id: doc.id, ...doc.data() }));
+  }
+
+  // ====== SERVICES & INQUIRIES (Fixed) ======
+  
+  // Services list fetch karne ke liye
+  async getServices(): Promise<any[]> {
+    const servicesRef = collection(this.firestore, 'services');
+        const snapshot = await getDocs(servicesRef);
+    return snapshot.docs.map((doc) => ({ id: doc.id, ...doc.data() }));
+  }
+
+
+  async seedServices(servicesArray: any[]) {
+  const promises = servicesArray.map(async (service) => {
+    // Agar aap chahte hain ki ID '1', '2' hi rahe Firestore mein:
+    const serviceDocRef = doc(this.firestore, `services/${service.id}`);
+    
+    // id field ko data ke andar se hata bhi sakte hain ya rakh sakte hain
+    const { id, ...dataToSave } = service;
+    
+    return setDoc(serviceDocRef, {
+      ...dataToSave,
+      createdAt: new Date()
+    });
+  });
+
+  await Promise.all(promises);
+  console.log('All services uploaded successfully!');
+}
+
+  // User ki request/inquiry save karne ke liye
+  submitServiceInquiry(inquiryData: any) {
+    const inquiriesRef = collection(this.firestore, 'serviceInquiries');
+    return addDoc(inquiriesRef, {
+      ...inquiryData,
+      createdAt: new Date()
+    });
   }
 }

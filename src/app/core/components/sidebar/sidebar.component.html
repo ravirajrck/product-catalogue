@@ -104,6 +104,34 @@
         Store
       </a>
 
+      <!-- Services (Added right after Store) -->
+      <a
+        routerLink="/store/services"
+        (click)="sidebarService.close()"
+        class="flex items-center gap-3 text-s font-semibold text-slate-600 uppercase hover:text-[#FF7620] transition-colors cursor-pointer py-1"
+      >
+        <svg
+          class="w-5 h-5"
+          fill="none"
+          stroke="currentColor"
+          viewBox="0 0 24 24"
+        >
+          <path
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            stroke-width="2"
+            d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"
+          ></path>
+          <path
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            stroke-width="2"
+            d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"
+          ></path>
+        </svg>
+        Services
+      </a>
+
       <!-- Saved -->
       <a
         routerLink="/store/saved"
@@ -149,10 +177,10 @@
       </a>
     </div>
 
-    <!-- NEW SECTION: Policy Links (List View) -->
+    <!-- Policy Links -->
     <div class="mt-6 pt-4 border-t border-slate-100 flex flex-col space-y-0.5">
       <a
-        routerLink="/store//about"
+        routerLink="/store/about"
         (click)="sidebarService.close()"
         class="flex items-center justify-between text-s text-slate-600 uppercase hover:text-[#FF7620] transition-colors cursor-pointer py-1"
       >
@@ -166,14 +194,14 @@
         Privacy Policy
       </a>
       <a
-        routerLink="/store//terms"
+        routerLink="/store/terms"
         (click)="sidebarService.close()"
         class="flex items-center justify-between text-s text-slate-600 uppercase hover:text-[#FF7620] transition-colors cursor-pointer py-1"
       >
         Terms & Conditions
       </a>
       <a
-        routerLink="/store//contact"
+        routerLink="/store/contact"
         (click)="sidebarService.close()"
         class="flex items-center justify-between text-s text-slate-600 uppercase hover:text-[#FF7620] transition-colors cursor-pointer py-1"
       >
@@ -194,10 +222,11 @@
         href="mailto:ravirajchoudhary@gmail.com"
         class="text-slate-500 hover:text-[#FF7620] transition-colors"
       >
-        sanataninfotechgmail.com
+         sanataninfotech&#64;gmail.in
       </a>
       <a
-        href="mailto:ravirajchoudhary@gmail.com"
+        href="https://www.sanataninfotech.in"
+        target="_blank"
         class="text-slate-500 hover:text-[#FF7620] transition-colors"
       >
         <span class="text-slate-400">www.sanataninfotech.in</span>

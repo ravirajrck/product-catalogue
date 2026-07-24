@@ -41,7 +41,7 @@
 
   <div
     *ngIf="!isLoading && savedProducts.length > 0; else noDataLayout"
-    class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 2xl:grid-cols-6 gap-5 flex-1 items-stretch"
+    class="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 2xl:grid-cols-6 gap-3 sm:gap-5 flex-1"
   >
     <div *ngFor="let prod of savedProducts" class="h-full">
       <app-product-card
