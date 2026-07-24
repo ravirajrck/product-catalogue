@@ -152,7 +152,7 @@ export class DashboardComponent implements OnInit {
   }
 
   viewProduct(productId: string) {
-    this.router.navigate(['/store/product', productId]); // Apne route ke hisab se path set kar lein
+    this.router.navigate(['/store/product', productId],{queryParams:{type:"dashboard"}}); // Apne route ke hisab se path set kar lein
   }
 
   onImageError(event: any) {
