@@ -11,7 +11,7 @@ import {
 import { Location } from '@angular/common';
 import { DataService } from '../../../core/services/data.service';
 import { ActivatedRoute, RouterLink } from '@angular/router';
-import { ToastrService } from 'ngx-toastr'; // Toastr import kiya gaya hai
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-add-product',
@@ -22,11 +22,12 @@ import { ToastrService } from 'ngx-toastr'; // Toastr import kiya gaya hai
 export class AddProductComponent {
   private dataService = inject(DataService);
   private route = inject(ActivatedRoute);
-  private toastr = inject(ToastrService); // Toastr service inject ki gayi hai
+  private toastr = inject(ToastrService);
   private location: any = inject(Location);
 
   productForm!: FormGroup;
   isSaving = false;
+  isLoading = true; // Shimmer ke liye loader flag
   categoriesList: any[] = [];
   isEditing = false;
   productId: string | null = null;
@@ -34,85 +35,89 @@ export class AddProductComponent {
   constructor(private fb: FormBuilder) {}
 
   goBack() {
-    this.location.back(); // Browser history mein piche jayega
+    this.location.back();
   }
 
   ngOnInit() {
-    const urlPattern =
-      /^(https?:\/\/)?([\da-z\.-]+)\.([a-z\.]{2,6})([\/\w \.-]*)*\/?$/;
     window.scrollTo({ top: 0, behavior: 'smooth' });
 
-    this.dataService.getCategories().subscribe({
-      next: (data) => {
-        this.categoriesList = data;
-      },
-      error: (err) => {
-        console.error(err);
-        this.toastr.error('Failed to load categories!', 'Error');
-      },
-    });
-
-    this.route.paramMap.subscribe((params) => {
-      this.productId = params.get('id');
-      if (this.productId) {
-        this.isEditing = true;
-        this.loadProductData(this.productId); // Agar edit hai toh data load karein
-      }
-    });
-
+    // 1. Form Initialization
     this.productForm = this.fb.group({
       name: ['', [Validators.required, Validators.minLength(3)]],
       categoryId: ['', Validators.required],
       originalPrice: [null, [Validators.required, Validators.min(1)]],
       price: [null, [Validators.required, Validators.min(1)]],
+      inStock: [true, Validators.required],
       description: [
         '',
         [
           Validators.required,
-          Validators.minLength(10), // Kam se kam 10 characters
+          Validators.minLength(10),
           Validators.maxLength(2000),
         ],
       ],
       images: this.fb.array([
-        this.fb.group({
-          url: ['', Validators.required],
-        }),
-        this.fb.group({
-          url: ['', Validators.required],
-        }),
-        this.fb.group({
-          url: ['', Validators.required],
-        }),
+        this.fb.group({ url: ['', Validators.required] }),
+        this.fb.group({ url: ['', Validators.required] }),
+        this.fb.group({ url: ['', Validators.required] }),
       ]),
     });
+
+    // 2. Load Categories and Check for Edit Mode
+    this.loadInitialData();
+  }
+
+  async loadInitialData() {
+    this.isLoading = true;
+    try {
+      // Categories fetch karein
+      this.dataService.getCategories().subscribe({
+        next: (data) => {
+          this.categoriesList = data;
+        },
+        error: (err) => {
+          console.error(err);
+          this.toastr.error('Failed to load categories!', 'Error');
+        },
+      });
+
+      // Route se ID check karein (Edit mode ke liye)
+      this.productId = this.route.snapshot.paramMap.get('id');
+      if (this.productId) {
+        this.isEditing = true;
+        await this.loadProductData(this.productId);
+      } else {
+        // Agar Add New Product hai toh loader turant hata dein
+        this.isLoading = false;
+      }
+    } catch (error) {
+      console.error(error);
+      this.isLoading = false;
+    }
   }
 
   async loadProductData(id: string) {
     try {
-      // Service se product fetch karein
       const product = await this.dataService.getProductById(id);
 
-      // 1. Basic fields patch karein
       this.productForm.patchValue({
         name: product.name,
         categoryId: product.categoryId,
         originalPrice: product.originalPrice,
         price: product.price,
+        inStock: product.inStock ?? true,
         description: product.description,
       });
 
-      // 2. Images (FormArray) ko handle karein
       if (product.images && Array.isArray(product.images)) {
-        this.imageArray.clear(); // Purane khali fields hatao
+        this.imageArray.clear();
         product.images.forEach((img: any) => {
           this.imageArray.push(
             this.fb.group({ url: [img.url, Validators.required] }),
-          ); // Ensure validation is attached
+          );
         });
 
-        // Agar 3 se kam images hain, toh baki khali fields wapas add karein
         while (this.imageArray.length < 3) {
-          // Pehli image required ho sakti hai, baki optional ya teeno required rakh sakte hain
           const isFirst = this.imageArray.length === 0;
           this.imageArray.push(
             this.fb.group({
@@ -122,15 +127,15 @@ export class AddProductComponent {
         }
       }
 
-      // 3. Yahan form array ko touched mark kar dein taaki agar khali ho toh error dikhe
       this.imageArray.markAllAsTouched();
     } catch (error) {
       console.error('Error loading product:', error);
       this.toastr.error('Failed to load product details for editing.', 'Error');
+    } finally {
+      this.isLoading = false; // Data load hone ke baad shimmer hat jayega
     }
   }
 
-  // Helper function to get image array
   get imageArray() {
     return this.productForm.get('images') as FormArray;
   }
@@ -147,7 +152,6 @@ export class AddProductComponent {
       },
       (error: any, result: any) => {
         if (!error && result && result.event === 'success') {
-          // Yahan 'patchValue' use karein aur object structure dein
           this.imageArray.at(index).patchValue({
             url: result.info.secure_url,
           });
@@ -161,7 +165,6 @@ export class AddProductComponent {
   }
 
   removeImage(index: number) {
-    // Yahan bhi object structure pass karein
     this.imageArray.at(index).patchValue({
       url: '',
     });
@@ -171,13 +174,11 @@ export class AddProductComponent {
   async onSaveProduct() {
     this.productForm.markAllAsTouched();
 
-    // 1. Check karein ki kam se kam pehli image bhari hai ya nahi
     const imagesArray = this.imageArray.value;
     const hasAtLeastOneImage = imagesArray.some(
       (img: any) => img.url && img.url.trim() !== '',
     );
 
-    // 2. Agar form invalid hai YA ek bhi image nahi hai, toh rok dein
     if (this.productForm.invalid || !hasAtLeastOneImage) {
       this.toastr.warning(
         'Please fill in all required fields.',
@@ -206,10 +207,9 @@ export class AddProductComponent {
       this.isSaving = false;
     }
   }
-  onlyNumbers(event: Event) {
-    // 'event' ko KeyboardEvent mein cast karein
-    const keyboardEvent = event as KeyboardEvent;
 
+  onlyNumbers(event: Event) {
+    const keyboardEvent = event as KeyboardEvent;
     const charCode = keyboardEvent.which
       ? keyboardEvent.which
       : keyboardEvent.keyCode;

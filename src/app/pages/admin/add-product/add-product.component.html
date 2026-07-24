@@ -34,7 +34,40 @@
     </p>
   </div>
 
+  <!-- SHIMMER LOADER (Jab tak data load ho raha hai) -->
+  <div
+    *ngIf="isLoading"
+    class="max-w-6xl mx-auto grid grid-cols-1 lg:grid-cols-3 gap-8 animate-pulse"
+  >
+    <div class="lg:col-span-2 space-y-6">
+      <div
+        class="bg-white border border-slate-200 p-8 rounded-2xl shadow-xl space-y-6"
+      >
+        <!-- Title & Category Shimmer -->
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
+          <div class="h-14 bg-slate-200 rounded-xl"></div>
+          <div class="h-14 bg-slate-200 rounded-xl"></div>
+        </div>
+        <!-- Prices Shimmer -->
+        <div class="grid grid-cols-2 gap-6">
+          <div class="h-14 bg-slate-200 rounded-xl"></div>
+          <div class="h-14 bg-slate-200 rounded-xl"></div>
+        </div>
+        <!-- Stock Shimmer -->
+        <div class="h-14 bg-slate-200 rounded-xl"></div>
+        <!-- Description Shimmer -->
+        <div class="h-32 bg-slate-200 rounded-xl"></div>
+        <!-- Image Box Shimmer -->
+        <div class="h-28 bg-slate-200 rounded-xl"></div>
+        <!-- Button Shimmer -->
+        <div class="h-14 bg-slate-300 rounded-xl"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- REAL FORM (Data load hone ke baad dikhega) -->
   <form
+    *ngIf="!isLoading"
     [formGroup]="productForm"
     (ngSubmit)="onSaveProduct()"
     class="max-w-6xl mx-auto grid grid-cols-1 lg:grid-cols-3 gap-8"
@@ -125,7 +158,7 @@
               class="text-base font-bold text-slate-700 mb-2 flex items-center gap-1.5"
             >
               <span> Selling Price</span>
-             ( <i class="fa-solid fa-indian-rupee-sign text-sm"></i>)*
+              ( <i class="fa-solid fa-indian-rupee-sign text-sm"></i>)*
             </label>
             <input
               type="number"
@@ -144,6 +177,48 @@
             >
               Please enter a valid price.
             </div>
+          </div>
+        </div>
+
+        <!-- Stock Status (Radio Buttons) -->
+        <div class="mt-6">
+          <label class="block text-base font-bold text-slate-700 mb-2">
+            Stock Status *
+          </label>
+          <div
+            class="flex items-center gap-6 bg-slate-50 border border-slate-200 rounded-xl px-4 py-3.5"
+          >
+            <label class="flex items-center gap-2 cursor-pointer">
+              <input
+                type="radio"
+                formControlName="inStock"
+                [value]="true"
+                class="w-4 h-4 text-[#FF7620] focus:ring-[#FF7620]"
+              />
+              <span class="text-slate-900 font-semibold text-sm">In Stock</span>
+            </label>
+
+            <label class="flex items-center gap-2 cursor-pointer">
+              <input
+                type="radio"
+                formControlName="inStock"
+                [value]="false"
+                class="w-4 h-4 text-[#FF7620] focus:ring-[#FF7620]"
+              />
+              <span class="text-slate-900 font-semibold text-sm"
+                >Out of Stock</span
+              >
+            </label>
+          </div>
+
+          <div
+            *ngIf="
+              productForm.get('inStock')?.invalid &&
+              productForm.get('inStock')?.touched
+            "
+            class="text-red-500 text-sm mt-1"
+          >
+            Please select stock status.
           </div>
         </div>
 
@@ -177,43 +252,45 @@
           </div>
         </div>
 
-        <div class="space-y-6">
+        <div class="space-y-6 mt-6">
           <div>
             <div formArrayName="images" class="space-y-4">
               <div
                 *ngFor="let img of imageArray.controls; let i = index"
                 [formGroupName]="i"
-                class="bg-slate-50 p-4 rounded-2xl border border-slate-100"
+                class="bg-slate-50 p-4 rounded-2xl border border-slate-100 overflow-hidden"
               >
                 <label class="block text-base font-bold text-slate-700 mb-4"
                   >Product Images ({{ i + 1 }})*</label
                 >
-                <div class="flex items-center gap-2">
+                <div
+                  class="flex flex-col sm:flex-row items-stretch sm:items-center gap-2"
+                >
                   <input
                     type="text"
                     formControlName="url"
                     placeholder="Paste image URL here..."
-                    class="flex-1 bg-white border border-slate-200 rounded-xl px-4 py-3 text-slate-900 focus:border-[#FF7620] focus:ring-1 focus:ring-[#FF7620] outline-none transition-all"
+                    class="w-full sm:flex-1 bg-white border border-slate-200 rounded-xl px-4 py-3 text-slate-900 focus:border-[#FF7620] focus:ring-1 focus:ring-[#FF7620] outline-none transition-all text-sm"
                   />
 
-                  <!-- Agar URL nahi hai toh 'Upload' button dikhega -->
                   <button
                     *ngIf="!img.get('url')?.value"
                     type="button"
                     (click)="uploadImage(i)"
-                    class="bg-[#FF7620] text-white px-4 py-3 rounded-xl font-bold cursor-pointer hover:bg-orange-600 transition-all shrink-0"
+                    class="w-full sm:w-auto bg-[#FF7620] text-white px-5 py-3 rounded-xl font-bold cursor-pointer hover:bg-orange-600 transition-all shrink-0 flex items-center justify-center gap-2"
                   >
-                    Upload
+                    <i class="fa-solid fa-cloud-arrow-up"></i>
+                    <span>Upload</span>
                   </button>
 
-                  <!-- Agar URL hai toh 'Change' button dikhega taaki user naya upload kar sake -->
                   <button
                     *ngIf="img.get('url')?.value"
                     type="button"
                     (click)="uploadImage(i)"
-                    class="bg-slate-800 text-white px-4 py-3 rounded-xl font-bold cursor-pointer hover:bg-slate-900 transition-all shrink-0"
+                    class="w-full sm:w-auto bg-slate-800 text-white px-5 py-3 rounded-xl font-bold cursor-pointer hover:bg-slate-900 transition-all shrink-0 flex items-center justify-center gap-2"
                   >
-                    Change
+                    <i class="fa-solid fa-rotate"></i>
+                    <span>Change</span>
                   </button>
                 </div>
 
@@ -224,7 +301,6 @@
                   Please provide a valid image URL or upload an image.
                 </div>
 
-                <!-- Preview Box -->
                 <div
                   *ngIf="img.get('url')?.value"
                   class="relative w-28 h-28 mt-4"
@@ -249,36 +325,7 @@
               </div>
             </div>
           </div>
-          <!-- <button
-            type="submit"
-            [disabled]="isSaving"
-            [class.opacity-50]="isSaving"
-            class="w-full bg-white text-slate-900 border border-slate-200 font-black uppercase text-base tracking-widest py-4 rounded-xl shadow-sm hover:border-[#FF7620] hover:text-[#FF7620] transition-all duration-300 transform hover:-translate-y-0.5 active:scale-[0.98] flex items-center justify-center cursor-pointer"
-          >
-            <span *ngIf="isSaving" class="flex items-center">
-              <svg
-                class="animate-spin h-5 w-5 mr-3 text-[#FF7620]"
-                viewBox="0 0 24 24"
-              >
-                <circle
-                  class="opacity-25"
-                  cx="12"
-                  cy="12"
-                  r="10"
-                  stroke="currentColor"
-                  stroke-width="4"
-                ></circle>
-                <path
-                  class="opacity-75"
-                  fill="currentColor"
-                  d="M4 12a8 8 0 018-8v8H4z"
-                ></path>
-              </svg>
-              Saving...
-            </span>
 
-            <span *ngIf="!isSaving">Save Product</span>
-          </button> -->
           <button
             type="submit"
             [disabled]="isSaving"
