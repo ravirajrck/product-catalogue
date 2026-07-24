@@ -1,28 +1,37 @@
-import { Component, OnInit, inject } from '@angular/core';
+import {
+  Component,
+  ElementRef,
+  OnInit,
+  ViewChild,
+  inject,
+} from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { DataService } from '../../../core/services/data.service';
 import { CommonModule, Location } from '@angular/common';
 import { FooterComponent } from '../../../core/components/footer/footer.component';
 import { NavbarComponent } from '../../../core/components/navbar/navbar.component';
+import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 
 @Component({
   selector: 'app-product-detail',
   imports: [FooterComponent, NavbarComponent, CommonModule],
   templateUrl: './product-detail.component.html',
   styleUrl: './product-detail.component.css',
+  schemas: [CUSTOM_ELEMENTS_SCHEMA],
 })
 export class ProductDetailComponent implements OnInit {
   private route = inject(ActivatedRoute);
   private dataService = inject(DataService);
   private location = inject(Location);
+  @ViewChild('swiperRef') swiperRef: ElementRef | undefined;
 
   product: any = null;
   loading = true;
   activeImage: string = ''; // Slider ke liye
-sourceType: string = '';
+  sourceType: string = '';
   async ngOnInit() {
     window.scrollTo({ top: 0, behavior: 'smooth' });
-    this.route.queryParams.subscribe(params => {
+    this.route.queryParams.subscribe((params) => {
       this.sourceType = params['type']; // Yahan 'store' milega
       console.log('Coming from:', this.sourceType);
     });
@@ -35,19 +44,37 @@ sourceType: string = '';
     }
   }
 
-  changeImage(url: string) {
+  changeImage(url: string, index: number) {
     this.activeImage = url;
-    if (window.innerWidth < 768) {
-      window.scrollTo({ top: 0, behavior: 'smooth' });
+    // Swiper ko batayein ki konsi slide par jana hai
+    if (this.swiperRef?.nativeElement?.swiper) {
+      this.swiperRef.nativeElement.swiper.slideTo(index);
+    }
+
+    // if (window.innerWidth < 768) {
+    //   window.scrollTo({ top: 0, behavior: 'smooth' });
+    // }
+  }
+
+  onSlideChange(event: any) {
+    const swiperEl = event.target;
+    const activeIndex = swiperEl.swiper.activeIndex;
+
+    if (this.product?.images && this.product.images[activeIndex]) {
+      this.activeImage = this.product.images[activeIndex].url;
     }
   }
 
-orderOnWhatsApp() {
-  const message = `Hi! I am interested in this product: ${this.product.name}. 
-  Could you please provide more details and current availability?`;
   
-  window.open(`https://wa.me/YOUR_NUMBER?text=${encodeURIComponent(message)}`, '_blank');
-}
+  orderOnWhatsApp() {
+    const message = `Hi! I am interested in this product: ${this.product.name}. 
+  Could you please provide more details and current availability?`;
+
+    window.open(
+      `https://wa.me/YOUR_NUMBER?text=${encodeURIComponent(message)}`,
+      '_blank',
+    );
+  }
   shareProduct() {
     if (navigator.share) {
       navigator.share({ title: this.product.name, url: window.location.href });
