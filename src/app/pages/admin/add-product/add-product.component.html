@@ -13,8 +13,8 @@
       <div
         class="w-10 h-10 rounded-full border border-slate-300 flex items-center justify-center group-hover:bg-[#FF7620]/10 group-hover:border-[#FF7620] transition-all shrink-0 relative"
       >
-        <div class="absolute inset-0 flex items-center justify-center pb-1">
-          <span class="text-xl">←</span>
+        <div class="absolute inset-0 flex items-center justify-center pb-0">
+          <i class="fa-solid fa-arrow-left text-sm"></i>
         </div>
       </div>
       <span class="font-bold tracking-widest text-sm">Back to Dashboard</span>
@@ -22,13 +22,18 @@
   </div>
 
   <div class="max-w-6xl mx-auto mb-8 relative z-10">
-    <h1 class="text-3xl font-black uppercase tracking-widest text-slate-900">
+    <h1 class="text-3xl font-bold text-slate-900 tracking-wider uppercase">
       {{ isEditing ? "Edit Product" : "Add New Product" }}
     </h1>
-    <p class="text-sm text-slate-500 mt-1">
-      Deploy new inventory to your store.
+    <p class="text-sm font-medium text-slate-500 mt-1">
+      {{
+        isEditing
+          ? "Update existing product details and specifications."
+          : "Deploy new inventory to your store."
+      }}
     </p>
   </div>
+
   <form
     [formGroup]="productForm"
     (ngSubmit)="onSaveProduct()"
@@ -36,7 +41,7 @@
   >
     <div class="lg:col-span-2 space-y-6">
       <div
-        class="glass-panel bg-cyber-card/70 border border-white/5 p-8 rounded-2xl shadow-2xl"
+        class="bg-white glass-panel bg-cyber-card/70 border border-white/5 p-8 rounded-2xl shadow-2xl"
       >
         <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
           <div>
@@ -89,8 +94,11 @@
 
         <div class="grid grid-cols-2 gap-6 mt-6">
           <div>
-            <label class="block text-base font-bold text-slate-700 mb-2">
-              M.R.P (₹)
+            <label
+              class="text-base font-bold text-slate-700 mb-2 flex items-center gap-1.5"
+            >
+              <span>M.R.P</span>
+              (<i class="fa-solid fa-indian-rupee-sign text-sm"></i>)*
             </label>
             <input
               step="0"
@@ -113,8 +121,11 @@
             </div>
           </div>
           <div>
-            <label class="block text-base font-bold text-slate-700 mb-2">
-              Selling Price (₹) *
+            <label
+              class="text-base font-bold text-slate-700 mb-2 flex items-center gap-1.5"
+            >
+              <span> Selling Price</span>
+             ( <i class="fa-solid fa-indian-rupee-sign text-sm"></i>)*
             </label>
             <input
               type="number"
@@ -138,7 +149,7 @@
 
         <div class="mt-6">
           <label class="block text-base font-bold text-slate-700 mb-2">
-            Description
+            Description*
           </label>
           <textarea
             formControlName="description"
@@ -175,9 +186,9 @@
                 class="bg-slate-50 p-4 rounded-2xl border border-slate-100"
               >
                 <label class="block text-base font-bold text-slate-700 mb-4"
-                  >Product Images ({{ i + 1 }})</label
+                  >Product Images ({{ i + 1 }})*</label
                 >
-                <div class="flex  items-center gap-2">
+                <div class="flex items-center gap-2">
                   <input
                     type="text"
                     formControlName="url"

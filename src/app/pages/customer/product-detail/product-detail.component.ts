@@ -23,6 +23,7 @@ export class ProductDetailComponent implements OnInit {
   private route = inject(ActivatedRoute);
   private dataService = inject(DataService);
   private location = inject(Location);
+    isLoading = false;
   @ViewChild('swiperRef') swiperRef: ElementRef | undefined;
 
   product: any = null;
@@ -65,7 +66,6 @@ export class ProductDetailComponent implements OnInit {
     }
   }
 
-  
   orderOnWhatsApp() {
     const message = `Hi! I am interested in this product: ${this.product.name}. 
   Could you please provide more details and current availability?`;
@@ -96,9 +96,18 @@ export class ProductDetailComponent implements OnInit {
     this.isExpanded = !this.isExpanded;
   }
 
-  // Save/Toggle Logic
+
   toggleSaved() {
+    if (this.isLoading) return;
+    this.isLoading = true;
+
+    // Data service call
     this.dataService.toggleSavedLocal(this.product);
+
+    // Thoda sa visual loading effect dikhane ke baad loader hata dein
+    setTimeout(() => {
+      this.isLoading = false;
+    }, 400);
   }
 
   // Check karne ke liye button active hai ya nahi

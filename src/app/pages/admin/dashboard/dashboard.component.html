@@ -67,16 +67,19 @@
         <!-- Manage Categories Button -->
         <button
           (click)="showCategoryModal = true"
-          class="px-6 py-3 bg-slate-900 hover:bg-[#FF7620] text-white border border-slate-200 hover:border-slate-300 font-bold text-xs uppercase tracking-wider duration-300 rounded-xl transition-all cursor-pointer whitespace-nowrap inline-flex items-center justify-center no-underline"
+          class="px-6 py-3 bg-slate-900 hover:bg-[#FF7620] text-white border border-slate-200 hover:border-slate-300 font-bold text-xs uppercase tracking-wider duration-300 rounded-xl transition-all cursor-pointer whitespace-nowrap inline-flex items-center justify-center gap-2 no-underline"
         >
-          Manage Categories
+          <i class="fa-solid fa-plus"></i>
+          <span>Manage Categories</span>
         </button>
 
+        <!-- Add New Product Button -->
         <a
           [routerLink]="['/admin', 'manage-product']"
-          class="px-6 py-3 bg-slate-900 hover:bg-[#FF7620] text-white border border-slate-200 hover:border-slate-300 font-bold text-xs uppercase tracking-wider duration-300 rounded-xl transition-all cursor-pointer whitespace-nowrap inline-flex items-center justify-center no-underline"
+          class="px-6 py-3 bg-slate-900 hover:bg-[#FF7620] text-white border border-slate-200 hover:border-slate-300 font-bold text-xs uppercase tracking-wider duration-300 rounded-xl transition-all cursor-pointer whitespace-nowrap inline-flex items-center justify-center gap-2 no-underline"
         >
-          Add New Product
+          <i class="fa-solid fa-plus"></i>
+          <span>Add New Product</span>
         </a>
       </div>
     </div>
