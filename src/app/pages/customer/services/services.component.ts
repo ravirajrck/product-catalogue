@@ -151,7 +151,7 @@ async submitInquiry() {
 
       // 2. Generate WhatsApp Message URL
       // Apna WhatsApp number yahan dalein (Country code ke sath, bina '+' ke. Jaise: 919876543210)
-      const adminWhatsAppNumber = '919876543210'; 
+      const adminWhatsAppNumber = '9644692189'; 
 
       const whatsappMessage = 
         `*New Service Inquiry Booking!*%0A%0A` +
